@@ -39,14 +39,22 @@ def write_paper_deck(
 ):
     """Generate one 3-step nonlinear CalculiX model with real platen contact.
 
-    damage=True explicitly fails because CCX 2.13 does not implement
-    Abaqus ductile damage evolution + element deletion.
+    damage=True requires native Rice-Tracey in ccx >= 2.23. This is NOT
+    Abaqus displacement-based damage evolution. CCX 2.23 deletion has
+    known isolated-node singularity hazards and needs verification.
     """
     if damage:
-        raise NotImplementedError(
-            "CCX 2.13 cannot reproduce Abaqus ductile damage/deletion. "
-            "A verified extended CalculiX engine is required."
-        )
+        if config.get("native_damage_engine") != "calculix_223_rice_tracey":
+            raise NotImplementedError(
+                "Native Rice-Tracey needs a ccx >=2.23 build and explicit "
+                "native_damage_engine=calculix_223_rice_tracey. This does "
+                "NOT implement Abaqus displacement-based damage softening."
+            )
+        if not all(k in config for k in ("rice_tracey_first_parameter",
+                                          "rice_tracey_limit")):
+            raise ValueError("Supply calibrated Rice-Tracey card parameters")
+        if float(config["rice_tracey_first_parameter"]) <= 0 or float(config["rice_tracey_limit"]) <= 0:
+            raise ValueError("Rice-Tracey parameters must be positive")
     if self_contact and not config.get("experimental_self_contact_ack", False):
         raise ValueError("Set experimental_self_contact_ack=true in config")
     nodes = np.asarray(nodes, float)
@@ -105,17 +113,26 @@ def write_paper_deck(
     ) + 1
     _nset(lines, "CORE_OUT_OF_PLANE", flat)
 
+    # Order intentionally matters for the official CCX 2.23 damage parser:
+    # the damaged material must be the LAST *MATERIAL definition.
     lines += [
+        "*MATERIAL,NAME=STEEL", "*ELASTIC",
+        f"{float(config.get('steel_young',210000)):.10g}, "
+        f"{float(config.get('steel_poisson',.3)):.10g}",
         "*MATERIAL,NAME=ALSI10MG", "*ELASTIC",
         f"{float(config['young']):.10g}, {float(config['poisson']):.10g}",
         "*PLASTIC",
     ]
     lines += [f"{s:.12g}, {p:.12g}" for s, p in plastic]
+    if damage:
+        lines += [
+            "** EXPERIMENTAL CCX >=2.23: Rice-Tracey deletion is NOT Abaqus damage evolution",
+            "*DAMAGE INITIATION,CRITERION=RICE TRACEY",
+            f"{float(config['rice_tracey_first_parameter']):.10g}, "
+            f"{float(config['rice_tracey_limit']):.10g}"
+        ]
     lines += [
         "*SOLID SECTION,ELSET=CORE,MATERIAL=ALSI10MG",
-        "*MATERIAL,NAME=STEEL", "*ELASTIC",
-        f"{float(config.get('steel_young',210000)):.10g}, "
-        f"{float(config.get('steel_poisson',.3)):.10g}",
         "*SOLID SECTION,ELSET=TOP_PLATEN,MATERIAL=STEEL",
         "*SOLID SECTION,ELSET=BOTTOM_PLATEN,MATERIAL=STEEL",
     ]
@@ -190,6 +207,7 @@ def write_paper_deck(
             "S,E,PEEQ",
             "*NODE PRINT,NSET=TOP_PLATEN_NODES",
             "U,RF",
+            *(["*EL PRINT,ELSET=CORE", "DUCT"] if damage else []),
             "*END STEP",
         ]
     path = Path(path)
