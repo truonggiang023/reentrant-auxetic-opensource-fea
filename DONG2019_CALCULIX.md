@@ -76,7 +76,10 @@ completed run or a solver-declared failure. Its accepted states remain usable.
 The original zero-imperfection run hit a zero-step error after an output-point
 retry at time 0.185. The patched full-lattice rerun accepted that retry and
 continued with positive increments beyond it. See the qualification JSON for
-its final available strain and the status of the 0.35/0.65 targets. These results
+its final available strain and the status of the 0.35/0.65 targets. The corrected
+run was stopped at a 20-minute qualification runtime limit after repeated
+cutbacks, with accepted nominal strain 0.14422. This is a deliberately stopped
+run, not a solver-declared failure. Neither lattice reached 0.35 or 0.65. These results
 do not establish the complete deformation sequence, mesh convergence, or a
 calibrated constitutive response.
 

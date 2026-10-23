@@ -30,7 +30,7 @@ def main():
     ap.add_argument("--output",default="results/dong2019_contact.inp")
     ap.add_argument("--ccx",default=None)
     ap.add_argument("--run",action="store_true")
-    ap.add_argument("--target-output-only",action="store_true", help="Request exact strain frames .12/.35/.65; sparse history is unsuitable for damage integration")
+    ap.add_argument("--target-output-only",action="store_true", help="Request exact strain frames .12/.35/.65; sparse history limits offline initiation diagnostics")
     ap.add_argument("--threads",type=int,default=2)
     ap.add_argument("--self-contact",action="store_true",
                     help="Disjoint wall patches with shared-node adjacency exclusions; potentially expensive")

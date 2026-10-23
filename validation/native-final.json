@@ -12,8 +12,8 @@
   },
   "completed": false,
   "errors": [],
-  "converged_increments": 59,
-  "last_converged_nominal_strain": 0.13975,
+  "converged_increments": 63,
+  "last_converged_nominal_strain": 0.14421875,
   "frames": [
     {
       "target_strain": 0.12,
@@ -39,9 +39,9 @@
     }
   ],
   "contact": {
-    "contact_frames": 44,
-    "max_reported_penetration_mm": 0.00061672,
-    "max_reported_pressure_MPa": 6.1672
+    "contact_frames": 45,
+    "max_reported_penetration_mm": 0.00068384,
+    "max_reported_pressure_MPa": 6.8384
   },
   "reaction_history": [
     {
@@ -263,11 +263,27 @@
       "strain": 0.13975,
       "reaction_y_N": -1295.69,
       "nominal_stress_MPa": 0.6819421052631579
+    },
+    {
+      "strain": 0.14300000000000002,
+      "reaction_y_N": -1281.249,
+      "nominal_stress_MPa": 0.6743415789473685
     }
   ],
-  "max_recorded_integration_point_damage": 0.0,
-  "max_recorded_integration_point_peeq": 0.03942202,
+  "max_recorded_integration_point_damage": 0.49995,
+  "max_recorded_integration_point_peeq": 0.1117083,
   "stress_area_convention_mm2": 1900.0,
   "qualification": "solver evidence only; calibration, full-contact validity and experimental agreement are not established",
+  "latest_recorded_frame": {
+    "time": 0.22,
+    "nominal_strain": 0.14300000000000002,
+    "projected_contact": {
+      "front_plane_elements": 7392,
+      "invalid_projected_elements": [],
+      "overlap_pairs": 0,
+      "max_overlap_mm2": 0.0,
+      "sum_pair_overlap_mm2": 0.0
+    }
+  },
   "material_sidecar_sha256": "cdb78d96b3d52bdfa75c415309ad5f8d03c06e254902ca2efbdb8098aa2af921"
 }

@@ -28,7 +28,9 @@ Damaged elements retain stiffness and contact faces; no deletion, new fracture
 surfaces or complete general self-contact is implemented. Global mesh,
 hourglass-energy, contact-penalty and viscosity sensitivity remain unqualified.
 The full Bi-V/Z/severe-collapse sequence and experimental agreement are not
-established. The PR should remain a draft research implementation.
+established. The PR should remain a draft research implementation. The corrected lattice
+was deliberately stopped after 20 minutes of qualification, at accepted strain
+0.14422 with repeated contact cutbacks; it did not reach 0.35 or 0.65.
 
 `native-imperfect-stopped.*` is a labelled 0.003 mm imperfection comparison,
 deliberately stopped to prioritize the corrected backend. Its accepted fields
