@@ -5,6 +5,7 @@ from .geometry import core_polygon
 from .mesh import mesh_wedges
 from .solver import write_deck,run_ccx
 from .advanced_solver import write_advanced_deck
+from .paper_modes import write_paper_deck
 from .plastic import from_reference
 
 def main():
@@ -14,6 +15,7 @@ def main():
     p.add_argument('--output',default='results/reentrant.inp')
     p.add_argument('--run',action='store_true',help='Run installed CalculiX ccx')
     p.add_argument('--ccx',default='ccx')
+    p.add_argument('--paper-modes',action='store_true',help='Dong2019 candidate: steel platens, friction contact, snapshots at 0.12/0.35/0.65')
     p.add_argument('--advanced',action='store_true',help='Experimental rigid bonded-grip model')
     p.add_argument('--self-contact',action='store_true',help='Experimental unvalidated self-contact, requires config acknowledgement')
     p.add_argument('--ductile-damage',action='store_true',help='Fail fast: coupled damage not yet implemented')
@@ -22,7 +24,9 @@ def main():
     geom=core_polygon(c)
     nodes,elements,top,bottom=mesh_wedges(geom,c['depth'],c['mesh_size'],c['depth_layers'])
     out=Path(a.output);out.parent.mkdir(parents=True,exist_ok=True)
-    if a.advanced or a.self_contact or a.ductile_damage:
+    if a.paper_modes:
+        deck=write_paper_deck(out,nodes,elements,top,bottom,c,from_reference(a.plastic),self_contact=a.self_contact,damage=a.ductile_damage)
+    elif a.advanced or a.self_contact or a.ductile_damage:
         deck=write_advanced_deck(out,nodes,elements,top,bottom,c,from_reference(a.plastic),self_contact=a.self_contact,ductile_damage=a.ductile_damage)
     else:
         deck=write_deck(out,nodes,elements,top,bottom,c,from_reference(a.plastic))
