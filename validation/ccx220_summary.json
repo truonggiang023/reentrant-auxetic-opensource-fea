@@ -1,0 +1,41 @@
+{
+  "solver": "CalculiX 2.20 (Debian 2.20-1)",
+  "date": "2026-10-23",
+  "lattice": {
+    "original": {
+      "converged_increments": 4,
+      "last_step_time": 1.625e-05,
+      "last_nominal_strain": 1.05625e-05,
+      "error_lines": [],
+      "completed": false,
+      "stopped_by_agent": true
+    },
+    "anchored": {
+      "converged_increments": 0,
+      "last_step_time": 0.0,
+      "last_nominal_strain": 0.0,
+      "error_lines": [
+        "*ERROR: increment size smaller than minimum"
+      ],
+      "completed": false,
+      "stopped_by_agent": false
+    },
+    "mortar": {
+      "converged_increments": 33,
+      "last_step_time": 0.0329062,
+      "last_nominal_strain": 0.02138903,
+      "error_lines": [],
+      "completed": false,
+      "stopped_by_agent": true
+    },
+    "linmortar": {
+      "converged_increments": 20,
+      "last_step_time": 0.0318906,
+      "last_nominal_strain": 0.02072889,
+      "error_lines": [],
+      "completed": false,
+      "stopped_by_agent": true
+    }
+  },
+  "benchmark": "Two-wedge slab, not Dong lattice or experimental validation"
+}

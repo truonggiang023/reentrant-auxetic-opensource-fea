@@ -1,11 +1,13 @@
 """CalculiX nonlinear elastic-plastic baseline (no false damage/contact claims)."""
 from pathlib import Path
+from .plastic import validate_material
 import subprocess
 
 def write_deck(path,nodes,elements,top,bottom,c,plastic):
     """Rigid-grip idealization: every top node shares U2, every bottom node fixed.
     Not a deformable steel platen or bonded face-to-face contact implementation.
     """
+    validate_material(c, plastic)
     path=Path(path)
     if len(plastic)<2: raise ValueError('At least two plastic points required')
     lines=['*HEADING','Independent ReEntrant WEDGE6 baseline','*NODE']

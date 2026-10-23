@@ -4,15 +4,16 @@ No native ductile softening/deletion is provided by this deck. Enabling damage
 without a verified solver extension raises an error rather than faking failure.
 """
 from pathlib import Path
+from .plastic import validate_material
 import numpy as np
-from .contact import lateral_exterior_faces
 
 def write_advanced_deck(path, nodes, elements, top, bottom, config, plastic,
                         *, self_contact=False, ductile_damage=False):
+    validate_material(config, plastic)
     if ductile_damage:
         raise NotImplementedError('Coupled ductile damage and element deletion require a verified constitutive solver extension; CalculiX *PLASTIC alone cannot provide them.')
-    if self_contact and not config.get('experimental_self_contact_ack', False):
-        raise ValueError('Self-contact syntax/behavior is unvalidated. Set experimental_self_contact_ack=true explicitly to generate an experimental deck.')
+    if self_contact:
+        raise NotImplementedError('Same-surface self contact is not verified for CalculiX 2.20')
     nodes=np.asarray(nodes,dtype=float)
     elements=np.asarray(elements,dtype=int)
     top=np.asarray(top,dtype=int)
@@ -25,12 +26,14 @@ def write_advanced_deck(path, nodes, elements, top, bottom, config, plastic,
     if len(plastic)<2: raise ValueError('At least two plastic data points needed')
     ymin,ymax=float(nodes[:,1].min()),float(nodes[:,1].max())
     nt,nb=len(nodes)+1,len(nodes)+2
+    rt,rb=len(nodes)+3,len(nodes)+4
     # Reference nodes are independent of core, controlled by rigid-body kinematics.
     lines=['*HEADING','ReEntrant experimental nonlinear bonded-grip model',
            '*NODE']
     lines += [f'{i+1}, {x:.10g}, {y:.10g}, {z:.10g}' for i,(x,y,z) in enumerate(nodes)]
     lines += [f'{nt}, {np.mean(nodes[top,0]):.10g}, {ymax:.10g}, {np.mean(nodes[top,2]):.10g}',
               f'{nb}, {np.mean(nodes[bottom,0]):.10g}, {ymin:.10g}, {np.mean(nodes[bottom,2]):.10g}',
+              f'{rt}, 0., 0., 0.', f'{rb}, 0., 0., 0.',
               '*ELEMENT,TYPE=C3D6,ELSET=CORE']
     lines += [f'{i+1}, '+', '.join(str(int(j)+1) for j in el) for i,el in enumerate(elements)]
     def nset(name, ids):
@@ -44,23 +47,12 @@ def write_advanced_deck(path, nodes, elements, top, bottom, config, plastic,
               '*PLASTIC']
     lines += [f'{stress:.12g}, {strain:.12g}' for stress,strain in plastic]
     lines += ['*SOLID SECTION,ELSET=CORE,MATERIAL=ALSI10MG',
-              '*RIGID BODY,NSET=TOP_GRIP,REF NODE='+str(nt),
-              '*RIGID BODY,NSET=BOTTOM_GRIP,REF NODE='+str(nb)]
-    if self_contact:
-        free=lateral_exterior_faces(elements,nodes,ymin,ymax)
-        if not free: raise ValueError('No exterior faces for contact')
-        lines += ['** EXPERIMENTAL: validate contact pair compatibility with your CalculiX build',
-                  '*SURFACE,NAME=CORE_OUTER,TYPE=ELEMENT']
-        lines += [f'{eid}, {face}' for eid,face,_ in free]
-        lines += ['*SURFACE INTERACTION,NAME=SELF_INTERACTION',
-                  '*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=HARD',
-                  '*FRICTION',str(config.get('friction',0.35)),
-                  '*CONTACT PAIR,INTERACTION=SELF_INTERACTION,TYPE=SURFACE TO SURFACE',
-                  'CORE_OUTER,CORE_OUTER']
-    lines += ['*BOUNDARY','BOTTOM_RP,1,6,0.0','TOP_RP,1,1,0.0',
-              'TOP_RP,3,6,0.0',
+              '*RIGID BODY,NSET=TOP_GRIP,REF NODE='+str(nt)+',ROT NODE='+str(rt),
+              '*RIGID BODY,NSET=BOTTOM_GRIP,REF NODE='+str(nb)+',ROT NODE='+str(rb)]
+    lines += ['*BOUNDARY','BOTTOM_RP,1,3,0.0',f'{rt},1,3,0.',f'{rb},1,3,0.','TOP_RP,1,1,0.0',
+              'TOP_RP,3,3,0.0',
               '*STEP,NLGEOM=YES,INC=100000','*STATIC',
-              '0.0001,1.0,1e-10,0.01',
+              '0.0001,1.0,1e-6,0.01',
               '*BOUNDARY',f"TOP_RP,2,2,{-config['compression_strain']*(ymax-ymin):.10g}",
               '*NODE FILE','U,RF','*EL FILE','S,E,PEEQ',
               '*NODE PRINT,NSET=TOP_RP','U,RF',
