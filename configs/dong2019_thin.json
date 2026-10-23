@@ -1,0 +1,9 @@
+{
+  "l1": 12.0, "l2": 12.0, "bevel": 5.66, "wall": 0.30,
+  "rows": 6, "cols": 5, "height": 47.7, "depth": 25.0,
+  "lambda_m": 1.0, "mesh_size": 0.85, "depth_layers": 2,
+  "young": 69000.0, "poisson": 0.30, "density": 2.67e-9,
+  "compression_strain": 0.60, "increments": 100,
+  "damage_fracture_strain": 0.047, "damage_triaxiality": 0.333,
+  "damage_failure_displacement": 0.001
+}

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "reentrant-python-fea"
+version = "0.1.0"
+description = "Independent Python geometry and wedge6 mesh pipeline with CalculiX elastic-plastic baseline and tested ductile damage material-point prototype"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "shapely>=2.0", "gmsh>=4.11"]
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+[project.scripts]
+reentrant-fea = "reentrant_fea.cli:main"
+[tool.setuptools.packages.find]
+where = ["src"]
