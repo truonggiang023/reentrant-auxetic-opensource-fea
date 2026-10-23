@@ -120,7 +120,7 @@ def write_paper_contact_deck(
               "*SURFACE INTERACTION,NAME=SLIDING",
               "*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR",
               str(config.get("normal_penalty", 1.0e5)),
-              "*FRICTION",str(config.get("friction",0.35)),
+              "*FRICTION",\n              f"{config.get('friction',0.35):.12g}, {config.get('stick_slope',100000.0):.12g}",
               "*CONTACT PAIR,INTERACTION=SLIDING,TYPE=SURFACE TO SURFACE",
               "CORE_BOTTOM,BOTTOM_PLATEN_CONTACT",
               "*CONTACT PAIR,INTERACTION=SLIDING,TYPE=SURFACE TO SURFACE",
