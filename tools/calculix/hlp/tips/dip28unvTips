@@ -1,0 +1,8 @@
+.UNV Converter
+
+Can be used with UNV format in GMSH
+3D mesh only (?)
+In GMSH save as .UNV with "Save groups of nodes" option or export with all selected options.
+
+Play with samples  and read PDF files in /samples/Converters/tests_dip28
+folder

@@ -1,0 +1,5 @@
+The linear pressure-overclosure behavior simulates a linear relationship between the pressure and the overclosure. 
+Recommended value for the slope K is 50 Young's modulus (K=50*E)
+Bigger values (hard contact) gives more accurate local stress but it makes problem for convergence.
+
+ 

@@ -1,0 +1,9 @@
+NETGEN .VOL Converter
+
+3D-Tetra (C3D10), second order only!
+It will make nodal groups for all surfaces.  
+
+Play with samples in /samples/Converters/tests_dip28
+folder
+
+

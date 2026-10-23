@@ -1,0 +1,12 @@
+GMSH INP to CCX INP Converter.
+
+This converter allows element type option (to produce plane stress, axisymmetric, reduced integration and etc elements - read CCX help for details).
+For plane stress elements directions of normales should be positive to avoid gen3dim issue (negative Jacobian).
+Supports 2D-Tri(C2D3 , C2D6) or 3D-Tetra(C3D4 , C3D10) only
+(cannot treat Recombined mesh , it will make 2D-Rect , 3D-prism , Hexa)
+Save as .INP with "Save all" option or Export as INP.
+
+Play with samples  and read PDF files in /samples/Converters/tests_dip28
+folder
+
+

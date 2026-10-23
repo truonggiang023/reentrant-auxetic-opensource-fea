@@ -1,0 +1,10 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.egg-info/
+results/
+*.frd
+*.dat
+*.sta
+*.cvg
+*.12d

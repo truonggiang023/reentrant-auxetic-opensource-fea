@@ -1,0 +1,11 @@
+Some additional commands were implemented into CGX (for CalculixForWin educational freeware)
+
+you can find actual source code at calculix.de
+or bconverged.com
+
+see changes in two files (search by "prool" comment)
+
+cgx.c and setfunktions.c
+
+Current version of is 2.5
+

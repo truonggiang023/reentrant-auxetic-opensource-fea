@@ -42,7 +42,13 @@ def mesh_wedges(poly, depth, mesh_size, layers):
         for k in range(layers):
             for tri in tris:
                 a,b,c=[idmap[n] for n in tri]
-                if np.cross(xy[b]-xy[a],xy[c]-xy[a]) < 0: b,c=c,b
+                ab = xy[b] - xy[a]
+                ac = xy[c] - xy[a]
+
+                cross_z = ab[0] * ac[1] - ab[1] * ac[0]
+
+                if cross_z < 0:
+                    b, c = c, b
                 elements.append([a+k*nn,b+k*nn,c+k*nn,a+(k+1)*nn,b+(k+1)*nn,c+(k+1)*nn])
         elements=np.asarray(elements,dtype=int)
         y0,y1=nodes[:,1].min(),nodes[:,1].max()

@@ -1,0 +1,11 @@
+GMSH .MSH Converter
+
+Create model mesh it and save as.. (or export) to MSH type (2.0)
+3D mesh only
+cannot convert Gmsh's Type18(18-node second order prism )
+cannot convert Gmsh's  Type 12(27-node second order hexahedron )
+(Type18 and Type 12 will be made when using  Recombine and mesh oder 2)
+
+Play with samples and read PDF files in /samples/Converters/tests_dip28
+folder 
+

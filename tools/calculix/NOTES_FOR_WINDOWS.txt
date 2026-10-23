@@ -1,0 +1,16 @@
+Installation:
+
+Unzip CalculiX Launcher onto C:\ drive and run Launcher.exe
+Some Settings and some python converters (dip28) may not work correctly in Windows.
+Also you may need to install python 2.X in your system, to get all libraries with it.
+
+To perform CalculiX calculations in parallel
+go to MyComputer->Properties->Advanced System Settings->Environment Variables and create new user variable
+OMP_NUM_THREADS with variable value = number of cores of your computer. Read CCX help for more information 
+
+General Note:
+
+No_spaces or cyrillic/etc letters on any path to file or in the names of files.
+This program works actually from DOS command line.
+
+For more efficiency use it with bconverged.com version.

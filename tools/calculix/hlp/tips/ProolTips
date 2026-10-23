@@ -1,0 +1,7 @@
+Prool converter is to transfer GMSH INP file to CCX INP file.
+Also you may correct GMSH INP manually to obtain of what yo need.
+It works for beam, shell and body elements separately.
+Will produce nodal groups for all lines and faces (can be recognized by number)
+
+Play with samples in /samples/Converters/tests_prool
+folder

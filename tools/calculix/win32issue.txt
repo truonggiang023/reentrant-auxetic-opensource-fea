@@ -1,0 +1,3 @@
+32 bit version has one issue, that you can not launch files sometimes
+(when some file is already selected)
+In this case, just delete text in address line and try to launch again.
