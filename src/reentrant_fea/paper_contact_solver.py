@@ -120,8 +120,16 @@ def write_paper_contact_deck(
               "*SURFACE INTERACTION,NAME=SLIDING",
               "*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR",
               str(config.get("normal_penalty", 1.0e5)),
-              "*FRICTION",
-              f"{config.get('friction',0.35):.12g}, {config.get('stick_slope',100000.0):.12g}",
+              ]
+    friction = float(config.get("friction", 0.35))
+    stick_slope = float(config.get("stick_slope", 100000.0))
+    if not np.isfinite(friction) or friction < 0:
+        raise ValueError("friction must be finite and nonnegative")
+    if friction > 0:
+        if not np.isfinite(stick_slope) or stick_slope <= 0:
+            raise ValueError("stick_slope must be finite and strictly positive")
+        lines += ["*FRICTION", f"{friction:.12g}, {stick_slope:.12g}"]
+    lines += [
               "*CONTACT PAIR,INTERACTION=SLIDING,TYPE=SURFACE TO SURFACE",
               "CORE_BOTTOM,BOTTOM_PLATEN_CONTACT",
               "*CONTACT PAIR,INTERACTION=SLIDING,TYPE=SURFACE TO SURFACE",
