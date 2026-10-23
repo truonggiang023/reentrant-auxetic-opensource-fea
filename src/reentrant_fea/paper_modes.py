@@ -26,8 +26,8 @@ def _surface(lines, name, faces):
 def _platen(x0, x1, y0, y1, depth, nid, eid):
     """One first-order C3D8 hex platen, bottom-face S1 / top-face S2."""
     xyz = [
-        (x0, y0, 0), (x1, y0, 0), (x1, y0, depth), (x0, y0, depth),
-        (x0, y1, 0), (x1, y1, 0), (x1, y1, depth), (x0, y1, depth),
+        (x0, y0, 0), (x0, y0, depth), (x1, y0, depth), (x1, y0, 0),
+        (x0, y1, 0), (x0, y1, depth), (x1, y1, depth), (x1, y1, 0),
     ]
     node_ids = list(range(nid, nid + 8))
     return xyz, node_ids, (eid, node_ids)
