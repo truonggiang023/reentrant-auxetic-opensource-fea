@@ -49,3 +49,22 @@ Dong et al., *Materials & Design* 182 (2019) 108036. Thin wall t=0.3 mm, 5 × 6 
 ## Units
 
 mm, N, MPa; geometry extrusion along Z and compression along Y. The baseline is implicit static; time is pseudo-time, not experimental seconds.
+
+## Advanced experimental solver deck (2026-10-23)
+
+The project now includes `advanced_solver.py`, `contact.py`, and `damage_history.py`.
+
+- `--advanced` creates **rigid-body bonded grips** using CalculiX `*RIGID BODY` and reference nodes; this is **not a meshed steel platen**. The CalculiX deck has not been solver-tested, and syntax/kinematics must be verified against the installed CalculiX version.
+- `--advanced --self-contact` generates a **candidate** exterior-element-face contact pair with friction. To acknowledge that same-surface self-contact is not validated, set `"experimental_self_contact_ack": true` in a copy of the JSON config. This is **not proof that CalculiX supports the intended self-contact**; inspect solver messages and contact forces. Large-deformation crushing remains unvalidated.
+- `--ductile-damage` **intentionally raises `NotImplementedError`**. The project does not pretend that an offline damage tracker or `*PLASTIC` provides coupled ductile softening or element deletion.
+- `damage_history.evaluate_damage_csv(...)` integrates the prototype damage law on a user-provided integration history CSV. It can flag elements for *analysis only*. It **does not delete elements from an active nonlinear simulation**. Its triaxiality must be computed from stress tensors exported by a solver; `PEEQ` alone is insufficient.
+
+Example:
+
+```powershell
+python -m reentrant_fea.cli --config configs/dong2019_thin.json --plastic reference_setup_numeric_source.py --output results/advanced.inp --advanced
+```
+
+### What is still required to honestly claim a complete damage solver
+
+A verified constitutive implementation with stress return mapping, triaxiality-dependent initiation, mesh-objective displacement regularization, damage-degraded tangent/stress, and integration-point state management, plus solver-supported **element deletion during the nonlinear solve**. The contact implementation must support self-contact between crushing internal walls without artificial initial penetrations, and needs benchmark checks. These are not provided by the CalculiX baseline in this repository. Do not use the current output for calibrated failure or plateau claims.
