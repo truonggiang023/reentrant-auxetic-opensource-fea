@@ -20,10 +20,11 @@
   "platen_margin": 1,
   "platen_gap": 0,
   "platen_thickness": 10,
-  "normal_penalty": 100000,
-  "initial_increment": 1e-05,
+  "normal_penalty": 10000,
+  "initial_increment": 0.001,
   "minimum_increment": 1e-06,
-  "maximum_increment": 0.002,
+  "maximum_increment": 0.005,
   "reference_area": 1900,
-  "contact_type": "SURFACE TO SURFACE"
+  "contact_type": "SURFACE TO SURFACE",
+  "stick_slope": 1000
 }

@@ -1,14 +1,15 @@
 """Dong et al. 2019 thin-wall replication candidate: CalculiX is the ONLY FE solver.
 
 Creates real, separately meshed steel platens and sliding contact instead of
-bonding or clamping the honeycomb end nodes. Same-surface self-contact is rejected until a disjoint wall-surface
-algorithm has been benchmarked in the installed CCX build.
+bonding or clamping the honeycomb end nodes. Optional wall contact uses
+disjoint initially facing patches with adjacency and solid-interior exclusions.
 This is a numerical research candidate, NOT a validated Dong-2019 reproduction.
 """
 from pathlib import Path
 import numpy as np
-from .contact import exterior_faces
+from .contact import exterior_faces, wall_contact_patches
 from .plastic import validate_material
+from .native_damage import material_cards
 
 
 def _nset(lines, name, ids):
@@ -40,8 +41,6 @@ def write_paper_contact_deck(
     contact_type = config.get('contact_type', 'SURFACE TO SURFACE')
     if contact_type not in ('SURFACE TO SURFACE', 'MORTAR', 'LINMORTAR'):
         raise ValueError('Unsupported contact_type for CCX 2.20')
-    if self_contact:
-        raise NotImplementedError('Same-surface contact pairs are not a verified self-contact algorithm in CalculiX 2.20. Partition disjoint nonadjacent wall surfaces and benchmark before enabling crushing self-contact.')
     for key, default in [('normal_penalty', 1e5), ('stick_slope', 1e5)]:
         if key == 'stick_slope' and float(config.get('friction', .35)) == 0:
             continue
@@ -59,6 +58,7 @@ def write_paper_contact_deck(
     elements = np.asarray(elements, dtype=int)
     if nodes.ndim != 2 or nodes.shape[1] != 3 or len(nodes) < 6 or len(elements) < 1 or not np.isfinite(nodes).all():
         raise ValueError("Invalid core mesh")
+    reference_nodes=nodes.copy()
     if imperfections is not None:
         perturb = np.asarray(imperfections, dtype=float)
         if perturb.shape != (len(nodes), 2):
@@ -76,8 +76,11 @@ def write_paper_contact_deck(
         raise ValueError("Zero specimen height")
     if zmax <= zmin:
         raise ValueError('Zero specimen depth')
-    if elements.ndim != 2 or elements.shape[1] != 6 or elements.min() < 0 or elements.max() >= len(nodes):
-        raise ValueError('Invalid C3D6 connectivity')
+    if elements.ndim != 2 or elements.shape[1] not in (6,8) or elements.min() < 0 or elements.max() >= len(nodes):
+        raise ValueError('Invalid C3D6/C3D8 connectivity')
+    element_type = config.get('element_type', 'C3D8R' if elements.shape[1]==8 else 'C3D6')
+    if element_type not in ('C3D6','C3D8','C3D8R') or ((element_type=='C3D6') != (elements.shape[1]==6)):
+        raise ValueError('element_type and connectivity disagree')
     # Planens span the full specimen in X and depth in Z.
     side_margin = max(float(config.get("platen_margin", 1.0)), 0.0)
     x0, x1 = xmin - side_margin, xmax + side_margin
@@ -103,7 +106,7 @@ def write_paper_contact_deck(
     lines = ["*HEADING", "Dong2019 candidate: sliding platen / large deformation",
              "** Units: mm, N, MPa; stress=top reaction/(76*25) only for exact paper envelope",
              "*NODE"] + node_lines + lower + upper
-    lines.append("*ELEMENT,TYPE=C3D6,ELSET=CORE")
+    lines.append(f"*ELEMENT,TYPE={element_type},ELSET=CORE")
     for eid, el in enumerate(elements,1):
         lines.append(f"{eid}, " + ", ".join(str(int(i)+1) for i in el))
     lower_el, upper_el = len(elements)+1, len(elements)+2
@@ -124,10 +127,17 @@ def write_paper_contact_deck(
     _surface(lines, "CORE_TOP", core_top)
     _surface(lines, "BOTTOM_PLATEN_CONTACT", [(lower_el,"S5")])
     _surface(lines, "TOP_PLATEN_CONTACT", [(upper_el,"S3")])
-    _nset(lines,"BOTTOM_PLATEN_NODES",lower_ids)
-    _nset(lines,"TOP_PLATEN_NODES",upper_ids)
-    z_faces = [i+1 for i,p in enumerate(nodes)
-               if abs(p[2]-zmin)<tol or abs(p[2]-zmax)<tol]
+    wall_pairs = wall_contact_patches(elements, reference_nodes) if self_contact else []
+    for i,(slave,master) in enumerate(wall_pairs):
+        _surface(lines,f'WALL_SLAVE_{i}',[(eid,face) for eid,face,_ in slave])
+        _surface(lines,f'WALL_MASTER_{i}',[(eid,face) for eid,face,_ in master])
+    rigid_platens=bool(config.get('rigid_platen_kinematics', False))
+    lower_load=lower_ids if rigid_platens else [lower_ids[i] for i in (0,1,4,5)]
+    upper_load=upper_ids if rigid_platens else [upper_ids[i] for i in (2,3,6,7)]
+    _nset(lines,"BOTTOM_PLATEN_NODES",lower_load)
+    _nset(lines,"TOP_PLATEN_NODES",upper_load)
+    z_faces = (list(range(1,ncore+1)) if config.get('plane_strain',True) else
+               [i+1 for i,p in enumerate(nodes) if abs(p[2]-zmin)<tol or abs(p[2]-zmax)<tol])
     _nset(lines,"CORE_PLANE_STRAIN",z_faces)
     # Remove the otherwise free in-plane rigid translation at initially unloaded
     # frictional contact. A centreline roller leaves end faces free to slide.
@@ -138,16 +148,29 @@ def write_paper_contact_deck(
     times = [strain / float(config['compression_strain']) for strain in (.12, .35, .65)
              if strain <= float(config['compression_strain'])]
     target_output_only = bool(config.get('target_output_only', False))
+    interval=config.get('output_interval')
+    if interval is not None:
+        interval=float(interval)
+        if not np.isfinite(interval) or not 0<interval<=1:
+            raise ValueError('output_interval must lie in (0,1]')
+        times=sorted(set(times+[float(v) for v in np.arange(interval,1,interval)]+[1.]))
     if times and target_output_only:
-        lines += ['*TIME POINTS,NAME=TARGET_FRAMES', ', '.join(f'{t:.12g}' for t in times)]
+        lines += ['*TIME POINTS,NAME=TARGET_FRAMES']
+        lines += [', '.join(f'{t:.12g}' for t in times[i:i+8]) for i in range(0,len(times),8)]
 
-    lines += ["*MATERIAL,NAME=ALSI10MG","*ELASTIC",
-              f"{config['young']:.12g}, {config['poisson']:.12g}",
-              "*PLASTIC"]
-    lines.extend(f"{s:.12g}, {p:.12g}" for s,p in plastic)
+    damage = config.get('ductile_damage')
+    damage_info = None
+    material_data = None
+    if damage:
+        cards, material_data, damage_info = material_cards(nodes, elements, config, plastic)
+        lines += cards
+    else:
+        lines += ["*MATERIAL,NAME=ALSI10MG", "*ELASTIC",
+                  f"{config['young']:.12g}, {config['poisson']:.12g}", "*PLASTIC"]
+        lines.extend(f"{s:.12g}, {p:.12g}" for s,p in plastic)
+        lines += ["*SOLID SECTION,ELSET=CORE,MATERIAL=ALSI10MG"]
     lines += ["*MATERIAL,NAME=STEEL","*ELASTIC",
               f"{config.get('steel_young',210000.0):.12g}, {config.get('steel_poisson',0.3):.12g}",
-              "*SOLID SECTION,ELSET=CORE,MATERIAL=ALSI10MG",
               "*SOLID SECTION,ELSET=PLATENS,MATERIAL=STEEL",
               "*SURFACE INTERACTION,NAME=SLIDING",
               "*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR",
@@ -160,6 +183,10 @@ def write_paper_contact_deck(
               f"*CONTACT PAIR,INTERACTION=SLIDING,TYPE={contact_type}",
               "CORE_TOP,TOP_PLATEN_CONTACT"]
 
+    for i in range(len(wall_pairs)):
+        lines += [f'*CONTACT PAIR,INTERACTION=SLIDING,TYPE={contact_type}',
+                  f'WALL_SLAVE_{i},WALL_MASTER_{i}']
+
     lines += ["*BOUNDARY","BOTTOM_PLATEN_NODES,1,3,0.",
               "TOP_PLATEN_NODES,1,1,0.","TOP_PLATEN_NODES,3,3,0.",
               "CORE_PLANE_STRAIN,3,3,0.", "CORE_X_ANCHOR,1,1,0.",
@@ -169,16 +196,19 @@ def write_paper_contact_deck(
               "*BOUNDARY",
               f"TOP_PLATEN_NODES,2,2,{-float(config['compression_strain'])*height:.12g}",
               ("*NODE FILE,GLOBAL=YES,TIME POINTS=TARGET_FRAMES" if times and target_output_only else "*NODE FILE,GLOBAL=YES"),"U,RF",
-              "*EL FILE","S,E,PEEQ",
+              "*EL FILE",("S,E,SDV" if damage else "S,E,PEEQ"),
               "*NODE PRINT,NSET=TOP_PLATEN_NODES,TOTALS=ONLY","RF",
-              "*EL PRINT,ELSET=CORE", "S,PEEQ",
+              "*EL PRINT,ELSET=CORE", ("S,SDV" if damage else "S,PEEQ"),
               "*CONTACT FILE", "CDIS,CSTR",
               "*END STEP"]
     path = Path(path)
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text("\n".join(lines)+"\n",encoding="utf-8")
-    return {"path":str(path),"core_nodes":ncore,"core_elements":len(elements),
+    if material_data:
+        path.with_suffix('.material.dat').write_text(material_data,encoding='utf8')
+    return {"path":str(path),"core_nodes":ncore,"core_elements":len(elements), "element_type":element_type,
             "top_faces":len(core_top),"bottom_faces":len(core_bottom),
             "initial_height":height,"nominal_area":float(config.get("reference_area",76.0*25.0)),
-            "self_contact_experimental":bool(self_contact), "x_anchor_node":int(anchor+1),
-            "target_strains":[.12,.35,.65], "damage_model":"uncoupled initiation diagnostic only"}
+            "self_contact_experimental":bool(self_contact), "wall_contact_pairs":len(wall_pairs), "rigid_platen_kinematics":rigid_platens,
+            "plane_strain":bool(config.get("plane_strain",True)), "x_anchor_node":int(anchor+1),
+            "target_strains":[.12,.35,.65], "damage_model":("compiled finite-strain J2 crack-band damage; retained residual elements" if damage else "J2 plasticity only"), "damage_parameters":damage_info}

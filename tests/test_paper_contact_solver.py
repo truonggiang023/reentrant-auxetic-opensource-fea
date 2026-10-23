@@ -31,9 +31,10 @@ def test_optional_self_contact_is_explicit(tmp_path):
     els=np.array([[0,1,2,4,5,6],[0,2,3,4,6,7]])
     config={"young":69000.,"poisson":.3,"compression_strain":.65}
     out=tmp_path/"a.inp"
-    with pytest.raises(NotImplementedError, match="Same-surface"):
-        write_paper_contact_deck(out,nodes,els,config,
+    info=write_paper_contact_deck(out,nodes,els,config,
                                  [(225.,0.),(300.,.02)],self_contact=True)
+    assert "CORE_LATERAL,CORE_LATERAL" not in out.read_text()
+    assert info["wall_contact_pairs"] == 0  # A single solid slab has no wall gap.
 
 
 def test_frictionless_omits_friction_card(tmp_path):

@@ -1,0 +1,278 @@
+{
+  "input_sha256": "e968fd4c92d0f6de760b508df212056051ff9a430d78ca1b5dbc50cb9412952b",
+  "mesh": {
+    "height_mm": 48.0,
+    "width_mm": 76.497146699265,
+    "depth_mm": 25.0,
+    "period": 1.0,
+    "end_nominal_strain": 0.65,
+    "core_nodes": 21870,
+    "core_elements": 7392,
+    "native_material": true
+  },
+  "completed": false,
+  "errors": [],
+  "converged_increments": 74,
+  "last_converged_nominal_strain": 0.14518335000000002,
+  "frames": [
+    {
+      "target_strain": 0.12,
+      "available": true,
+      "actual_strain": 0.11999975,
+      "time": 0.184615,
+      "projected_contact": {
+        "front_plane_elements": 7392,
+        "invalid_projected_elements": [],
+        "overlap_pairs": 0,
+        "max_overlap_mm2": 0.0,
+        "sum_pair_overlap_mm2": 0.0
+      },
+      "experimental_mode_agreement": "not established"
+    },
+    {
+      "target_strain": 0.35,
+      "available": false
+    },
+    {
+      "target_strain": 0.65,
+      "available": false
+    }
+  ],
+  "contact": {
+    "contact_frames": 45,
+    "max_reported_penetration_mm": 0.000730328,
+    "max_reported_pressure_MPa": 7.30328
+  },
+  "reaction_history": [
+    {
+      "strain": 0.0032500000000000003,
+      "reaction_y_N": -77.91894,
+      "nominal_stress_MPa": 0.04100996842105264
+    },
+    {
+      "strain": 0.006500000000000001,
+      "reaction_y_N": -154.6542,
+      "nominal_stress_MPa": 0.08139694736842105
+    },
+    {
+      "strain": 0.00975,
+      "reaction_y_N": -230.3597,
+      "nominal_stress_MPa": 0.12124194736842106
+    },
+    {
+      "strain": 0.013000000000000001,
+      "reaction_y_N": -304.852,
+      "nominal_stress_MPa": 0.16044842105263157
+    },
+    {
+      "strain": 0.01625,
+      "reaction_y_N": -378.1773,
+      "nominal_stress_MPa": 0.19904068421052631
+    },
+    {
+      "strain": 0.0195,
+      "reaction_y_N": -450.375,
+      "nominal_stress_MPa": 0.23703947368421052
+    },
+    {
+      "strain": 0.022750000000000003,
+      "reaction_y_N": -521.4809,
+      "nominal_stress_MPa": 0.2744636315789474
+    },
+    {
+      "strain": 0.026000000000000002,
+      "reaction_y_N": -591.5283,
+      "nominal_stress_MPa": 0.3113306842105263
+    },
+    {
+      "strain": 0.029249999999999998,
+      "reaction_y_N": -660.5476,
+      "nominal_stress_MPa": 0.3476566315789474
+    },
+    {
+      "strain": 0.0325,
+      "reaction_y_N": -728.2421,
+      "nominal_stress_MPa": 0.3832853157894737
+    },
+    {
+      "strain": 0.035750000000000004,
+      "reaction_y_N": -788.7278,
+      "nominal_stress_MPa": 0.41511989473684213
+    },
+    {
+      "strain": 0.039,
+      "reaction_y_N": -840.4438,
+      "nominal_stress_MPa": 0.44233884210526314
+    },
+    {
+      "strain": 0.04225,
+      "reaction_y_N": -882.1211,
+      "nominal_stress_MPa": 0.4642742631578947
+    },
+    {
+      "strain": 0.045500000000000006,
+      "reaction_y_N": -917.0055,
+      "nominal_stress_MPa": 0.48263447368421053
+    },
+    {
+      "strain": 0.04875,
+      "reaction_y_N": -946.8883,
+      "nominal_stress_MPa": 0.4983622631578947
+    },
+    {
+      "strain": 0.052000000000000005,
+      "reaction_y_N": -972.8379,
+      "nominal_stress_MPa": 0.512019947368421
+    },
+    {
+      "strain": 0.05525000000000001,
+      "reaction_y_N": -996.4027,
+      "nominal_stress_MPa": 0.5244224736842105
+    },
+    {
+      "strain": 0.058499999999999996,
+      "reaction_y_N": -1018.064,
+      "nominal_stress_MPa": 0.5358231578947368
+    },
+    {
+      "strain": 0.061750000000000006,
+      "reaction_y_N": -1037.747,
+      "nominal_stress_MPa": 0.5461826315789474
+    },
+    {
+      "strain": 0.065,
+      "reaction_y_N": -1055.687,
+      "nominal_stress_MPa": 0.5556247368421052
+    },
+    {
+      "strain": 0.06825,
+      "reaction_y_N": -1072.61,
+      "nominal_stress_MPa": 0.5645315789473684
+    },
+    {
+      "strain": 0.07150000000000001,
+      "reaction_y_N": -1088.465,
+      "nominal_stress_MPa": 0.5728763157894736
+    },
+    {
+      "strain": 0.07475000000000001,
+      "reaction_y_N": -1103.331,
+      "nominal_stress_MPa": 0.5807005263157894
+    },
+    {
+      "strain": 0.078,
+      "reaction_y_N": -1117.424,
+      "nominal_stress_MPa": 0.5881178947368421
+    },
+    {
+      "strain": 0.08125,
+      "reaction_y_N": -1130.813,
+      "nominal_stress_MPa": 0.5951647368421054
+    },
+    {
+      "strain": 0.0845,
+      "reaction_y_N": -1143.577,
+      "nominal_stress_MPa": 0.6018826315789474
+    },
+    {
+      "strain": 0.08775000000000001,
+      "reaction_y_N": -1155.868,
+      "nominal_stress_MPa": 0.6083515789473684
+    },
+    {
+      "strain": 0.09100000000000001,
+      "reaction_y_N": -1167.601,
+      "nominal_stress_MPa": 0.6145268421052632
+    },
+    {
+      "strain": 0.09425,
+      "reaction_y_N": -1178.806,
+      "nominal_stress_MPa": 0.6204242105263158
+    },
+    {
+      "strain": 0.0975,
+      "reaction_y_N": -1189.603,
+      "nominal_stress_MPa": 0.6261068421052632
+    },
+    {
+      "strain": 0.10075,
+      "reaction_y_N": -1200.019,
+      "nominal_stress_MPa": 0.6315889473684211
+    },
+    {
+      "strain": 0.10400000000000001,
+      "reaction_y_N": -1210.072,
+      "nominal_stress_MPa": 0.6368799999999999
+    },
+    {
+      "strain": 0.10725000000000001,
+      "reaction_y_N": -1219.781,
+      "nominal_stress_MPa": 0.64199
+    },
+    {
+      "strain": 0.11050000000000001,
+      "reaction_y_N": -1229.142,
+      "nominal_stress_MPa": 0.6469168421052632
+    },
+    {
+      "strain": 0.11374999999999999,
+      "reaction_y_N": -1238.042,
+      "nominal_stress_MPa": 0.6516010526315789
+    },
+    {
+      "strain": 0.11699999999999999,
+      "reaction_y_N": -1246.516,
+      "nominal_stress_MPa": 0.656061052631579
+    },
+    {
+      "strain": 0.12000001000000002,
+      "reaction_y_N": -1254.091,
+      "nominal_stress_MPa": 0.660047894736842
+    },
+    {
+      "strain": 0.12025,
+      "reaction_y_N": -1254.68,
+      "nominal_stress_MPa": 0.6603578947368421
+    },
+    {
+      "strain": 0.12350000000000001,
+      "reaction_y_N": -1262.53,
+      "nominal_stress_MPa": 0.6644894736842105
+    },
+    {
+      "strain": 0.12675,
+      "reaction_y_N": -1270.06,
+      "nominal_stress_MPa": 0.6684526315789473
+    },
+    {
+      "strain": 0.13,
+      "reaction_y_N": -1277.081,
+      "nominal_stress_MPa": 0.672147894736842
+    },
+    {
+      "strain": 0.13325,
+      "reaction_y_N": -1283.643,
+      "nominal_stress_MPa": 0.6756015789473684
+    },
+    {
+      "strain": 0.1365,
+      "reaction_y_N": -1289.695,
+      "nominal_stress_MPa": 0.6787868421052631
+    },
+    {
+      "strain": 0.13975,
+      "reaction_y_N": -1295.43,
+      "nominal_stress_MPa": 0.6818052631578948
+    },
+    {
+      "strain": 0.14300000000000002,
+      "reaction_y_N": -1280.415,
+      "nominal_stress_MPa": 0.6739026315789474
+    }
+  ],
+  "max_recorded_integration_point_damage": 0.49995,
+  "max_recorded_integration_point_peeq": 0.1120275,
+  "stress_area_convention_mm2": 1900.0,
+  "qualification": "solver evidence only; calibration, full-contact validity and experimental agreement are not established",
+  "material_sidecar_sha256": "cdb78d96b3d52bdfa75c415309ad5f8d03c06e254902ca2efbdb8098aa2af921"
+}
