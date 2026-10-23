@@ -37,3 +37,20 @@ def test_damage_is_never_silently_faked(tmp_path):
             {"young": 69000., "poisson": 0.3},
             [(224.67, 0.0), (351.15, 0.03814)], damage=True
         )
+
+
+def test_223_rice_tracey_is_explicit_and_last_material(tmp_path):
+    nodes, elems, top, bottom = _mesh()
+    config = {
+        "young": 69000., "poisson": 0.3, "mesh_size": 0.1,
+        "native_damage_engine": "calculix_223_rice_tracey",
+        "rice_tracey_first_parameter": 1.,
+        "rice_tracey_limit": 0.047,
+    }
+    deck = write_paper_deck(
+        tmp_path / "reentrant.inp", nodes, elems, top, bottom, config,
+        [(224.67, 0.0), (351.15, 0.03814)], damage=True
+    ).read_text()
+    assert "*DAMAGE INITIATION,CRITERION=RICE TRACEY" in deck
+    assert "*EL PRINT,ELSET=CORE" in deck
+    assert deck.index("*MATERIAL,NAME=STEEL") < deck.index("*MATERIAL,NAME=ALSI10MG")
