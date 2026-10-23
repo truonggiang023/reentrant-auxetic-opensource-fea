@@ -68,11 +68,17 @@ def write_paper_deck(
     width = float(config.get("platen_width", 76.0))
     depth = zhi - zlo
     margin = (width - (xhi - xlo)) / 2
-    if margin < -1e-5:
+    # Offset-wall CAD may slightly exceed 76 mm: tolerate up to 1 mm
+    # overhang rather than silently widening the reference platen.
+    allowed_overhang = float(config.get("platen_width_tolerance", 1.0))
+    if -2 * margin > allowed_overhang:
         raise ValueError(
-            f"Core width {xhi-xlo:.5g} mm exceeds nominal platen width {width}. "
-            "Correct geometry before replication."
+            f"Core width {xhi-xlo:.5g} mm exceeds nominal platen width {width} "
+            f"by {-2*margin:.5g} mm (tolerance {allowed_overhang:.5g} mm)."
         )
+    if margin < 0:
+        print(f"[PLATEN] Core extends {-margin:.4g} mm beyond platen per side; "
+              "check geometry/reference width.")
     xmid = (xlo + xhi) / 2
     px0, px1 = xmid - width / 2, xmid + width / 2
     th = float(config.get("platen_thickness", 25.0))
