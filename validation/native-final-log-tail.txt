@@ -66,7 +66,7 @@ line search factor=1.000001
  largest correction to disp= 1.455121e-05 in node 40 and dof 2
 
 
- restoring the elastic contact stifnesses to their original values 
+ restoring the elastic contact stifnesses to their original values
 
 divergence allowed: number of contact elements stabilized
  no convergence
@@ -177,4 +177,3 @@ line search factor=0.704206
  largest residual force= 8.110646 in node 21873 and dof 1
  largest increment of disp= 2.663156e-01
  largest correction to disp= 2.224696e-03 in node 239 and dof 2
-
