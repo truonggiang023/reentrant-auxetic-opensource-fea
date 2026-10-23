@@ -12,7 +12,7 @@
   "depth_layers": 2,
   "young": 69000,
   "poisson": 0.3,
-  "density": 2.67e-9,
+  "density": 2.67e-09,
   "compression_strain": 0.65,
   "friction": 0.35,
   "steel_young": 210000,
@@ -21,8 +21,9 @@
   "platen_gap": 0,
   "platen_thickness": 10,
   "normal_penalty": 100000,
-  "initial_increment": 0.00001,
-  "minimum_increment": 1e-10,
+  "initial_increment": 1e-05,
+  "minimum_increment": 1e-06,
   "maximum_increment": 0.002,
-  "reference_area": 1900
+  "reference_area": 1900,
+  "contact_type": "SURFACE TO SURFACE"
 }

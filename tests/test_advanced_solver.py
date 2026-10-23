@@ -25,8 +25,8 @@ def test_damage_not_misrepresented(tmp_path):
         write_advanced_deck(tmp_path/'a.inp',N,E,[2,5],[0,1,3,4],C,P,ductile_damage=True)
 
 def test_self_contact_opt_in(tmp_path):
-    with pytest.raises(ValueError):
+    with pytest.raises(NotImplementedError):
         write_advanced_deck(tmp_path/'a.inp',N,E,[2,5],[0,1,3,4],C,P,self_contact=True)
     c={**C,'experimental_self_contact_ack':True}
-    p=write_advanced_deck(tmp_path/'b.inp',N,E,[2,5],[0,1,3,4],c,P,self_contact=True)
-    assert '*CONTACT PAIR' in p.read_text()
+    with pytest.raises(NotImplementedError, match='Same-surface'):
+        write_advanced_deck(tmp_path/'b.inp',N,E,[2,5],[0,1,3,4],c,P,self_contact=True)

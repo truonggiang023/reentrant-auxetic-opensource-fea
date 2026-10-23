@@ -1,37 +1,114 @@
-# Dong et al. 2019 — CalculiX replication candidate
+# Dong et al. (2019): CalculiX development candidate
 
-Reference: Dong et al., Materials & Design 182 (2019) 108036, Fig. 11(b).
+**Incomplete reproduction.** Python creates meshes/input decks and reads results;
+CalculiX performs the finite element solve. The tested Linux executable is Debian
+CalculiX 2.20-1, using SPOOLES. The bundled Windows 2.13 executable has not been
+validated with these changes. No experimental agreement is claimed.
 
-## Scope
-This branch adds **CalculiX-only FEM solving** with separately meshed top and bottom steel platen elements, a contact pair at each core/platen interface, friction 0.35, out-of-plane U3 constraint, original plastic hardening table, nominal strain 0.65, and optional explicitly imposed geometric imperfection. Python is strictly pre/post-processing. The repository's original run.py and baseline are untouched.
+## Run on the prepared cloud machine
 
-It **does not** reproduce Abaqus Explicit general contact, ductile damage initiation/evolution, C3D8R meshing, or verified large-strain honeycomb self-contact. The new single-surface CCX self-contact is intentionally **experimental** and may be rejected or behave incorrectly with ccx213.exe. A completed solver exit alone does not demonstrate mode equivalence.
+From `/workspace/reentrant-auxetic-opensource-fea`:
 
-## Run (Windows PowerShell; existing portable CalculiX)
-```powershell
-.\.venv\Scripts\python.exe run_paper.py --run --threads 16
-.\.venv\Scripts\python.exe convert_paper.py
+```sh
+export PATH=/workspace/bin:/workspace/fea-venv/bin:$PATH
+OMP_NUM_THREADS=2 CCX_EXECUTABLE=/workspace/bin/ccx pytest -q -rx
+python run_paper.py --run --threads 2
 ```
-If the CCX213 bundle is installed at a different location, pass `--ccx path/to/ccx.exe`.
-Run exploratory single-surface self contact with `--self-contact`, but expect that it may be unsupported. To explore mode selection via a **documented** deterministic imperfection (without fitting to Fig. 11), use `--imperfection-mm 0.01`. Never silently call this a measured specimen imperfection.
 
-Contact physics is explicitly different from the baseline's rigid bonded grips. Large deformation and contact-induced densification may still fail convergence or produce other modes. Contact normal stiffness and load increments are numerical parameters requiring sensitivity analysis.
+The second command attempts the full lattice; convergence is **not established**.
+It writes a log and requires both a clean solver finish and a completed `.sta`
+step at pseudo-time 1. Old outputs are retained in a unique `*-previous-*`
+directory. A zero process exit status alone is insufficient.
 
-## Reference conditions and targets
-- 5 columns x 6 rows; thin wall 0.30 mm; 76 x 48 x 25 mm nominal specimen
-- Material AlSi10Mg; original tensile true stress vs plastic strain table
-- Reference paper finite element: 10,068 C3D8R, 19 horizontal / 10 inclined edge divisions; self contact; `mu = 0.35` at platen interfaces, out-of-plane constrained, prescribed compression 2 mm/min
-- Target mode frames **Bi-V at strain 0.12**, **Z at strain 0.35**, strong collapse at strain 0.65
-- Experimental thin-wall plateau mean ~0.28 MPa, densification mean strain ~0.58; paper FE 5x6 plateau ~0.31 MPa
+Default output contains every converged increment, including unaveraged CORE
+integration-point stress and PEEQ in `.dat`. `--target-output-only` instead asks
+CalculiX for exact nominal strain frames 0.12, 0.35 and 0.65 (if in the loading
+range); sparse output is unsuitable for accurate history integration. Static
+time is a load fraction, not experimental seconds. Nominal strain is total
+prescribed displacement / initial height (48 mm here); platen and contact
+compliance mean it is not exactly the core's material strain.
 
-## Important scientific gaps
-1. **Damage**: ccx213.exe has no equivalent of the Abaqus ductile initiation table plus displacement-based linear softening (`u_f=0.001 mm`) and in-solver deletion used by the paper. We have not inserted unsupported keywords. A Python post-processing damage flag is not material damage in the solver.
-2. **Core self-contact**: this deck can emit a tentative same-surface contact pair but does not establish support or valid evolution of folded walls. Without successful self-contact, compressed walls may interpenetrate.
-3. **Elements**: uses C3D6 wedge mesh, not paper's C3D8R brick. Mesh morphology, nominal geometry, relative density, and integration quality must be checked.
-4. **Quasi-static equivalence**: the deck is implicit static, not the Abaqus Explicit simulation in the supplied source script. Loading speed is not a physical variable for rate-independent implicit static.
-5. **Validation**: the solution has not been run on your Windows ccx213.exe in this session; figure and curve matching are unconfirmed. Run tests with `pytest tests/test_paper_contact_solver.py -q`.
+## Changes and verification
 
-ParaView: open the converted VTU time series, use Warp By Vector on U, compare geometries at the requested nominal strain frame. Use top reaction magnitude / 1900 mm² for nominal stress only when the exact nominal envelope is appropriate. A proper RF-strain extractor and qualitative Bi-V/Z comparison remain necessary before claiming reproduction.
+- Validate positive elasticity, admissible Poisson ratio, finite monotone true
+  stress/plastic strain tables starting at zero plastic strain, compression
+  range, friction, contact stiffnesses and increment ordering. Stress softening
+  in a `*PLASTIC` table is rejected as a substitute for ductile damage.
+- Use explicit `ROT NODE` nodes with translational DOFs 1–3 for rigid-grip
+  rotations in the advanced writer. Reference-node DOFs 4–6 are not used as
+  CalculiX rigid-body rotation constraints.
+- Keep separate meshed steel platens, positive normal penalty and stick slope,
+  friction 0.35 and out-of-plane constraints. Add one bottom centreline X roller
+  to remove the initial in-plane rigid translation before friction carries load.
+  This explicit numerical anchor must be included in boundary-condition
+  sensitivity studies; it is not a measured experimental support.
+- Use the actual CCX 2.20 minimum increment floor of 1e-6 of step time, rather
+  than requesting 1e-10 which CCX silently increases with a warning.
+- Expose penalty (`SURFACE TO SURFACE`), `MORTAR`, and `LINMORTAR` contact choices
+  for controlled numerical studies. Penalty remains the default. Mortar is not
+  a demonstrated cure for nonlinear convergence.
+- Reject same-surface self-contact pairs. Reusing one exterior surface as both
+  master and slave is not a benchmarked wall self-contact algorithm. Crushing
+  requires disjoint nonadjacent wall patches, appropriate search and exclusions,
+  and contact-force/penetration benchmarks before enabling it.
 
-### Literature-specific caution
-The uploaded paper says the thin honeycomb showed Bi-V → Z, with a measured mean plateau 0.28 MPa and mean densification 0.58. It also says damage initiation used fracture plastic strain 0.047 at triaxiality 0.333 (additional fitted values), followed by 0.001 mm linear displacement softening. This **cannot** be represented by an ordinary `*PLASTIC` deck.
+Actual solver regressions compress a **two-wedge rectangular specimen**, with
+frictional steel platens, through nominal strains 0.12, 0.35 and 0.65. Penalty
+contact completes all three and transmits compressive reaction. These are
+contact/execution tests, not honeycomb morphology tests. Mortar fails the same
+coarse specimen after cutbacks; the tests report these three known numerical
+failures as XFAIL only when the log confirms cutback exhaustion or the minimum
+increment limit. Any other failure fails the test.
+
+Full lattice attempts use 10,026 core nodes and 6,880 C3D6 elements. The original
+penalty deck exhibits enormous rigid translation corrections (~1e9 mm). The
+anchored penalty deck still exhausts cutbacks in its first increment. Exploratory
+mortar variants make limited progress, but were stopped because they advance
+very slowly near nominal strain 0.021; they did not reach any target frame.
+See `validation/ccx220_summary.json` for captured solver evidence. No lattice
+Bi-V at 0.12, Z at 0.35, or collapse at 0.65 is verified.
+
+## Ductile initiation and unresolved coupled damage
+
+`reentrant_fea.ccx_results.integration_history(dat)` reads unaveraged integration
+point stress and PEEQ from CCX 2.20 `*EL PRINT`. It computes triaxiality as mean
+stress / von Mises stress, with positive tensile hydrostatic stress. Separate
+integration points are never merged into an element-average history.
+
+`initiation_indices(dat, locus)` integrates `dPEEQ / fracture_strain(eta)` on each
+integration point. It refuses a single-point locus or stress triaxialities outside
+the calibration range; it never assumes the tensile datum 0.047 at eta=0.333 is
+valid in compressive or shear states. Synthetic test loci verify plumbing only.
+Output sampling and interpolation introduce integration error; refine output
+and loading increments for sensitivity studies.
+
+This is an **uncoupled diagnostic**, not a damage constitutive law. Stock CCX
+2.20 `*PLASTIC` does not supply the paper's Abaqus ductile initiation plus
+0.001 mm displacement softening and automatic deletion. `--ductile-damage` in
+the advanced CLI remains an explicit unsupported-feature error. No Python FE
+solver, externally imposed element deletion, or unsupported `*DAMAGE` keywords
+are substituted for a solver-side material law.
+
+A physically appropriate coupled implementation remains required: a compiled,
+finite-strain CalculiX user material with committed integration-point state,
+calibrated tension/shear/compression fracture locus, characteristic-length or
+fracture-energy regularization, stress degradation and verified tangent. It
+needs unloading, rotating-body, mesh-objectivity and energy benchmarks, plus a
+supported treatment of failed elements and contact. The repository's standalone
+small-strain Python kernel cannot be attached to CCX as that implementation.
+The missing calibration and this solver extension remain blockers to a complete
+damage reproduction.
+
+## Scientific limitations
+
+The geometry is a buffered-strut approximation; its envelope is approximately
+76.50 × 48 × 25 mm, not exactly the nominal 76 × 48 × 25 mm. C3D6 wedges with two
+depth layers are not the paper's 10,068 C3D8R elements. End-contact discretization,
+mesh aspect ratios, penalty sensitivity, reaction balance and convergence at
+large buckling/collapse require further work. Implicit static equilibrium can
+fail at snap-through; no dynamics or mass scaling has been introduced to hide
+that failure. Frictional work, penetration and mesh convergence are not validated.
+
+Dong et al., Materials & Design 182 (2019), 108036 reports the target Bi-V → Z
+sequence, mean plateau stress ~0.28 MPa and densification strain ~0.58. None of
+these experimental quantities is validated by the current lattice calculations.
