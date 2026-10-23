@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parent
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config",default="configs/dong2019_thin.json")
+    ap.add_argument("--config",default="configs/dong2019_contact.json")
     ap.add_argument("--plastic",default="reference_setup_numeric_source.py")
     ap.add_argument("--output",default="results/dong2019_contact.inp")
     ap.add_argument("--ccx",default="tools/calculix/bin/ccx/ccx213.exe")
