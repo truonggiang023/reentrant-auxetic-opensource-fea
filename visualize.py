@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import sys
 import re
 import numpy as np
 import pyvista as pv
@@ -77,6 +79,20 @@ def make_frame(index):
 
     return deformed, u_name, s_name
 
+
+# Cloud containers typically have no X server, EGL or OSMesa.
+# Do not construct any VTK render window in that environment: VTK may
+# segfault in native code before Python can catch an exception.
+if sys.platform.startswith("linux") and not os.environ.get("DISPLAY"):
+    print("Headless environment detected: no DISPLAY.")
+    print("Skipping VTK rendering (no X/EGL/OSMesa available).")
+    print("VTU files are already ParaView-compatible; open them locally.")
+    print("VTU directory:", files[0].parent.resolve())
+    for index in sorted({0, len(files)//2, len(files)-1}):
+        mesh, u_name, s_name = make_frame(index)
+        print(f"Frame {index+1}/{len(files)}: points={mesh.n_points}, "
+              f"cells={mesh.n_cells}, displacement={u_name}, stress={s_name}")
+    sys.exit(0)
 
 plotter = pv.Plotter()
 plotter.set_background("white")
