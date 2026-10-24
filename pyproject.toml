@@ -9,7 +9,7 @@ requires-python = ">=3.10"
 dependencies = ["numpy>=1.24", "shapely>=2.0", "gmsh>=4.11"]
 [project.optional-dependencies]
 dev = ["pytest>=7"]
-post = ["matplotlib>=3.8"]
+post = ["matplotlib>=3.8", "ccx2paraview"]
 [project.scripts]
 reentrant-fea = "reentrant_fea.cli:main"
 [tool.setuptools.packages.find]
