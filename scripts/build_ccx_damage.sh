@@ -8,7 +8,18 @@ cat > "$root/apt/sources/debian.list" <<'EOF'
 deb [signed-by=/usr/share/keyrings/debian-archive-keyring.gpg] https://deb.debian.org/debian bookworm main
 deb-src [signed-by=/usr/share/keyrings/debian-archive-keyring.gpg] https://deb.debian.org/debian bookworm main
 EOF
-opts=(-o "Dir::Etc::sourcelist=$root/apt/sources/debian.list" -o Dir::Etc::sourceparts=- -o "Dir::State::lists=$root/apt/lists" -o "Dir::Cache=$root/apt/cache" -o "Acquire::https::Proxy=${HTTPS_PROXY:?}")
+opts=(
+  -o "Dir::Etc::sourcelist=$root/apt/sources/debian.list"
+  -o "Dir::Etc::sourceparts=-"
+  -o "Dir::State::lists=$root/apt/lists"
+  -o "Dir::Cache=$root/apt/cache"
+  -o "Dir::Cache::archives=$root/apt/cache/archives"
+  -o "Dir::State::status=/var/lib/dpkg/status"
+)
+
+if [[ -n "${HTTPS_PROXY:-}" ]]; then
+  opts+=(-o "Acquire::https::Proxy=$HTTPS_PROXY")
+fi
 cd "$root/apt"
 apt-get "${opts[@]}" update
 apt-get "${opts[@]}" download gfortran-12 libgfortran-12-dev libspooles2.2 libspooles-dev

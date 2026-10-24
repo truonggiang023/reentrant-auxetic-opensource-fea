@@ -15,7 +15,7 @@ def natural_key(path):
 
 
 files = sorted(
-    RESULTS.glob("reentrant*.vtu"),
+    RESULTS.glob("dong2019_contact*.vtu"),
     key=natural_key
 )
 

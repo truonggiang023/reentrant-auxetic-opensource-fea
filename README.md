@@ -38,8 +38,7 @@ compiler. The bundled Windows 2.13 executable is not qualified for this material
 python run_paper.py --config configs/dong2019_contact.json --run
 
 # Native coupled softening, all-quad C3D8R mesh, wall-contact candidate:
-python run_paper.py --config configs/dong2019_brick_damage.json \
-  --self-contact --target-output-only --run
+D
 
 # Plot accepted solver frames; missing targets are shown explicitly:
 MPLCONFIGDIR=/workspace/mplconfig python plot_run.py results/dong2019_contact.inp

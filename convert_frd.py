@@ -13,6 +13,11 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parent
+<<<<<<< HEAD
+=======
+FRD = ROOT / "results" / "dong2019_contact.frd"
+OUT = ROOT / "results" / "vtk"
+>>>>>>> 2f5d2f9 (Update CalculiX FEA)
 
 def main():
     parser = argparse.ArgumentParser()
