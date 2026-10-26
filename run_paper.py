@@ -18,6 +18,7 @@ from reentrant_fea.geometry import core_polygon
 from reentrant_fea.mesh import mesh_wedges,mesh_bricks
 from reentrant_fea.plastic import from_reference
 from reentrant_fea.paper_contact_solver import write_paper_contact_deck
+from reentrant_fea.provenance import record_generation
 
 
 ROOT = Path(__file__).resolve().parent
@@ -58,6 +59,18 @@ def main():
                                   from_reference(ROOT/args.plastic),
                                   imperfections=imperfection,
                                   self_contact=args.self_contact)
+    generation=record_generation(
+        out, ROOT/args.config, ROOT/args.plastic, config=c, metadata=meta,
+        source_paths=[Path(__file__), ROOT/'src/reentrant_fea/geometry.py',
+                      ROOT/'src/reentrant_fea/mesh.py',
+                      ROOT/'src/reentrant_fea/paper_contact_solver.py',
+                      ROOT/'src/reentrant_fea/contact.py', ROOT/'native/ductile.c'])
+    # Overrides can change geometry/contact without changing the JSON file.
+    generation['invocation'] = {'self_contact':args.self_contact,
+                              'imperfection_mm':args.imperfection_mm,
+                              'target_output_only':args.target_output_only,
+                              'threads':args.threads}
+    out.with_suffix('.generation.json').write_text(json.dumps(generation,indent=2)+'\n')
     print(json.dumps(meta,indent=2))
     print("Material:",meta["damage_model"])
     if c.get("ductile_damage"):

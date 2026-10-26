@@ -1,8 +1,8 @@
-# Re-entrant honeycomb FEM with CalculiX
+# Re-entrant honeycomb FEM with CalculiX and OpenCourant
 
 Research implementation for the Dong et al. (2019) compression problem.
 **Experimental agreement and the complete Bi-V → Z → collapse sequence are not
-established.** CalculiX performs the FEM solve; Python handles geometry, meshing,
+established.** CalculiX and OpenCourant perform the FEM solves; Python handles geometry, meshing,
 automation, tests and postprocessing.
 
 The primary workflow now includes a compiled finite-strain J2 ductile-softening
@@ -32,6 +32,27 @@ It currently targets Debian amd64 with GCC 14 and the downloaded Fortran 12
 compiler. The bundled Windows 2.13 executable is not qualified for this material.
 
 ## Generate and run
+
+An additional **experimental OpenCourant backend** now uses native solid
+erosion and TYPE25 all-face contact. Its installation, actual component tests,
+commands and unresolved lattice qualification are documented in
+[the OpenCourant workflow](validation/opencourant_workflow.md). Native deletion
+has been demonstrated; complete fracture-contact coverage, calibration and
+experimental agreement have not been established.
+
+The [paper-reference data](validation/paper_reference/README.md) and
+[calibration workflow](validation/calibration_workflow.md) keep digitized
+experiments, published FE and current simulations distinct. Generate the
+historical thin-wall comparison with `python plot_paper_comparison.py`.
+
+The completed OpenCourant **legacy interior-X-pin baseline** reached strain
+0.65 with 252 eroded elements. Its [stress comparison](validation/opencourant-thin-pinned-comparison.png)
+and [actual deformation frames](validation/opencourant-thin-pinned-frames.png)
+show substantial differences from the paper. See
+[the quantitative assessment](validation/opencourant_thin_qualification.json).
+The current native exporter removes that unsupported interior pin by default;
+`core_x_anchor=true` retains it only for explicit boundary sensitivity studies.
+Calibration, numerical convergence and experimental agreement remain unresolved.
 
 ```sh
 # Builtin J2 plasticity, wedge mesh, platen contact:
@@ -63,7 +84,7 @@ failure. Target-output mode includes exact strains 0.12, 0.35 and 0.65; the exam
 also requests a regular output grid for reaction histories. Failed or unrun
 frames must not be presented as deformation evidence.
 
-## Model scope
+## CalculiX model scope
 
 Units are mm, N and MPa. Compression is along Y and extrusion along Z. The
 paper-oriented deck fixes all core U3 DOFs and removes one in-plane rigid

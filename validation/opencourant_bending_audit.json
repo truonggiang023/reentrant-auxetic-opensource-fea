@@ -1,0 +1,223 @@
+{
+  "status": "elastic component audit; no lattice calibration or experimental agreement claim",
+  "reproduction": {
+    "command": "source /workspace/opencourant/env.sh && /workspace/fea-venv/bin/python scripts/probe_courant_bending.py --output /workspace/opencourant-validation/bending-repro-final --report validation/opencourant_bending_audit.json",
+    "script": "scripts/probe_courant_bending.py",
+    "script_sha256": "05bc47f051cc4de5873d60af611c9aa4e56928cb18140b673d06e6d7d16e34b0"
+  },
+  "geometry": {
+    "wall_thickness_mm": 0.3,
+    "wall_length_mm": 5.66,
+    "elements_through_wall": 2,
+    "elements_along_length": 16
+  },
+  "material": {
+    "young_MPa": 69000.0,
+    "poisson": 0.3,
+    "density_Mg_per_mm3": 2.67e-09,
+    "true_flow_table": [
+      [
+        0,
+        225
+      ],
+      [
+        1,
+        300
+      ]
+    ]
+  },
+  "boundary_conditions": "Bottom X,Y fixed; all Z fixed; top prescribed X with Y free.",
+  "loading": {
+    "tip_displacement_mm": 0.001,
+    "duration_seconds": 0.002,
+    "mass_scaling": false,
+    "native_default_numerical_damping": true,
+    "amplitude": "101-point piecewise-linear quintic smoothstep",
+    "history_interval_seconds": 5e-06
+  },
+  "reference_formula": "k=3*[E/(1-nu^2)]*[depth*wall_thickness^3/12]/wall_length^3; late-ramp force from Delta(impulse)/Delta(time)",
+  "finite_geometry_flag_audit": {
+    "native_property_cfg": "/workspace/opencourant/runtime/OpenCourant/hm_cfg_files/config/CFG/radioss2022/PROP/prop_p14_solid.cfg",
+    "cfg_sha256": "c6723d69556d8ba4e4218962af7e2bf7efc931a69b0731411262ff0992a72130",
+    "solid_formulation": 24,
+    "corotational_frame": 2,
+    "ismstr": 4,
+    "is_small_strain_approximation": false,
+    "ismstr4_definition": "Full Geometric Nonlinearities (/DT/BRICK/CST has No Effect)",
+    "source_lines": [
+      202,
+      210
+    ]
+  },
+  "cases": [
+    {
+      "case": "near_square_control",
+      "directory": "/workspace/opencourant-validation/bending-repro-final/near_square_control",
+      "depth_mm": 0.3,
+      "depth_layers": 1,
+      "core_elements": 32,
+      "nominal_brick_dimensions_mm": [
+        0.15,
+        0.35375,
+        0.3
+      ],
+      "largest_to_smallest_edge_ratio": 2.3583333333333334,
+      "native_global_time_step_scale": 0.9,
+      "starter_exit_code": 0,
+      "engine_exit_code": 0,
+      "engine_normal_termination": true,
+      "starter_zero_errors": true,
+      "starter_zero_warnings": true,
+      "engine_error_line_count": 0,
+      "sample_engine_error": null,
+      "negative_volume_message_count": 0,
+      "contains_nonfinite_printed_values": false,
+      "completed_cycles": 91860,
+      "runtime_binary_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+      "elastic_stiffness_comparison_usable": true,
+      "expected_plane_strain_EB_stiffness_N_per_mm": 0.8468050365300096,
+      "mean_late_tip_stiffness_N_per_mm": 0.8521222047507465,
+      "late_stiffness_range_N_per_mm": [
+        0.8518813303893626,
+        0.8524096096528185
+      ],
+      "relative_stiffness_error": 0.006279093759911092,
+      "last_observed_history_time_seconds": 0.001995021,
+      "history_samples": 400,
+      "input_and_output_sha256": {
+        "wall_0000.rad": "2d89b7c3894eff4ea8a78b1e406cccf2f43b550a3f8ee04b711ba1bab90de32f",
+        "wall_0001.rad": "f284bfc6b2250715a0e315d0cf6db6e96739d60d98b8f46ab5e799205e23bdb0",
+        "wall_0000.out": "a4dc28088425c613a86fde0529a7e8bbaad4adc13f95293365497145aa195fb0",
+        "wall_0001.out": "5be5d8162caad7bd23f1985e09519f066e0821034dfdc34d771c8ebb31ebf62b",
+        "wallT01": "b9ed4a41d0ad7d7ca363322f74c091da4b2ee2fb799658288b15b133b80225bf",
+        "wallT01.csv": "a4310f25fa9afef0b84645f06ff9cd56434242f9913588175e951d7ca9408c39"
+      }
+    },
+    {
+      "case": "high_aspect_default_step",
+      "directory": "/workspace/opencourant-validation/bending-repro-final/high_aspect_default_step",
+      "depth_mm": 25.0,
+      "depth_layers": 1,
+      "core_elements": 32,
+      "nominal_brick_dimensions_mm": [
+        0.15,
+        0.35375,
+        25.0
+      ],
+      "largest_to_smallest_edge_ratio": 166.66666666666669,
+      "native_global_time_step_scale": 0.9,
+      "starter_exit_code": 0,
+      "engine_exit_code": 0,
+      "engine_normal_termination": true,
+      "starter_zero_errors": true,
+      "starter_zero_warnings": true,
+      "engine_error_line_count": 16651,
+      "sample_engine_error": "**ERROR : TIME STEP LESS OR EQUAL DTMIN FOR SOLID ELEMENT          23",
+      "negative_volume_message_count": 14,
+      "contains_nonfinite_printed_values": true,
+      "completed_cycles": 1183,
+      "runtime_binary_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+      "elastic_stiffness_comparison_usable": false,
+      "excluded_reason": "Native warning/error/nonfinite response: normal termination and exit0 alone are insufficient.",
+      "input_and_output_sha256": {
+        "wall_0000.rad": "7b0f86f8d1ef985120989416df909a832261996de9bbd93b5efd2087e3ebd818",
+        "wall_0001.rad": "f284bfc6b2250715a0e315d0cf6db6e96739d60d98b8f46ab5e799205e23bdb0",
+        "wall_0000.out": "449760f4f922cb5a17e6f11c3b2ab454f2e35bca37dda0c4e1ed89c18819bb59",
+        "wall_0001.out": "4628955638476cfc6f14c5f547ce993a3414a8bccda0b41f76b5b5272a67695f",
+        "wallT01": "c4cefa1f3a55e4479fc11030242d1489fb39ec070c2af839f872e81d29c7adec"
+      }
+    },
+    {
+      "case": "high_aspect_four_depth_layers",
+      "directory": "/workspace/opencourant-validation/bending-repro-final/high_aspect_four_depth_layers",
+      "depth_mm": 25.0,
+      "depth_layers": 4,
+      "core_elements": 128,
+      "nominal_brick_dimensions_mm": [
+        0.15,
+        0.35375,
+        6.25
+      ],
+      "largest_to_smallest_edge_ratio": 41.66666666666667,
+      "native_global_time_step_scale": 0.9,
+      "starter_exit_code": 0,
+      "engine_exit_code": 0,
+      "engine_normal_termination": true,
+      "starter_zero_errors": true,
+      "starter_zero_warnings": true,
+      "engine_error_line_count": 0,
+      "sample_engine_error": null,
+      "negative_volume_message_count": 0,
+      "contains_nonfinite_printed_values": false,
+      "completed_cycles": 91860,
+      "runtime_binary_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+      "elastic_stiffness_comparison_usable": true,
+      "expected_plane_strain_EB_stiffness_N_per_mm": 70.56708637750081,
+      "mean_late_tip_stiffness_N_per_mm": 71.01019039441225,
+      "late_stiffness_range_N_per_mm": [
+        70.98943337361727,
+        71.03514612431334
+      ],
+      "relative_stiffness_error": 0.0062791882116406406,
+      "last_observed_history_time_seconds": 0.001995021,
+      "history_samples": 400,
+      "input_and_output_sha256": {
+        "wall_0000.rad": "25fcc6af1b1bfcedca3f7236860b62df121194156e4d1e7accd88eede428b699",
+        "wall_0001.rad": "f284bfc6b2250715a0e315d0cf6db6e96739d60d98b8f46ab5e799205e23bdb0",
+        "wall_0000.out": "93c12573d216ca1bd34f1e036f6b9a3e15edf7c6a9c44429ab5b0eccbe4e9db0",
+        "wall_0001.out": "23bf80b08fb74e88ae001600dabb946e2f7d665093fae93d34be22e394519552",
+        "wallT01": "7e04d8f7e2636fb541c75e2bea398f1709ad0a3b811adc0f8e9933b2f89e2c6c",
+        "wallT01.csv": "b98d34359a838aba84d1d2724e898efc6167a98aa15bf788ba7a5aa089241890"
+      }
+    },
+    {
+      "case": "high_aspect_reduced_step",
+      "directory": "/workspace/opencourant-validation/bending-repro-final/high_aspect_reduced_step",
+      "depth_mm": 25.0,
+      "depth_layers": 1,
+      "core_elements": 32,
+      "nominal_brick_dimensions_mm": [
+        0.15,
+        0.35375,
+        25.0
+      ],
+      "largest_to_smallest_edge_ratio": 166.66666666666669,
+      "native_global_time_step_scale": 0.3,
+      "starter_exit_code": 0,
+      "engine_exit_code": 0,
+      "engine_normal_termination": true,
+      "starter_zero_errors": true,
+      "starter_zero_warnings": true,
+      "engine_error_line_count": 0,
+      "sample_engine_error": null,
+      "negative_volume_message_count": 0,
+      "contains_nonfinite_printed_values": false,
+      "completed_cycles": 275578,
+      "runtime_binary_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+      "elastic_stiffness_comparison_usable": true,
+      "expected_plane_strain_EB_stiffness_N_per_mm": 70.56708637750081,
+      "mean_late_tip_stiffness_N_per_mm": 71.01035247632102,
+      "late_stiffness_range_N_per_mm": [
+        70.98495973527548,
+        71.03111070538853
+      ],
+      "relative_stiffness_error": 0.006281485060172898,
+      "last_observed_history_time_seconds": 0.001995006,
+      "history_samples": 400,
+      "input_and_output_sha256": {
+        "wall_0000.rad": "7b0f86f8d1ef985120989416df909a832261996de9bbd93b5efd2087e3ebd818",
+        "wall_0001.rad": "d74e59e85cd2a105ad549c3e656837eb00c0db07771727df4744f7d67be78021",
+        "wall_0000.out": "f7692621c19e267ba82373b0465608eeeb40f84d096ec3b5b9d47226bcba1b6a",
+        "wall_0001.out": "8719e2f3d8a76a01f25f6273316800cf43a0a14791e392be621e5c4ba1a59515",
+        "wallT01": "9b360ba36e99f4b629a0bbabc1232a826b865120465a7ae476ca083123ff210b",
+        "wallT01.csv": "4329608929a521beb9e964ecf45f85c1ff3c5f63467491ca22c0751fe30457a0"
+      }
+    }
+  ],
+  "limitations": [
+    "Elastic component diagnostic, not experimental calibration or a universal HEPH aspect-ratio rule.",
+    "Negative-volume/time-step errors and nonfinite output are excluded even if the engine prints NORMAL TERMINATION.",
+    "The AMS lattice uses a different inertial operator and still needs independent time-step, rate, extrusion and contact sensitivity.",
+    "The observed lattice stress mismatch is not attributed to elastic bending stiffness by this diagnostic."
+  ]
+}

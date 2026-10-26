@@ -1,0 +1,134 @@
+{
+  "status": "controlled newly exposed internal-face contact component test passed",
+  "backend": "official OpenCourant latest-20261011 Linux64 GNU double precision",
+  "runtime_source_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "test": "tests/test_radioss_contact.py::test_new_internal_face_carries_contact_after_neighbor_erodes",
+  "test_source_sha256": "ecf44299685276145958452ec8f56d6a7144fe09a01fd12c68b48c3a2e79445d",
+  "command": "source /workspace/opencourant/env.sh && /workspace/fea-venv/bin/python -m pytest tests/test_radioss_contact.py -q --basetemp=/workspace/fea-research/contact-components-final",
+  "test_outcome": {
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "solver_runs": 2
+  },
+  "model": {
+    "units": [
+      "Mg",
+      "mm",
+      "s",
+      "N",
+      "MPa"
+    ],
+    "solid_elements": 3,
+    "connected_lower_upper_part": 1,
+    "lower_solid_id": 1,
+    "sacrificial_solid_id": 2,
+    "impactor_solid_id": 3,
+    "initially_internal_face_y_mm": 1.0,
+    "formerly_exterior_eroded_face_y_mm": 2.2,
+    "impactor_cross_section_mm": [
+      0.5,
+      0.5
+    ],
+    "impactor_sidewall_clearance_mm": 0.25,
+    "maximum_contact_gaps_mm": [
+      0.005,
+      0.005
+    ],
+    "native_failure": "INIEVO strain .04 constant locus, linear displacement softening .001mm",
+    "contact": "TYPE25 Idel1 face contact; impactor secondary versus eroding part main",
+    "duration_seconds": 0.001,
+    "prescribed_motion": "Upper face stretches .2mm by.0003s; impactor remains still until.0005s then descends2.2mm. Retained lower solid fixed.",
+    "mass_scaling": false
+  },
+  "controls": "ALL and EXT select identical connected part; ALL retains initially internal faces, EXT omits them. Centered narrow impactor and explicit small gaps exclude side/corner contact.",
+  "force_semantics": "Differentiate cumulative TH/INTER Y impulse by actual output interval to obtain interval-averaged force.",
+  "runs": {
+    "all_internal_faces": {
+      "working_directory": "/workspace/fea-research/contact-components-final/test_new_internal_face_carries0/all",
+      "normal_termination": true,
+      "starter_zero_errors_and_warnings": true,
+      "observed_samples": 500,
+      "last_time_seconds": 0.0009980394,
+      "artifacts_sha256": {
+        "fresh_all_0000.rad": "75c3d85dadce88520ad5d2cc667886f785779ac3185a1e85ea23e34dc33c5102",
+        "fresh_all_0001.rad": "3105157143139f579f39a1ccb6358988914ed53904b499e3a4e21e2f96c60e0b",
+        "fresh_all_0000.out": "60aa94e28c9aa479a7c6a0b42b7c72653d3db614cf68e7b54b1e1ce5a89123c0",
+        "fresh_all_0001.out": "5ad80653d686368ed219fdba8e3482c8c2bc8894ab6ae262a5b6712ded407313",
+        "fresh_allT01.csv": "d330be01a669bf1918177895495775db25411859ccd4fb8813d089c32e2aae60"
+      },
+      "upper_solid_rupture_time_seconds": 0.00010205,
+      "peak_interval_averaged_contact_force_N": 6110.203070827074,
+      "contact_impulse_N_s": 0.1361028,
+      "peak_ghost_wall_force_above_y1p3_N": 0.0,
+      "first_nonzero_force_impactor_base_y_mm": 0.997811,
+      "final_impactor_base_y_mm": 0.808627,
+      "element_active_states": {
+        "1": {
+          "initial_active": 1.0,
+          "final_active": 1.0
+        },
+        "2": {
+          "initial_active": 1.0,
+          "final_active": 0.0
+        },
+        "3": {
+          "initial_active": 1.0,
+          "final_active": 1.0
+        }
+      }
+    },
+    "exterior_only_negative_control": {
+      "working_directory": "/workspace/fea-research/contact-components-final/test_new_internal_face_carries0/exterior_control",
+      "normal_termination": true,
+      "starter_zero_errors_and_warnings": true,
+      "observed_samples": 500,
+      "last_time_seconds": 0.0009980344,
+      "artifacts_sha256": {
+        "fresh_ext_0000.rad": "9905763707dd206b0de3417b701996ec304e3cf7a1216adc6c09fd63e343d62e",
+        "fresh_ext_0001.rad": "aa8dab074fe7beecfc8943189f83af97ef97a763faa61a5b7f089f2b706bdbc0",
+        "fresh_ext_0000.out": "a836616f148b6828fbd296e40d951cabc80a8ea9966c02d427091b69db0edf1c",
+        "fresh_ext_0001.out": "433c900e611451d0e2090412d517b35a28e1d0543fd833cbc3e139e709cc6f4b",
+        "fresh_extT01.csv": "05299b4edfb487371433f023cff22f7c56e86786194acc07f5c737998598832c"
+      },
+      "upper_solid_rupture_time_seconds": 0.00010205,
+      "peak_interval_averaged_contact_force_N": 0.0,
+      "contact_impulse_N_s": 0.0,
+      "peak_ghost_wall_force_above_y1p3_N": 0.0,
+      "first_nonzero_force_impactor_base_y_mm": null,
+      "final_impactor_base_y_mm": 0.808649,
+      "element_active_states": {
+        "1": {
+          "initial_active": 1.0,
+          "final_active": 1.0
+        },
+        "2": {
+          "initial_active": 1.0,
+          "final_active": 0.0
+        },
+        "3": {
+          "initial_active": 1.0,
+          "final_active": 1.0
+        }
+      }
+    }
+  },
+  "assertions_proved": [
+    "Upper solid erodes before impactor motion; retained lower and impactor stay active.",
+    "Impactor passes through former upper solid volume without ghost-wall traction.",
+    "ALL produces nonzero traction at the previously internal lower face.",
+    "The identical EXT control produces exactly zero contact force, isolating internal-face availability rather than side/corner contact."
+  ],
+  "new_fracture_face_contact_demonstrated": true,
+  "ghost_contact_removed_in_this_component": true,
+  "complete_general_self_contact_validated": false,
+  "quasi_static_lattice_validated": false,
+  "experimental_agreement": false,
+  "limitations": [
+    "Small prescribed-motion component; contact force magnitude is not an experimental calibration target.",
+    "No claim of mesh/time-step/penalty objectivity from this one configuration.",
+    "This is secondary/main contact between separate parts, not a complete self-contact rotation benchmark.",
+    "All possible fractured-fragment contact configurations and full honeycomb collapse remain unqualified.",
+    "The separate large-rotation component is recorded in opencourant_rotation_contact_qualification.json; neither component proves complete general-contact coverage."
+  ]
+}

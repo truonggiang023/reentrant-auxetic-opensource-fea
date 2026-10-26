@@ -1,0 +1,149 @@
+{
+  "status": "native AMS acceleration implemented and component-tested; quasi-static lattice equivalence not established",
+  "backend": "OpenCourant latest-20261011 Linux64 GNU double precision",
+  "runtime_source_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "controls": {
+    "starter": "/AMS with group 0 selects all parts",
+    "engine": "/DT/AMS/2",
+    "scale_factor": 0.67,
+    "pcg_tolerance": 0.0001,
+    "maximum_iterations": 1000,
+    "additional_nodal_CST_mass_scaling": false
+  },
+  "physics": "AMS changes the high-frequency inertial operator; zero net added mass is insufficient to establish quasi-static response.",
+  "component_tests": {
+    "command": "source /workspace/opencourant/env.sh; /workspace/fea-venv/bin/python -m pytest tests/test_radioss.py tests/test_radioss_solver.py -q",
+    "result": "9 passed, including three actual native-solver regressions",
+    "coverage": "Input provenance/refusal; native INIEVO erosion/load loss; TYPE25 platen force transfer; INIEVO erosion with AMS enabled"
+  },
+  "contact_coupon_sensitivity": {
+    "description": "One-brick plane-strain core between elastic steel platens; synthetic plastic table 225 MPa at PEEQ0 to300 MPa atPEEQ1. This coupon is a severe contact/dynamics component test, not an experimental calibration.",
+    "duration_seconds": 0.001,
+    "baseline_and_ams_runs": [
+      {
+        "name": "slowcomp_base",
+        "starter_zero_errors_and_warnings": true,
+        "engine_normal_termination": true,
+        "cycles": 10242,
+        "history_samples": 400,
+        "last_history_time_seconds": 0.0009975058,
+        "peak_interval_compression_force_N": 256.82824655894683,
+        "final_top_contact_impulse_Ns": -0.03973709,
+        "final_internal_energy_Nmm": 2.615561,
+        "peak_kinetic_energy_Nmm": 1.143693,
+        "maximum_absolute_added_mass_Mg": 6.617445e-24,
+        "artifacts": {
+          "slowcomp_base_0000.rad": "7c079a45591d07ff7d501a2a20ca1270899514eeff616d5caf0544d6b67b7eca",
+          "slowcomp_base_0001.rad": "a6b1aea1f9a75e4b0aa3cf933e9aee94cb217309288deb9ec59f0e55af7cc46e",
+          "slowcomp_base_0000.out": "27dd51a00c8d0a051ebea8d04f2c5979384d58e242eb8380a2704e92595d6f30",
+          "slowcomp_base_0001.out": "d01e878e160a9101bfc1497a9a2f964b31b25a23967bf83bf84fdb70d1391e4e",
+          "slowcomp_baseT01.csv": "8d21e9d45311dc99e5fec428616b75a81792f5d6593a18481ad8fcd1ed750d7d"
+        }
+      },
+      {
+        "name": "slowcomp_ams2e7",
+        "starter_zero_errors_and_warnings": true,
+        "engine_normal_termination": true,
+        "cycles": 5001,
+        "history_samples": 400,
+        "last_history_time_seconds": 0.0009976,
+        "peak_interval_compression_force_N": 255.2115384615438,
+        "final_top_contact_impulse_Ns": -0.05899944,
+        "final_internal_energy_Nmm": 7.013727,
+        "peak_kinetic_energy_Nmm": 2.232116,
+        "maximum_absolute_added_mass_Mg": 6.617445e-24,
+        "artifacts": {
+          "slowcomp_ams2e7_0000.rad": "1ed143f2370d472695314b7a1b0b5b0d21fbbe01b514c67500252277810cfb0a",
+          "slowcomp_ams2e7_0001.rad": "b0c663b464e92f5a4569f907c79a420c0ae51a9a6364d6073a906338795f4f58",
+          "slowcomp_ams2e7_0000.out": "4384e58c10e91510dff915c48a380a74495f8d325cfbb7eda1a70015a421a451",
+          "slowcomp_ams2e7_0001.out": "5585d297183fcc2e525efee272bd8b21a8f54dc23d09b4cfa32005218396db14",
+          "slowcomp_ams2e7T01.csv": "137cceb313e46d14915d12d52554fe0c25c11ac41a89a5e1f11d9dc2e33661f6"
+        },
+        "interval_force_relative_l2_difference_from_baseline": 0.4821887055937167,
+        "common_time_impulse_relative_difference_from_baseline": 0.48464902145190175
+      },
+      {
+        "name": "slowcomp_ams5e7",
+        "starter_zero_errors_and_warnings": true,
+        "engine_normal_termination": true,
+        "cycles": 2000,
+        "history_samples": 400,
+        "last_history_time_seconds": 0.0009975379,
+        "peak_interval_compression_force_N": 256.9960000000045,
+        "final_top_contact_impulse_Ns": -0.02896971,
+        "final_internal_energy_Nmm": 4.069169,
+        "peak_kinetic_energy_Nmm": 2.674783,
+        "maximum_absolute_added_mass_Mg": 6.617445e-24,
+        "artifacts": {
+          "slowcomp_ams5e7_0000.rad": "436c4c259ae1242352b0e2ca4bbf679aa61cdd4ce6e618bb64145513dbfb4765",
+          "slowcomp_ams5e7_0001.rad": "4eb4acd5f38756420ce381a678d6668af566c2b830e6a0c20835dfe7a268ae17",
+          "slowcomp_ams5e7_0000.out": "78752bf515d6317c117091bb8e4d19e218d1eabf86852ef7889ca4fe9cd9e935",
+          "slowcomp_ams5e7_0001.out": "af9cff97e05e11c2f2feca4b3f3eff56f8908f35c2fce8a27a7aac1da61b2d27",
+          "slowcomp_ams5e7T01.csv": "0402736e905943ce297016f39106701b29df3d206e01d574999e53e56ad3db3c"
+        },
+        "interval_force_relative_l2_difference_from_baseline": 0.3778060454322434,
+        "common_time_impulse_relative_difference_from_baseline": 0.270965488413973
+      },
+      {
+        "name": "slowcomp_ams1e6",
+        "starter_zero_errors_and_warnings": true,
+        "engine_normal_termination": true,
+        "cycles": 1000,
+        "history_samples": 400,
+        "last_history_time_seconds": 0.0009980119,
+        "peak_interval_compression_force_N": 257.62000000000313,
+        "final_top_contact_impulse_Ns": -0.03159338,
+        "final_internal_energy_Nmm": 4.919837,
+        "peak_kinetic_energy_Nmm": 1.933037,
+        "maximum_absolute_added_mass_Mg": 6.617445e-24,
+        "artifacts": {
+          "slowcomp_ams1e6_0000.rad": "f856f18eb9313f3ce6cb24e456f4a921edb020b092b6992679b135e14e728a06",
+          "slowcomp_ams1e6_0001.rad": "af686fbcfb3246ed569870c0bfccf4967848928d38847c26a5a03afcbd462bda",
+          "slowcomp_ams1e6_0000.out": "594b4446b4a5e6b4ce9d39d852c4d587d33c63cf93db4c34099d61c019b3a67f",
+          "slowcomp_ams1e6_0001.out": "555e53278a551105b2a33df376225929effdb1d94852c3d5d5d7faf9a0494c25",
+          "slowcomp_ams1e6T01.csv": "d23b302e750c526eae102d81741b0e399fc095fc1b6f0800e418e05aa6c207e1"
+        },
+        "interval_force_relative_l2_difference_from_baseline": 0.43014432355391025,
+        "common_time_impulse_relative_difference_from_baseline": 0.20493930086475898
+      }
+    ],
+    "accepted_for_quasi_static_fitting": false,
+    "reason": "Large force-history and impulse changes with AMS target despite similar peak forces and unchanged total mass. Further refinement and speed sensitivity are required."
+  },
+  "lattice_throughput_pilot": {
+    "name": "thin_ams_1e6_pilot",
+    "duration_requested_seconds": 0.01,
+    "ams_target_seconds": 1e-06,
+    "core_elements": 7392,
+    "threads": 4,
+    "checkpoint_cycles": 1000,
+    "checkpoint_time_seconds": 0.001,
+    "checkpoint_elapsed_wall_seconds": 63.0,
+    "solver_remaining_wall_estimate_seconds": 567.03,
+    "checkpoint_energy_error_percent": -1.2,
+    "checkpoint_relative_added_mass": 0.0,
+    "stopped_by_agent": true,
+    "completed": false,
+    "last_history_time_seconds": 0.0011,
+    "last_core_internal_energy_Nmm": 58.36944,
+    "last_core_kinetic_energy_Nmm": 3.435918,
+    "last_top_platen_kinetic_energy_Nmm": 52.81572,
+    "excluded_from_physical_comparison": true,
+    "reason": "Performance-only pilot predates constant-tail hardening correction; original native FUNCT10 extrapolation differed from the CCX clamp. Partial and not experimentally calibrated.",
+    "artifacts": {
+      "thin_ams_1e6_pilot_0000.rad": "fb42eed5622847c44be530762f02e828274cdfb00fd44e5eef47ad09c14762e3",
+      "thin_ams_1e6_pilot_0001.rad": "4bdbd144343ca122afe494d98bc53f0e942dc9faab91cb71071dffd7b72927a7",
+      "thin_ams_1e6_pilot_0000.out": "255a399d86b87bb24aaa08f5de9698dbca7d26f9e187623376819787a6436bfe",
+      "thin_ams_1e6_pilot_0001.out": "6d27da10764a2f6b64f7dfd79a49755a4bd787de59df6c0aec5f0a15d83b8cb7",
+      "thin_ams_1e6_pilotT01.csv": "96431fdbb2a8549c4dae6b189c628001f9ae1615b54e09b612e77e685a6499d2"
+    }
+  },
+  "readiness_gates": [
+    "Complete solver run without unresolved errors or unexpected warnings",
+    "Hold material, mesh, loading and contact fixed while refining AMS target",
+    "Repeat with slower loading and compare core reaction/strain histories",
+    "Audit core kinetic/internal energy separately from driven platen kinetic energy; retain global balance, hourglass, contact energy and added mass checks",
+    "Require mesh and contact sensitivity plus holdout experimental comparison before agreement claims"
+  ],
+  "implicit_alternative": "Source implicit tangent assembly exposes TYPE24 contact branches but no TYPE25 branch in imp_int_k.F; do not assume switching engine mode preserves TYPE25 all-face erosion contact."
+}

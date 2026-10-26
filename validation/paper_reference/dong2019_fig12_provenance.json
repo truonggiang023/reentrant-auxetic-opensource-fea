@@ -1,0 +1,79 @@
+{
+  "source": "Dong et al., Materials & Design 182 (2019) 108036, Fig. 12, PDF page 10",
+  "doi": "10.1016/j.matdes.2019.108036",
+  "pdf_sha256": "9af42ee348be93b564b9dcc1e57a6a4c70bc8a96756b03ecc0647309571226de",
+  "embedded_image_sha256": "9e773757643ed36cc907c1d4b979b7164357bb4542a161c312939713dd203018",
+  "embedded_image": "PDF page 10 first image, RGB JPEG 1884x772; extracted with pdfimages -j",
+  "method": "Color thresholding of original embedded image, per-column median of largest contiguous trace group; legends and axes excluded. No interpolation of missing columns during extraction.",
+  "uncertainty": "At least +/-2 image pixels per coordinate for line width, antialiasing and axis selection, plus the reported vertical y_span_MPa/2. This is a coordinate-resolution bound, not a statistical confidence interval. Larger errors are possible at intersections/occlusion; curves are samples of printed lines, not raw data.",
+  "limitations": [
+    "Original experiments are not available as raw data.",
+    "Trace crossings and dashed-line gaps can be missing or ambiguous.",
+    "Near-vertical segments are represented by a per-column median and span.",
+    "The top of the thin-wall curves is clipped by the published plot; no extrapolation is supplied.",
+    "Compression curves do not uniquely identify the fracture locus.",
+    "Experimental labels follow the legend of each panel; its colors swap between panels."
+  ],
+  "panels": {
+    "thin": {
+      "wall_mm": 0.3,
+      "axis": [
+        1094,
+        1862,
+        591,
+        21
+      ],
+      "max_strain": 0.8,
+      "max_stress_MPa": 1.4,
+      "legend": [
+        1130,
+        1460,
+        45,
+        180
+      ],
+      "colors": {
+        "experiment_1": "red",
+        "experiment_2": "black",
+        "paper_fe": "blue"
+      },
+      "file": "dong2019_fig12_thin.csv",
+      "counts": {
+        "experiment_1": 618,
+        "experiment_2": 684,
+        "paper_fe": 595
+      },
+      "pixel_size_strain": 0.0010416666666666667,
+      "pixel_size_stress_MPa": 0.0024561403508771926
+    },
+    "thick": {
+      "wall_mm": 1.0,
+      "axis": [
+        119,
+        894,
+        591,
+        15
+      ],
+      "max_strain": 0.5,
+      "max_stress_MPa": 20.0,
+      "legend": [
+        170,
+        515,
+        45,
+        170
+      ],
+      "colors": {
+        "experiment_1": "black",
+        "experiment_2": "red",
+        "paper_fe": "blue"
+      },
+      "file": "dong2019_fig12_thick.csv",
+      "counts": {
+        "experiment_1": 587,
+        "experiment_2": 761,
+        "paper_fe": 590
+      },
+      "pixel_size_strain": 0.0006451612903225806,
+      "pixel_size_stress_MPa": 0.034722222222222224
+    }
+  }
+}

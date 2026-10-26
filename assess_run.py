@@ -5,10 +5,12 @@ import json
 from pathlib import Path
 from reentrant_fea.ccx_results import completed_increments
 from reentrant_fea.frd import committed_fields,read_core_deck,projected_overlap,contact_envelope
+from reentrant_fea.provenance import read_generation
 
 
 def assess(deck, targets=(.12,.35,.65), tolerance=.002):
     deck=Path(deck);nodes,elements,meta=read_core_deck(deck)
+    generation=read_generation(deck)
     inc=completed_increments(deck.with_suffix('.sta'))
     log=deck.with_suffix('.log').read_text(errors='replace')
     errors=[s.strip() for s in log.splitlines() if '*ERROR' in s]
@@ -64,6 +66,10 @@ def assess(deck, targets=(.12,.35,.65), tolerance=.002):
                                          'projected_contact':projected_overlap(nodes,elements,data)}
     sidecar=deck.with_suffix('.material.dat')
     if sidecar.exists():result['material_sidecar_sha256']=hashlib.sha256(sidecar.read_bytes()).hexdigest()
+    if generation:
+        result['generation']=generation
+        for key in ('generation_config_sha256','config_wall_mm','hardening_source_sha256'):
+            result[key]=generation[key]
     return result
 
 
