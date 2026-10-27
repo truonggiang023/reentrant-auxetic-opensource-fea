@@ -1,0 +1,93 @@
+{
+  "status": "matched early-strain diagnostic; not a full loading result or calibration",
+  "baseline_prefix": "thin_free_x_ams1e6",
+  "control_prefix": "thin_free_x_no_self_partial",
+  "archive": "validation/contact_audit/thin_self_contactoff_partial.tar.gz",
+  "archive_sha256": "533afe71c72cd74bd4930dafa35d16ef3faaffecdb32b555afc0a84dd097ed39",
+  "script_sha256": "927405cd89dd65a3ebf63f4716df125d786d2c805036b4594b96f13b92edb356",
+  "baseline_execution_binding_verified": true,
+  "control_pre_execution_generation_hashes_verified": true,
+  "control_execution_input_binding_recorded": false,
+  "control_execution_metadata_binding_recorded": false,
+  "both_runs_starter_and_engine_termination_verified_without_solver_errors": true,
+  "only_self_contact_and_its_history_selection_removed": true,
+  "only_engine_name_and_requested_stop_changed": true,
+  "same_amplitude_material_geometry_ams_and_reference_area": true,
+  "loading_duration_seconds": 0.01,
+  "control_requested_stop_seconds": 0.0032,
+  "control_engine_normal_termination": true,
+  "control_reached_requested_partial_stop": true,
+  "control_completed_full_loading": false,
+  "control_intentionally_partial": true,
+  "control_last_history_time_seconds": 0.003175,
+  "control_last_force_strain": 0.12043763207125,
+  "comparison_interval": [
+    0.005,
+    0.12
+  ],
+  "overlap_samples": 88,
+  "force_mapping": {
+    "baseline": "Contact force and energy                 3 Contact 3                                var 64",
+    "control": "Contact force and energy                 3 Contact 3                                var 58",
+    "physical_quantity": "Contact 3 FNY cumulative normal impulse",
+    "operation": "negative first difference divided by actual time interval, then1900mm2"
+  },
+  "overlap_rmse_MPa": 0.0,
+  "max_absolute_overlap_difference_MPa": 0.0,
+  "energy_sample_timestamps_identical": true,
+  "global_internal_energy_samples_bitwise_equal": true,
+  "core_part_internal_energy_samples_bitwise_equal": true,
+  "strain_checks": [
+    {
+      "strain": 0.01,
+      "baseline_stress_MPa": 0.24063016544517363,
+      "control_stress_MPa": 0.24063016544517363
+    },
+    {
+      "strain": 0.02,
+      "baseline_stress_MPa": 0.43985635719299887,
+      "control_stress_MPa": 0.43985635719299887
+    },
+    {
+      "strain": 0.04,
+      "baseline_stress_MPa": 0.7803399512857657,
+      "control_stress_MPa": 0.7803399512857657
+    },
+    {
+      "strain": 0.08,
+      "baseline_stress_MPa": 1.0399084277416377,
+      "control_stress_MPa": 1.0399084277416377
+    },
+    {
+      "strain": 0.12,
+      "baseline_stress_MPa": 1.1847781741753487,
+      "control_stress_MPa": 1.1847781741753487
+    }
+  ],
+  "conclusion": "Removing core self-contact leaves early stress and internal energy identical at recorded CSV precision. Core self-contact does not explain the early overshoot through strain.12 in this configuration.",
+  "limitations": [
+    "Contact-on late collapse remains sensitive to gap, edge and adjacency choices.",
+    "The archived control run record contains commands and runtime only; it has no execution-time input or metadata SHA. Generation deck hashes and the post-run evidence archive do not establish a prospective execution binding.",
+    "No claim that the accelerated AMS run is quasi-static or experimentally calibrated.",
+    "FNY comparison uses normal contact only, consistently for both cases; it is not an independent validation of total platen reaction.",
+    "This partial control cannot select a material candidate or prove full-strain agreement."
+  ],
+  "evidence_sha256": {
+    "thin_free_x_ams1e6.radioss.json": "92db404b91ac71d52211cb11f782235d5e693a43eff86f52df942863b849f30e",
+    "thin_free_x_ams1e6.run.json": "e6a4942222c175a1d0b2e4789497df6b4ee9a1b51f805b275516b54ddf245d65",
+    "thin_free_x_ams1e6_0000.out": "193c32dfe94fc75aa51dcd934bdd9c6a2c5b23d4dffa03c0d4720bbf4f91a028",
+    "thin_free_x_ams1e6_0001.out": "b10d45c86e8fe3d08bdfed061c20621473c3a1721cc9d613bb97a5730c7ec7cb",
+    "thin_free_x_ams1e6T01": "3ea26ab634655a8902c46c84eeff3f6fbe60280059ab69bf5b181c4ddda9177e",
+    "thin_free_x_ams1e6T01.csv": "ad134d3499c48ad1a156ae04bd98f6711d5056694c60b4a0958f3c417ee0dca6",
+    "thin_free_x_no_self_partial.radioss.json": "9e7e71e70c0364a99fd625cbd80fcf4b2fb53afbe57237bfc3f4cd470c771eff",
+    "thin_free_x_no_self_partial.run.json": "dbec15c80733615cc2152f8377d76a6d86ebfc4ba814ffb8832cfba817340e5e",
+    "thin_free_x_no_self_partial_0000.out": "a3fddebd1398f52d145d25acba4045fb3cc54121ff571151f9804761d60715af",
+    "thin_free_x_no_self_partial_0001.out": "9856ad13745b7bd7aa007aa2fc319f6e6cd7040449e5f4c0fe2a4740c2d63a5d",
+    "thin_free_x_no_self_partialT01": "d0bb1b7c24fb4e2090134a76c33ef112f3ad076e1edd83ac67e871ae218e2ccc",
+    "thin_free_x_no_self_partialT01.csv": "61c142929ca2dcc8932245ef3d62b7ff546f34377e0584ca3b2121d6842991f5",
+    "thin_free_x_no_self_partial_0000.rad": "c8753d090a4caa6bf3a4d94abe7a219fb21b76d9cea7e84236d27eca0f9b370a",
+    "thin_free_x_no_self_partial_0001.rad": "324008538596aacec8c0977d718b64dd0a452a597d5728ee4224eae9507e78b8",
+    "thin_free_x_ams1e6_0001.rad": "f0bd0b4c58068a793f6421ed9b98729eb2676dc4f1a19ff02fd1cc50a33bbc46",
+    "baseline_removed_self_interface.txt": "995457e472381b3cad78e8084e755e0170e0c3b497fad4119d663858313a3d20"
+  }
+}

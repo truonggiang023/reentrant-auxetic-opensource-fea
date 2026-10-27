@@ -21,6 +21,7 @@ From the repository root, with the prepared Python environment:
 
 ```sh
 /workspace/fea-venv/bin/python calibration_study.py prepare \
+  --plastic validation/materials/user_plastic_table_2026-10-26.inp \
   --output /workspace/fea-research/new-calibration-study
 ```
 
@@ -36,6 +37,7 @@ For native OpenCourant, use an explicitly selected duration and optional AMS:
 source /workspace/opencourant/env.sh
 /workspace/fea-venv/bin/python calibration_study.py prepare \
   --backend opencourant --duration .01 --ams-time-step 1e-6 \
+  --plastic validation/materials/user_plastic_table_2026-10-26.inp \
   --output /workspace/fea-research/new-native-study
 ```
 
@@ -48,8 +50,23 @@ impulse-aware assessment commands. The native holdout force interval is
 the deformation target remains .65. Source config, geometry, hardening,
 metadata, actual execution outputs and force-channel mapping are checked.
 Cached completion flags or copied curves cannot qualify a native run.
+The selected hardening file is validated before study files are written and
+its path and SHA flow through both backend commands and scoring. Omitting
+`--plastic` preserves the original higher-precision source; supplied data
+already uses true stress/plastic strain and is not converted again.
 The current native study remains selection-blocked pending actual core/work
 balance, loading-speed, AMS and mesh/contact qualification.
+
+The completed native baseline and its step-halving control now demonstrate
+16.80% relative L2 difference in the stress history; see
+[the AMS report](opencourant_ams_lattice_sensitivity.json).
+The [physical audit](opencourant_physical_discrepancy_audit.json) also finds
+early excess stiffness before damage, and a matched self-contact-off control
+leaves the strain .005–.12 response unchanged. Inverse fracture fitting cannot
+resolve that initial mismatch. Numerical formulation and discretization
+qualification must precede selecting a material candidate. User-confirmed
+elastic constants and the already converted true/plastic table are retained;
+see [material provenance](materials/README.md).
 
 Changing only `wall` in the inherited centerline geometry changes the specimen's
 outer dimensions and relative density. These generated thick-wall configurations

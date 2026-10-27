@@ -171,6 +171,38 @@ The archive preserves exact generated inputs, avoiding changes from future
 mesher or exporter versions. It contains project-generated decks, not solver
 binaries or images from the paper.
 
+## Diagnosing the early discrepancy
+
+Actual early native frames at strains .00412 and .02068 have zero damage and
+erosion. The [physical audit](opencourant_physical_discrepancy_audit.json)
+finds no dimensional or reference-area error large enough to explain the
+stress excess. E=69000 MPa, nu=.3, density=2.67e-9 Mg/mm3 and the already
+converted true-stress/plastic-strain interpretation are
+[explicit user-confirmed inputs](materials/user_material_confirmation.json).
+They are retained; printed coupon-raster slopes do not override them.
+
+A matched control removes only core self-contact and deliberately stops at
+.0032 s of the unchanged .01 s loading amplitude. Over strain .005–.12 its
+stress and core internal-energy samples are identical to the baseline at CSV
+precision. Core self-contact therefore does not explain the early overshoot
+in this case. This intentionally partial diagnostic has generation hashes
+but lacks a prospective execution input/metadata binding, and cannot be used
+as a completed fit. Recheck the sealed evidence and report with:
+
+```sh
+python scripts/audit_self_contact.py \
+  --verify-report validation/contact_audit/thin_self_contactoff_partial.json
+```
+
+The [plastic-bending diagnostic](opencourant_plastic_bending_audit.json)
+also shows sensitivity to solid formulation and wall discretization. Both
+formulations agree in the elastic range and differ after yielding. Its
+prescribed tip face introduces a substantial finite-rotation couple, so the
+ideal free-tip beam plastic moment is only a reference. The finer cases also
+use a different loading duration. These controls do not establish a solver
+defect, clean mesh convergence, or the cause of the lattice discrepancy. They
+show why elastic coupon checks alone cannot qualify plastic wall bending.
+
 ## Earlier pinned baseline
 
 The corrected-law, legacy interior-X-pin baseline completed to strain .65:

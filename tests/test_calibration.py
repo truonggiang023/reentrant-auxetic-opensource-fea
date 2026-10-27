@@ -118,6 +118,31 @@ def test_native_study_records_backend_and_nontransferable_assumptions(tmp_path):
     assert metadata['starter'] == row['deck']
 
 
+@pytest.mark.parametrize('backend', ['ccx', 'opencourant'])
+def test_study_requested_user_hardening_source_flows_to_every_command(tmp_path, backend):
+    import hashlib
+    from pathlib import Path
+    from calibration_study import prepare
+    root = Path(__file__).resolve().parents[1]
+    source = root/'validation/materials/user_plastic_table_2026-10-26.inp'
+    digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    kwargs = {'backend': backend, 'duration': .01 if backend == 'opencourant' else None}
+    manifest = prepare(root/'configs/dong2019_brick_damage.json', tmp_path/'study', plastic=source, **kwargs)
+    assert manifest['hardening_source'] == str(source)
+    assert manifest['hardening_source_sha256'] == digest
+    for row in manifest['runs']:
+        assert row['hardening_source'] == str(source)
+        assert row['hardening_source_sha256'] == digest
+        argv = row['solve_argv']
+        assert argv[argv.index('--plastic')+1] == str(source)
+    bad = tmp_path/'invalid.inp'
+    bad.write_text('*Plastic\n100,0\n90,.1\n')
+    output = tmp_path/'must-not-exist'
+    with pytest.raises(ValueError, match='nondecreasing'):
+        prepare(root/'configs/dong2019_brick_damage.json', output, plastic=bad, **kwargs)
+    assert not output.exists()
+
+
 def test_native_score_recomputes_bound_history_and_keeps_physics_gate(tmp_path):
     """Forged JSON completion/curve cannot replace actual engine/history evidence."""
     import csv

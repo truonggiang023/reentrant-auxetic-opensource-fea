@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 
 from reentrant_fea.calibration import fracture_candidate, score_assessment, select_candidate
-from reentrant_fea.plastic import from_reference
+from reentrant_fea.plastic import load_plastic, validate_material, validate_plastic_table
 
 
 ROOT = Path(__file__).resolve().parent
@@ -38,7 +38,7 @@ def reference_curves(path):
     return list(curves.values())
 
 
-def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None):
+def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, plastic=None):
     """Write configurations and exact follow-up commands without launching solves."""
     if backend not in ('ccx', 'opencourant'):
         raise ValueError('Select ccx or opencourant backend')
@@ -53,6 +53,10 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None):
     if output.exists() and any(output.iterdir()):
         raise ValueError('Use an empty study output directory to preserve existing simulations')
     source = json.loads(base.read_text())
+    plastic_source = Path(plastic).resolve() if plastic is not None else ROOT/'reference_setup_numeric_source.py'
+    # Validate both supported input formats before creating any study files.
+    validate_material(source, load_plastic(plastic_source))
+    plastic_sha256 = hashlib.sha256(plastic_source.read_bytes()).hexdigest()
     records = []
     variants = [(f'locus_{low:g}_{high:g}', low, high, {})
                 for low in (-.2, 0., .2) for high in (.5, 1., 1.5)]
@@ -85,10 +89,11 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None):
                 'config': str(config_path),
                 'config_sha256': hashlib.sha256(config_path.read_bytes()).hexdigest(),
                 'deck': str(deck),
-                'hardening_source': str(ROOT/'reference_setup_numeric_source.py'),
-                'hardening_source_sha256': hashlib.sha256((ROOT/'reference_setup_numeric_source.py').read_bytes()).hexdigest(),
+                'hardening_source': str(plastic_source),
+                'hardening_source_sha256': plastic_sha256,
                 'assessment': str(assessment),
                 'solve_argv': ['python', 'run_paper.py', '--config', str(config_path),
+                               '--plastic', str(plastic_source),
                                '--output', str(deck), '--target-output-only', '--self-contact',
                                '--threads', '2', '--run'],
                 'assess_argv': ['python', 'assess_run.py', str(deck), '--output', str(assessment)],
@@ -119,6 +124,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None):
     manifest = {
         'status': 'unrun hypotheses; no calibrated material', 'calibrated': False,
         'base_config': str(base.resolve()), 'working_directory': str(ROOT), 'backend': backend,
+        'hardening_source': str(plastic_source), 'hardening_source_sha256': plastic_sha256,
         'fit_intervals': deepcopy_intervals(),
         'geometry_qualification': {
             'qualified': False,
@@ -161,6 +167,7 @@ def score_native_record(row, config, saved_assessment, experiments, interval):
     metadata = json.loads(metadata_path.read_text())
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     source = Path(row.get('hardening_source', ROOT/'reference_setup_numeric_source.py'))
+    validate_plastic_table(load_plastic(source))
     source_hash = digest(source)
     expected_mapping = dict(csv_column=NATIVE_FORCE_COLUMN, compressive_sign=-1, channel_kind='impulse')
     if row.get('force_mapping') != expected_mapping:
@@ -253,7 +260,7 @@ def score(manifest, reference_dir):
         source_sha256 = hashlib.sha256(plastic_source.read_bytes()).hexdigest()
         if row.get('hardening_source_sha256', source_sha256) != source_sha256:
             raise ValueError(f'Hardening source changed for candidate {row["candidate"]}')
-        hardening = np.asarray(from_reference(plastic_source))
+        hardening = validate_plastic_table(load_plastic(plastic_source))
         if hardening.shape != (int(nh), 2) or not np.allclose(values[:int(nh)], hardening, rtol=1e-10, atol=1e-12):
             raise ValueError(f'Hardening table does not match candidate {row["candidate"]}')
         lines = deck.read_text().splitlines()
@@ -321,6 +328,8 @@ def main():
     generate = commands.add_parser('prepare')
     generate.add_argument('--config', type=Path, default=ROOT/'configs/dong2019_brick_damage.json')
     generate.add_argument('--output', type=Path, required=True)
+    generate.add_argument('--plastic', type=Path, default=ROOT/'reference_setup_numeric_source.py',
+                          help='True stress/plastic strain: Abaqus *Plastic block or literal PLASTIC_DATA Python source; neither is executed')
     generate.add_argument('--backend', choices=('ccx', 'opencourant'), default='ccx')
     generate.add_argument('--duration', '--duration-seconds', dest='duration', type=float,
                           help='Explicit loading duration in seconds for native OpenCourant studies')
@@ -333,7 +342,7 @@ def main():
     args = parser.parse_args()
     if args.command == 'prepare':
         result = prepare(args.config, args.output, backend=args.backend,
-                         duration=args.duration, ams_time_step=args.ams_time_step)
+                         duration=args.duration, ams_time_step=args.ams_time_step, plastic=args.plastic)
         print(f"Prepared {len(result['runs'])} configurations; simulations have not run.")
     else:
         result = score(json.loads(args.manifest.read_text()), args.reference_dir)
