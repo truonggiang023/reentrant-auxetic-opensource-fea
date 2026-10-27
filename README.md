@@ -94,6 +94,130 @@ failure. Target-output mode includes exact strains 0.12, 0.35 and 0.65; the exam
 also requests a regular output grid for reaction histories. Failed or unrun
 frames must not be presented as deformation evidence.
 
+## Tự chạy calibration với OpenCourant
+
+Workflow này tạo và chạy một study tham số, tính sai lệch với paper và xuất
+plot. **Hiện chưa có bộ tham số đã được xác nhận experimental agreement.**
+Thick wall `t=1 mm` dùng để fitting; thin wall `t=0.3 mm` là holdout để kiểm tra
+khả năng dự đoán. Không fitting cả hai rồi gọi thin wall là validation độc lập.
+
+Các lệnh dưới chạy từ checkout trong cloud environment đã setup. Trên máy
+khác, thay đường dẫn Python/runtime tương ứng. Nếu thiếu native runtime, cài
+bằng `bash scripts/setup_opencourant.sh`; script kiểm tra checksum bản chính thức.
+
+```sh
+cd /workspace/reentrant-auxetic-opensource-fea
+export PATH=/workspace/bin:/workspace/fea-venv/bin:$PATH
+source /workspace/opencourant/env.sh
+export MPLCONFIGDIR=/workspace/mplconfig
+python -m pytest -q -rx
+```
+
+Giữ `E=69000 MPa`, `nu=0.3`, `density=2.67e-9 Mg/mm3`. Bảng được cung cấp đã
+là **true stress–plastic strain**, không chuyển đổi lần nữa. Tham số phá hủy
+ngoài điểm `(eta=0.333, strain=0.047)` vẫn là giả thuyết cần hiệu chỉnh.
+
+**1. Tạo study mới.** Đổi tên thư mục khi cần chạy lại; không ghi đè kết quả cũ.
+
+```sh
+STUDY_DIR="$PWD/results/calibration/native-v1"
+python calibration_study.py prepare \
+  --backend opencourant --duration .01 --ams-time-step 1e-6 \
+  --plastic validation/materials/user_plastic_table_2026-10-26.inp \
+  --output "$STUDY_DIR"
+```
+
+Lệnh này chỉ tạo `manifest.json` và 22 configurations: 9 giả thuyết fracture
+locus, 2 biến thể kiểm tra duration/AMS, mỗi loại có training và holdout.
+`.01 s` và AMS `1e-6 s` là giá trị khởi đầu để khảo sát, chưa phải lựa chọn đã
+hội tụ; tốc độ thí nghiệm là `2 mm/min`. Hai lần chạy thin wall hiện có mất
+khoảng 15–30 phút/lần trên 4 threads; cả study có thể mất nhiều giờ.
+
+**2. Xem lệnh, rồi chạy một training baseline.** `locus_0_1` là ví dụ, không
+phải bộ tham số tốt nhất đã được xác nhận.
+
+```sh
+python run_calibration.py "$STUDY_DIR/manifest.json" \
+  --candidate locus_0_1 --role training --dry-run
+
+python run_calibration.py "$STUDY_DIR/manifest.json" \
+  --candidate locus_0_1 --role training --threads 4 --timeout-seconds 3600
+```
+
+Runner chạy solver, chuyển T01 sang CSV và assess tự động, lưu log trong
+`execution-logs/` và trạng thái trong `execution-journal.json`. Một process
+exit code 0 không đủ: runner kiểm tra output thực và execution hashes.
+Ctrl-C dừng cả CLI và solver con, giữ dữ liệu dở dang, ghi
+`interrupted_preserved` vào journal và trả exit code 130.
+
+**3. Chạy các đối chứng số trước khi fitting vật liệu.**
+
+```sh
+python run_calibration.py "$STUDY_DIR/manifest.json" \
+  --candidate duration_double --candidate ams_half --role training \
+  --threads 4 --timeout-seconds 3600
+```
+
+So sánh toàn bộ đường lực, năng lượng của core, erosion và dạng biến dạng;
+không chỉ so plateau trung bình. Báo cáo hiện tại cho thấy giảm AMS một nửa
+làm thay đổi đường stress khoảng 16.8% theo relative L2, nên chưa đạt hội tụ.
+Nếu các đối chứng còn nhạy, cần giải quyết chúng trước khi kết luận calibration.
+
+**4. Chạy các training candidates còn lại và tính sai lệch.**
+
+```sh
+python run_calibration.py "$STUDY_DIR/manifest.json" \
+  --role training --threads 4 --timeout-seconds 3600 --resume --keep-going
+
+python calibration_study.py score "$STUDY_DIR/manifest.json" \
+  --output "$STUDY_DIR/scores.json"
+```
+
+`--resume` chỉ bỏ qua run hoàn tất có bằng chứng hợp lệ. Run timeout/failed vẫn
+được giữ nguyên và không được ghi đè; tạo study mới nếu muốn thử lại. Lệnh bỏ
+`--candidate` sẽ chọn tất cả candidates thuộc role đã chỉ định.
+`scores.json` chứa RMSE, bias, coverage, `evaluated`, `unrun` và
+`diagnostic_training_ranking`. Ranking chỉ so các training curves hoàn tất và
+đủ coverage, loại numerical sensitivities; nó không chứng minh model đã đúng.
+Hiện `selection.selected_candidate` vẫn bị chặn bởi geometry/numerical
+qualification chưa đạt. Không đổi cờ `qualified` để bỏ qua bằng chứng này.
+
+**5. Chạy thin-wall holdout và vẽ plot.** Giữ nguyên tham số của candidate
+đã khảo sát ở training. Ví dụ dưới dùng `locus_0_1`; nếu chọn candidate khác,
+dùng đường dẫn assessment/metadata ghi trong `manifest.json`.
+
+```sh
+python run_calibration.py "$STUDY_DIR/manifest.json" \
+  --candidate locus_0_1 --role holdout --threads 4 --timeout-seconds 3600
+
+python plot_paper_comparison.py \
+  --assessment "$STUDY_DIR/runs/locus_0_1_holdout.assessment.json" \
+  --output "$STUDY_DIR/plots/locus_0_1_thin" \
+  --case-label 'Calibration candidate; experimental agreement unverified'
+
+python plot_courant_frames.py "$STUDY_DIR/runs/locus_0_1_holdout.radioss.json" \
+  --output "$STUDY_DIR/plots/locus_0_1_frames" \
+  --case-label 'Calibration candidate; experimental agreement unverified'
+
+python calibration_study.py score "$STUDY_DIR/manifest.json" \
+  --output "$STUDY_DIR/scores-with-holdout.json"
+```
+
+Plot tạo PNG/PDF/JSON; thiếu dữ liệu strain sẽ được ghi rõ, không ngoại suy.
+Candidate names có dấu chấm được mã hóa thành `p` trong tên file native;
+hãy lấy path từ manifest thay vì đoán. `thin_wall_holdout` chỉ được gắn vào
+selection khi selection hợp lệ; kết quả holdout chưa qualified vẫn nằm trong
+`evaluated`. Xem thêm [quy trình và điều kiện chấp nhận](validation/calibration_workflow.md),
+[native runtime/contact](validation/opencourant_workflow.md) và
+[dữ liệu paper](validation/paper_reference/README.md).
+
+Các bước prepare → solve → resume → score → plot đã được chạy thử bằng solver
+thật trên một mô hình một-cell riêng; xem
+[bằng chứng workflow](validation/calibration_runner_smoke.json). Đây là kiểm
+tra công cụ, không phải calibration của lattice 6 hàng × 5 cột. Cả batch 22 runs
+chưa được chạy đầy đủ. Nếu cần kiểm tra sai lệch ban đầu trước fitting, dùng
+[đối chứng đàn hồi cùng lưới](validation/matched_elastic_workflow.md).
+
 ## CalculiX model scope
 
 Units are mm, N and MPa. Compression is along Y and extrusion along Z. The

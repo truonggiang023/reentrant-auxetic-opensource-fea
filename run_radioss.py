@@ -20,6 +20,22 @@ from reentrant_fea.radioss import write_radioss_deck
 from reentrant_fea.radioss_results import normal_termination, solver_errors
 
 
+def terminate_process_group(process):
+    """Stop a detached solver group when its controlling CLI is interrupted."""
+    for requested_signal, grace in ((signal.SIGTERM, 3), (signal.SIGKILL, 3)):
+        try:
+            os.killpg(process.pid, requested_signal)
+        except ProcessLookupError:
+            pass
+        try:
+            process.wait(timeout=grace)
+        except (subprocess.TimeoutExpired, KeyboardInterrupt):
+            continue
+        # Kill any surviving same-group descendants after the leader exits.
+        if requested_signal == signal.SIGKILL:
+            break
+
+
 def run_logged(command, directory, log, timeout):
     """Bound a solver process and its children; retain the underlying failure."""
     with Path(log).open('w') as stream:
@@ -27,6 +43,9 @@ def run_logged(command, directory, log, timeout):
                                    stderr=subprocess.STDOUT, start_new_session=True)
         try:
             code = process.wait(timeout=timeout)
+        except KeyboardInterrupt:
+            terminate_process_group(process)
+            raise
         except subprocess.TimeoutExpired:
             os.killpg(process.pid, signal.SIGTERM)
             try:

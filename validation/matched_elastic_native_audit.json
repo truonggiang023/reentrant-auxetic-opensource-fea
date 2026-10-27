@@ -1,0 +1,126 @@
+{
+  "status": "Matched native elastic diagnostics; static equivalence and plastic calibration not established",
+  "cases": [
+    {
+      "status": "matched elastic diagnostic, not calibrated or experimental validation",
+      "metadata": "/workspace/fea-research/matched-elastic-native24-d4/elastic.radioss.json",
+      "metadata_sha256": "1e7e0d96cfadee265cc572bf662e8c21dc3013a7d0943b73c4e4dcce0089c572",
+      "mesh_sha256": "f95ea4c46a45721905c8a9244daed2b930ebe09dac17503b069ab2708307bfbe",
+      "completed": true,
+      "metadata_execution_binding_verified": true,
+      "solid_formulation": 24,
+      "duration_seconds": 0.004,
+      "ams": {
+        "enabled": true,
+        "requested_time_step_seconds": 1e-06,
+        "time_step_scale_factor": 0.67,
+        "pcg_relative_tolerance": 0.0001,
+        "pcg_maximum_iterations": 1000,
+        "timestep_sensitivity_required": true,
+        "modifies_inertial_operator": true
+      },
+      "core_nodes": 21870,
+      "core_elements": 7392,
+      "raw_nodal_late_stiffness_N_per_mm": 718.0479051872136,
+      "raw_nodal_late_stiffness_range_N_per_mm": [
+        -1031.2394530056868,
+        1015.1295403482732
+      ],
+      "raw_nodal_nominal_effective_modulus_MPa": 18.14015760472961,
+      "nominal_reference_area_mm2": 1900.0,
+      "executed_metadata_reference_area_mm2": 1912.428667481625,
+      "area_normalization_note": "Effective moduli use the shared 1900 mm2 convention; executed inputs and metadata are preserved.",
+      "work_equivalent_stiffness_N_per_mm": 1006.2032297697035,
+      "work_equivalent_modulus_MPa": 25.419871067866197,
+      "energy_equivalent_stiffness_N_per_mm": 1006.2254298762639,
+      "integrated_impulse_regression": {
+        "formula": "I(t)=k*integral(displacement dt)+m_eff*velocity+offset",
+        "time_fraction_interval": [
+          0.25,
+          0.95
+        ],
+        "stiffness_N_per_mm": 999.8481928453577,
+        "effective_mass_Mg": 0.00201269625581252,
+        "offset_Ns": 7.965755494527772e-05,
+        "impulse_rmse_Ns": 4.487799480291713e-05,
+        "qualification": "Diagnostic spring/inertia approximation; not an independent static-stiffness validation"
+      },
+      "max_late_kinetic_internal_ratio": 7.06865331335814e-05,
+      "final_internal_energy_Nmm": 0.05031103,
+      "final_external_work_Nmm": 0.05030992,
+      "reconstructed_top_displacement_work_Nmm": 0.049287470152767535,
+      "max_late_top_bottom_force_difference_N": 20.23466462473077,
+      "nodal_reaction_differentiation_qualified": false,
+      "analysis_script_sha256": "8df169c8adf49012f0d15cd96a4acec2819bbcb5b86229d4f0c142a899e92026",
+      "generation_script_sha256": "3f7b35cf2c4c9cf41afe9c21725020b47dd4f3f43e101774775899593aea4f1a",
+      "actual_history_samples": 400,
+      "quasi_static_validated": false,
+      "experimental_agreement": false,
+      "qualification": "Raw nodal differentiation fails its balance check when flagged false. Work and integrated-impulse values remain diagnostics pending duration/AMS refinement; elastic diagnostics cannot qualify plastic collapse."
+    },
+    {
+      "status": "matched elastic diagnostic, not calibrated or experimental validation",
+      "metadata": "/workspace/fea-research/matched-elastic-native18-d4/elastic.radioss.json",
+      "metadata_sha256": "fc63733131bf3a0ca4664c7142be03cade2b442310f13bfa7a2cf416c2b859c2",
+      "mesh_sha256": "f95ea4c46a45721905c8a9244daed2b930ebe09dac17503b069ab2708307bfbe",
+      "completed": true,
+      "metadata_execution_binding_verified": true,
+      "solid_formulation": 18,
+      "duration_seconds": 0.004,
+      "ams": {
+        "enabled": true,
+        "requested_time_step_seconds": 1e-06,
+        "time_step_scale_factor": 0.67,
+        "pcg_relative_tolerance": 0.0001,
+        "pcg_maximum_iterations": 1000,
+        "timestep_sensitivity_required": true,
+        "modifies_inertial_operator": true
+      },
+      "core_nodes": 21870,
+      "core_elements": 7392,
+      "raw_nodal_late_stiffness_N_per_mm": 908.2535021922703,
+      "raw_nodal_late_stiffness_range_N_per_mm": [
+        -311.9171605146835,
+        1112.5923898036813
+      ],
+      "raw_nodal_nominal_effective_modulus_MPa": 22.945351634331036,
+      "nominal_reference_area_mm2": 1900.0,
+      "executed_metadata_reference_area_mm2": 1900.0,
+      "area_normalization_note": "Effective moduli use the shared 1900 mm2 convention; executed inputs and metadata are preserved.",
+      "work_equivalent_stiffness_N_per_mm": 1108.7569220268354,
+      "work_equivalent_modulus_MPa": 28.01070118804637,
+      "energy_equivalent_stiffness_N_per_mm": 1108.685121682194,
+      "integrated_impulse_regression": {
+        "formula": "I(t)=k*integral(displacement dt)+m_eff*velocity+offset",
+        "time_fraction_interval": [
+          0.25,
+          0.95
+        ],
+        "stiffness_N_per_mm": 1104.5066271477056,
+        "effective_mass_Mg": 0.0014004622881040299,
+        "offset_Ns": 5.3300221728482696e-05,
+        "impulse_rmse_Ns": 3.112119406122149e-05,
+        "qualification": "Diagnostic spring/inertia approximation; not an independent static-stiffness validation"
+      },
+      "max_late_kinetic_internal_ratio": 6.161029911172748e-05,
+      "final_internal_energy_Nmm": 0.05543399,
+      "final_external_work_Nmm": 0.05543758,
+      "reconstructed_top_displacement_work_Nmm": 0.05473465884365592,
+      "max_late_top_bottom_force_difference_N": 14.127340462208625,
+      "nodal_reaction_differentiation_qualified": false,
+      "analysis_script_sha256": "8df169c8adf49012f0d15cd96a4acec2819bbcb5b86229d4f0c142a899e92026",
+      "generation_script_sha256": "683b24cf3e136119788861ed5a40862900571f0394056319264bec308bf901f3",
+      "actual_history_samples": 400,
+      "quasi_static_validated": false,
+      "experimental_agreement": false,
+      "qualification": "Raw nodal differentiation fails its balance check when flagged false. Work and integrated-impulse values remain diagnostics pending duration/AMS refinement; elastic diagnostics cannot qualify plastic collapse."
+    }
+  ],
+  "input_archive": "validation/matched_elastic_native_inputs.tar.gz",
+  "input_archive_sha256": "c78b70628b07ead0b6709b5513ad434bf0d0fe951a73d54eddf9f1b6c8da500c",
+  "limitations": [
+    "Native raw nodal force differences failed the late balance check; do not equate their averages with static stiffness.",
+    "Work-equivalent and integrated-impulse estimates are diagnostic and still need loading-duration and AMS refinement.",
+    "No plasticity, damage or contact is present in these matched stiffness controls. They do not establish paper experimental agreement."
+  ]
+}

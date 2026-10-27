@@ -143,6 +143,32 @@ def test_study_requested_user_hardening_source_flows_to_every_command(tmp_path, 
     assert not output.exists()
 
 
+def test_diagnostic_ranking_excludes_partial_nuisance_and_unbound_curves():
+    from calibration_study import diagnostic_training_ranking
+    def row(name, error, **overrides):
+        item = dict(candidate=name, role='training', wall_mm=1., numerical_sensitivity=False,
+                    backend='opencourant', score=dict(solver_completed=True, full_interval_covered=True,
+                        generation_config_matches=True, run_binding_verified=True, metadata_binding_verified=True,
+                        overlap_rmse_MPa=error, interval_scored=[.04, .45], coverage_fraction=1.,
+                        eligible_for_selection=False, qualification_blockers=['speed/AMS qualification unresolved']))
+        for key, value in overrides.items():
+            if key in item['score']:
+                item['score'][key] = value
+            else:
+                item[key] = value
+        return item
+    ranking = diagnostic_training_ranking([
+        row('partial-low-error', .001, solver_completed=False, full_interval_covered=False),
+        row('nuisance-low-error', .002, numerical_sensitivity=True),
+        row('unbound-low-error', .003, metadata_binding_verified=False),
+        row('thin-holdout-low-error', .004, role='holdout', wall_mm=.3),
+        row('complete-unqualified', .2), row('complete-higher-error', .3)], {'qualified': False})
+    assert [item['candidate'] for item in ranking] == ['complete-unqualified', 'complete-higher-error']
+    assert ranking[0]['rank'] == 1 and not ranking[0]['eligible_for_selection']
+    assert any('geometry' in reason for reason in ranking[0]['qualification_blockers'])
+    assert any('speed/AMS' in reason for reason in ranking[0]['qualification_blockers'])
+
+
 def test_native_score_recomputes_bound_history_and_keeps_physics_gate(tmp_path):
     """Forged JSON completion/curve cannot replace actual engine/history evidence."""
     import csv

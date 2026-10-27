@@ -219,6 +219,29 @@ def score_native_record(row, config, saved_assessment, experiments, interval):
     return result
 
 
+def diagnostic_training_ranking(evaluated, geometry):
+    """Rank only complete bound training curves, without qualifying a material."""
+    ranked = []
+    for row in evaluated:
+        result = row['score']
+        bound = (result.get('run_binding_verified') and result.get('metadata_binding_verified')
+                 if row.get('backend') == 'opencourant' else result.get('execution_binding_verified'))
+        if (row['role'] != 'training' or not np.isclose(row['wall_mm'], 1.) or row['numerical_sensitivity']
+                or not result.get('solver_completed') or not result.get('full_interval_covered')
+                or not result.get('generation_config_matches') or not bound):
+            continue
+        blockers = list(result.get('qualification_blockers', []))
+        if not geometry.get('qualified'):
+            blockers.append('specimen geometry has not been qualified against paper')
+        blockers.append('diagnostic curve ranking does not establish a unique calibration or independent holdout agreement')
+        ranked.append(dict(candidate=row['candidate'], wall_mm=row['wall_mm'],
+            overlap_rmse_MPa=result['overlap_rmse_MPa'], interval_scored=result['interval_scored'],
+            coverage_fraction=result['coverage_fraction'], eligible_for_selection=False,
+            qualification_blockers=blockers))
+    ranked.sort(key=lambda row: (row['overlap_rmse_MPa'], row['candidate']))
+    return [dict(rank=i+1, **row) for i, row in enumerate(ranked)]
+
+
 def score(manifest, reference_dir):
     references = {role: reference_curves(reference_dir/f'dong2019_fig12_{kind}.csv')
                   for role, kind in (('training', 'thick'), ('holdout', 'thin'))}
@@ -283,9 +306,19 @@ def score(manifest, reference_dir):
         if not material_count:
             raise ValueError(f'No native material in candidate deck {row["candidate"]}')
         item = {key: row[key] for key in ('candidate', 'role', 'wall_mm', 'numerical_sensitivity')}
+        item['backend'] = 'ccx'
         try:
             interval = manifest.get('fit_intervals', ROLE_INTERVALS)[row['role']]
+            receipt = path.with_name(path.name+'.execution.json')
+            execution_bound = False
+            if receipt.is_file():
+                # The runner's receipt binds raw CCX outputs; a cached JSON
+                # completed flag and matching input deck alone are insufficient.
+                from run_calibration import verify_completed
+                assessment = verify_completed(row)
+                execution_bound = True
             item['score'] = score_assessment(assessment, references[row['role']], interval)
+            item['score']['execution_binding_verified'] = execution_bound
             binding = (assessment.get('generation_config_sha256') == row['config_sha256']
                        and assessment.get('config_wall_mm') == row['wall_mm']
                        and assessment.get('hardening_source_sha256') == source_sha256)
@@ -306,6 +339,7 @@ def score(manifest, reference_dir):
     held_out = [row for row in evaluated if row['role'] == 'holdout'
                 and row['candidate'] == selection['selected_candidate']]
     return {'calibrated': False, 'selection': selection, 'thin_wall_holdout': held_out,
+            'diagnostic_training_ranking': diagnostic_training_ranking(evaluated, geometry),
             'fit_intervals': manifest.get('fit_intervals', NATIVE_ROLE_INTERVALS
                                            if manifest.get('backend') == 'opencourant' else deepcopy_intervals()),
             'legacy_interval_note': ('Legacy single fit_interval ignored: paper thick/thin curves have different strain extents'
