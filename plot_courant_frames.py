@@ -144,7 +144,7 @@ def convert(path, converter):
     return result.stdout
 
 
-def paper_morphology_comparison(pdf, targets, summaries, frames, output):
+def paper_morphology_comparison(pdf, targets, summaries, frames, output, case_label=None):
     """Use user-supplied Fig. 11(b) crops; never vendor the paper's images."""
     from PIL import Image
     import matplotlib.pyplot as plt
@@ -191,7 +191,10 @@ def paper_morphology_comparison(pdf, targets, summaries, frames, output):
     for ax, label in zip(axes[0], ["Paper experiment (Fig. 11b)", "Paper FE (Fig. 11b)", "Current OpenCourant"]):
         position = ax.get_position()
         fig.text(position.x0+position.width/2, .91, label, ha="center", va="center", fontsize=11)
-    fig.suptitle("Thin wall t=0.3 mm — morphology comparison", fontsize=15, y=.98)
+    title = "Thin wall t=0.3 mm — morphology comparison"
+    if case_label:
+        title += "\n"+case_label
+    fig.suptitle(title, fontsize=13, y=.98)
     fig.text(.5, .025, "Source: Dong et al. (2019), user-supplied PDF. Current frames use true deformation, omit eroded cells, and are not interpolated.\nImages have different camera/rendering settings; Bi-V/Z/collapse agreement is not established by this visual comparison.",
              ha="center", fontsize=8)
     for suffix in (".png", ".pdf"):
@@ -208,6 +211,7 @@ def main():
     ap.add_argument("--targets", nargs="+", type=float, default=[.12, .35, .65])
     ap.add_argument("--maximum-strain-error", type=float, default=.005)
     ap.add_argument("--output", type=Path, default=Path("results/opencourant/deformation_frames"))
+    ap.add_argument("--case-label", help="Visible case and qualification description")
     ap.add_argument("--paper-pdf", type=Path,
                     help="Optional user-supplied Dong PDF for a separate Fig. 11(b) morphology comparison")
     args = ap.parse_args()
@@ -289,12 +293,19 @@ def main():
     if collections:
         cax = fig.add_axes([.935, .25, .012, .43])
         fig.colorbar(collections[0], cax=cax, label="Active-element damage (solver output)")
-    fig.suptitle("Thin-wall t=0.3 mm — OpenCourant actual deformed frames", fontsize=14, y=.98)
+    title = "Thin-wall t=0.3 mm — OpenCourant actual deformed frames"
+    if args.case_label:
+        title += "\n"+args.case_label
+    fig.suptitle(title, fontsize=13, y=.98)
     fig.supxlabel("Front projection; true displacement scale; eroded elements excluded. Morphology and experimental agreement remain unvalidated.", fontsize=9, y=.03)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     for suffix in (".png", ".pdf"):
         fig.savefig(args.output.with_suffix(suffix), dpi=210)
     report = {"metadata": str(args.metadata), "metadata_sha256": hashlib.sha256(args.metadata.read_bytes()).hexdigest(),
+              "case_label": args.case_label,
+              "calibrated": metadata.get("calibrated") is True,
+              "ams": metadata.get("ams"),
+              "quasi_static_validated_by_this_plot": False,
               "converter": str(args.converter), "converter_sha256": hashlib.sha256(args.converter.read_bytes()).hexdigest(),
               "method": "Official ASCII VTK conversion; deformed POINTS rendered directly; EROSION_STATUS==1 required; front face selected from initial POINTS-Displacement Z.",
               "strain_source": "Piecewise-linear interpolation of exact imposed displacement_fraction_samples at actual VTK TIME, multiplied by target_nominal_strain; no mesh interpolation.",
@@ -303,7 +314,7 @@ def main():
               "eroded_elements_rendered": False, "mesh_interpolation": False}
     if args.paper_pdf:
         report["paper_morphology_reference"] = paper_morphology_comparison(
-            args.paper_pdf, args.targets, summaries, selected_frames, args.output)
+            args.paper_pdf, args.targets, summaries, selected_frames, args.output, args.case_label)
     args.output.with_suffix(".json").write_text(json.dumps(report, indent=2)+"\n")
     print(json.dumps(report, indent=2))
 

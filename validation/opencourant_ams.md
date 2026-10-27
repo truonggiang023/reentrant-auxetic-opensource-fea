@@ -51,3 +51,14 @@ the native defaults.
 
 Exact observed outcomes and artifact hashes are in
 `opencourant_ams_qualification.json`.
+
+The completed thin-wall lattice was also rerun with the target step halved
+from 1e-6 to 5e-7 s, preserving the exact mesh, material, contact, boundary and
+loading curve. Both runs completed to strain approximately .65 with verified
+execution bindings. Their full stress histories differ by 16.80% in relative
+L2 and .1515 MPa RMS; integrated nominal work changes by 5.70%. Erosion changes
+from 254 to 243 solids. The .1–.5 plateau mean changes by only 1.04%, hiding
+substantial shifts in failure events. **AMS convergence is not established.**
+See the [quantitative report](opencourant_ams_lattice_sensitivity.json),
+[comparison plot](opencourant-thin-ams-sensitivity.png), and
+[half-step assessment](opencourant-thin-half-ams-final.json).

@@ -152,15 +152,19 @@ def main():
         panel.spines[["top", "right"]].set_visible(False)
         panel.set_ylim(bottom=0)
     ax.set_xlim(0, 0.8)
-    ax.set_ylim(0, 1.4)
+    # Keep the published range visible without clipping a mismatching solver
+    # peak above it; hiding such a peak would understate the discrepancy.
+    stress_ceiling = max(1.4, float(history[:, 1].max())*1.1)
+    ax.set_ylim(0, stress_ceiling)
     ax.xaxis.set_major_locator(MultipleLocator(0.2))
     ax.set_title("Thin wall, t = 0.3 mm — published range")
     end = float(history[-1, 0])
     if end < 0.8:
         ax.axvspan(end, 0.8, color="#00836c", alpha=0.035, zorder=0)
-        ax.text((end+0.8)/2, 1.27, f"No {backend} history beyond " + f"{end:.3f}",
-                ha="center", fontsize=8, color="#286a5d")
-    ax.legend(loc="lower right", fontsize=8, frameon=True, framealpha=.92)
+        ax.text((end+0.8)/2, stress_ceiling*.95, f"No {backend} history\nbeyond strain {end:.3f}",
+                ha="center", va="top", fontsize=8, color="#286a5d")
+    ax.legend(loc="upper center", bbox_to_anchor=(.50, .99), fontsize=7.5,
+              frameon=True, framealpha=.92)
     early.set_xlim(0, 0.15)
     early.set_title(f"Early {backend} history")
     early.xaxis.set_major_locator(MultipleLocator(0.05))

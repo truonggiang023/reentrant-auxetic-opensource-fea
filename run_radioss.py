@@ -15,7 +15,7 @@ from pathlib import Path
 
 from reentrant_fea.geometry import core_polygon
 from reentrant_fea.mesh import mesh_bricks
-from reentrant_fea.plastic import from_reference
+from reentrant_fea.plastic import load_plastic
 from reentrant_fea.radioss import write_radioss_deck
 from reentrant_fea.radioss_results import normal_termination, solver_errors
 
@@ -101,7 +101,8 @@ def run_generated(metadata, *, timeout, starter='starter_linux64_gf',
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', default='configs/dong2019_brick_damage.json')
-    parser.add_argument('--plastic', default='reference_setup_numeric_source.py')
+    parser.add_argument('--plastic', default='reference_setup_numeric_source.py',
+                        help='True stress/plastic strain: one Abaqus *Plastic block or literal PLASTIC_DATA Python source; neither is executed')
     parser.add_argument('--output', default='results/opencourant/thin')
     parser.add_argument('--duration-seconds', type=float, required=True,
                         help='Explicit duration; not assumed equivalent to 2 mm/min')
@@ -120,7 +121,7 @@ def main():
                                        config['mesh_size'], config['depth_layers'],
                                        strategy=config.get('brick_mesh', 'recombine'))
     metadata = write_radioss_deck(args.output, nodes, elements, config,
-                                 from_reference(args.plastic), duration=args.duration_seconds,
+                                 load_plastic(args.plastic), duration=args.duration_seconds,
                                  drop_ccx_viscosity=args.drop_ccx_viscosity,
                                  ams_time_step=args.ams_time_step)
     metadata['source_config_sha256'] = hashlib.sha256(Path(args.config).read_bytes()).hexdigest()

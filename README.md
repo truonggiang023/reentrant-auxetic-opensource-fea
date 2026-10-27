@@ -45,13 +45,16 @@ The [paper-reference data](validation/paper_reference/README.md) and
 experiments, published FE and current simulations distinct. Generate the
 historical thin-wall comparison with `python plot_paper_comparison.py`.
 
-The completed OpenCourant **legacy interior-X-pin baseline** reached strain
-0.65 with 252 eroded elements. Its [stress comparison](validation/opencourant-thin-pinned-comparison.png)
-and [actual deformation frames](validation/opencourant-thin-pinned-frames.png)
-show substantial differences from the paper. See
-[the quantitative assessment](validation/opencourant_thin_qualification.json).
-The current native exporter removes that unsupported interior pin by default;
-`core_x_anchor=true` retains it only for explicit boundary sensitivity studies.
+The completed OpenCourant **free-X thin-wall baseline** reached strain
+approximately 0.65 with 254 eroded elements. Its
+[stress comparison](validation/opencourant-thin-free-x-comparison.png) and
+[actual deformation frames](validation/opencourant-thin-free-x-frames.png)
+show substantial differences from the paper: at strain 0.12, the model gives
+1.185 MPa versus approximately 0.281/0.259 MPa in the two experiments. See
+[the quantitative assessment](validation/opencourant_thin_free_x_qualification.json).
+The earlier [interior-X-pin baseline](validation/opencourant_thin_qualification.json)
+is retained separately. That unsupported pin is absent by default;
+`core_x_anchor=true` enables it only for boundary sensitivity studies.
 Calibration, numerical convergence and experimental agreement remain unresolved.
 
 ```sh
@@ -71,6 +74,13 @@ fracture-locus point and a range for other fracture strains, without the missing
 triaxiality coordinates. Its assumptions and viscosity are written in the JSON.
 Use `--imperfection-mm .003` only as a labelled imperfection sensitivity study;
 that value is not a measured specimen defect.
+
+The [user-supplied 178-point tensile flow table](validation/materials/README.md)
+is preserved verbatim and audited against every value in the existing source.
+Both generators accept it directly with
+`--plastic validation/materials/user_plastic_table_2026-10-26.inp`.
+It agrees with six-significant-digit formatting of the existing table; it adds
+no fracture-locus measurements. Previously executed inputs remain unchanged.
 
 The writer produces `.inp` and `.material.dat` together. The runner sets
 `REENTRANT_MATERIAL_DATA` for that solver process and chooses `ccx-damage` when

@@ -1,0 +1,195 @@
+{
+  "status": "read-only physical discrepancy audit; no calibration or experimental agreement claim",
+  "reproduction": {
+    "script": "scripts/audit_physical_discrepancy.py",
+    "script_sha256": "8140dd194d1b7550edf1244d7050627fe2d85f8cd35c17eec5e3d6e04e00ec91",
+    "command": "python scripts/audit_physical_discrepancy.py /path/to/user_supplied_paper.pdf --output validation/opencourant_physical_discrepancy_audit.json",
+    "required_retained_native_prefix": "/workspace/reentrant-auxetic-opensource-fea/results/opencourant/thin_free_x_ams1e6",
+    "converter_sha256": "9c97eee2991f6949d16477831cc684165f53b790f498cbef51b8e8fd67bf28ae"
+  },
+  "paper_sha256": "9af42ee348be93b564b9dcc1e57a6a4c70bc8a96756b03ecc0647309571226de",
+  "paper_page_evidence": {
+    "page_3_section_2_1": "Six transverse and five horizontal cells; nominal 48x76 mm, depth25 mm; wall .3 mm; H8 mm, L1=12 mm, L3=5.66 mm, 2L2=12 mm, theta45 degrees; relative density .109.",
+    "page_7_section_3_4": "Crushing stress is recorded crosshead force divided by cross-section 76x25 mm2.",
+    "page_8_section_4_1": "Elastic steel platens; C3D8R; horizontal/bevel edges19/10 elements; total10068; out-of-plane displacement constrained; platen friction .35; velocity2 mm/min.",
+    "page_2_figure_2_b_and_page_3_section_2_2": "Three coupon tensile traces; exploratory printed slopes do not override the user-confirmed E and already-converted plastic input. Raw test histories and plotted strain definitions are not provided here."
+  },
+  "source_hashes": {
+    "configs/dong2019_brick_damage.json": "b1917d12f2685f983101761b1e0cdc90e90cd5ddb73044e7bd035330be12be9d",
+    "validation/paper_reference/dong2019_fig12_thin.csv": "73838e72f4d88aa67250e1d2d77e898e09bbe9e3814a1d350850a307da2fd70f",
+    "validation/native-final.json": "e4c5ed1929118f3d10c61eee7fc49de1aeda56f55e4c3dca639af1a1b593647c",
+    "validation/materials/user_material_confirmation.json": "c5053d1e17873573c82633837233f60ad78ffdbc9315a3f284787d26bb59882a"
+  },
+  "native_evidence_hashes": {
+    "thin_free_x_ams1e6.assessment.json": "9c3f4e89c49393044ec26831b563dd912f0de4cbcaa8eadd046856ab324483f0",
+    "thin_free_x_ams1e6.radioss.json": "92db404b91ac71d52211cb11f782235d5e693a43eff86f52df942863b849f30e",
+    "thin_free_x_ams1e6T01.csv": "ad134d3499c48ad1a156ae04bd98f6711d5056694c60b4a0958f3c417ee0dca6"
+  },
+  "geometry_units": {
+    "rows": 6,
+    "columns": 5,
+    "wall_mm": 0.3,
+    "depth_mm": 25,
+    "actual_width_mm": 76.49714669929503,
+    "actual_height_mm": 48.0,
+    "centerline_cell_height_mm": 7.95,
+    "bevel_mm": 5.66,
+    "shift_mm": 4.029264821279436,
+    "pitch_mm": 15.941470357441128,
+    "area_mm2": 407.64550215574405,
+    "solid_fraction_actual_envelope": 0.11101871108511467,
+    "paper_reported_relative_density": 0.109,
+    "paper_nominal_width_mm": 76,
+    "paper_nominal_height_mm": 48,
+    "nominal_stress_area_mm2": 1900,
+    "conclusion": "Thin geometry envelope/density deviations are about percent scale; no factor-of-three dimensional or area error found."
+  },
+  "early_curve_diagnostics": {
+    "paper_experiment_2": {
+      "interval_nominal_strain": [
+        0.005,
+        0.02
+      ],
+      "samples": 15,
+      "least_squares_slope_MPa": 7.570526303492381,
+      "intercept_MPa": 0.004514620004537516,
+      "diagnostic_stress_MPa": {
+        "0.005": 0.04150877191414736,
+        "0.01": 0.07417543852568421,
+        "0.02": 0.1564561401528421,
+        "0.03": 0.19943859687073687,
+        "0.05": 0.255438596,
+        "0.12": 0.259122807
+      }
+    },
+    "historical_static_ccx": {
+      "interval_nominal_strain": [
+        0.005,
+        0.02
+      ],
+      "samples": 5,
+      "least_squares_slope_MPa": 11.970132793522263,
+      "intercept_MPa": 0.004185000000000026,
+      "diagnostic_stress_MPa": {
+        "0.005": 0.06275624372469635,
+        "0.01": 0.12420014574898786,
+        "0.02": 0.242759975708502,
+        "0.03": 0.35584597975708504,
+        "0.05": 0.503608939271255,
+        "0.12": 0.66011367092636
+      }
+    },
+    "native_free_x": {
+      "interval_nominal_strain": [
+        0.005,
+        0.02
+      ],
+      "samples": 25,
+      "least_squares_slope_MPa": 22.768326306997537,
+      "intercept_MPa": 0.0024897901231465637,
+      "diagnostic_stress_MPa": {
+        "0.005": 0.1045413804026481,
+        "0.01": 0.24063016544517363,
+        "0.02": 0.43985635719299887,
+        "0.03": 0.6477397549534101,
+        "0.05": 0.88885410199512,
+        "0.12": 1.1847781741753487
+      }
+    }
+  },
+  "native_early_eroded_count_max": 0.0,
+  "native_actual_animation_checks": [
+    {
+      "animation": "thin_free_x_ams1e6A010",
+      "sha256": "69704d5a5f478c5b52d10b2c8326913e70380ef81045e81aefad4468c770fec7",
+      "actual_time_seconds": 0.0009,
+      "actual_nominal_strain": 0.0041218316100000004,
+      "max_core_element_damage": 0.0,
+      "eroded_core_elements": 0
+    },
+    {
+      "animation": "thin_free_x_ams1e6A017",
+      "sha256": "74f2560a5e40228b789ecbb02c360317f040d52ae41b0d7621a0f9a43cdfcea1",
+      "actual_time_seconds": 0.001601,
+      "actual_nominal_strain": 0.0206802022609,
+      "max_core_element_damage": 0.0,
+      "eroded_core_elements": 0
+    }
+  ],
+  "confirmed_material_inputs": {
+    "confirmation_file": "validation/materials/user_material_confirmation.json",
+    "confirmation_sha256": "c5053d1e17873573c82633837233f60ad78ffdbc9315a3f284787d26bb59882a",
+    "fixed_inputs": {
+      "density_Mg_per_mm3": 2.67e-09,
+      "young_MPa": 69000.0,
+      "poisson": 0.3
+    },
+    "plastic_interpretation": "true stress (MPa), equivalent true plastic strain (dimensionless)",
+    "engineering_to_true_reconversion": false,
+    "historical_source_note": "The old source comment called elasticity an editable default. Explicit user confirmation on 2026-10-27 now fixes these inputs for this task; that comment is not evidence of an input error."
+  },
+  "coupon_raster_diagnostic": {
+    "source": "Dong et al. (2019), Fig. 2(b), PDF page 2",
+    "embedded_image_sha256": "a3780747292b1e54dc1cc1291195645f7934b848388dbeb238fbf37cbaf8c270",
+    "original_image_size_pixels": [
+      1422,
+      718
+    ],
+    "axes_pixels": {
+      "x0": 678,
+      "x1": 1393,
+      "y0": 547,
+      "y1": 23
+    },
+    "axis_range": {
+      "strain": [
+        0,
+        0.05
+      ],
+      "stress_MPa": [
+        0,
+        350
+      ]
+    },
+    "method": "Per-column median dark/colored trace pixels x=686..728, y=250..534; unweighted stress versus strain line fit",
+    "estimates": {
+      "black": {
+        "samples": 31,
+        "initial_figure_strain_range": [
+          0.0005594405594405594,
+          0.003356643356643357
+        ],
+        "free_intercept_slope_MPa": 50768.68635130167,
+        "intercept_MPa": -1.9799682160829362,
+        "through_origin_slope_MPa": 49944.17693752778
+      },
+      "colored": {
+        "samples": 43,
+        "initial_figure_strain_range": [
+          0.0005594405594405594,
+          0.0034965034965034965
+        ],
+        "free_intercept_slope_MPa": 53386.57243032132,
+        "intercept_MPa": -6.343654681019288,
+        "through_origin_slope_MPa": 50742.63916778996
+      }
+    },
+    "uncertainty": "Diagnostic raster estimate, not a measured modulus or confidence interval. At least +/-2 pixels per coordinate (strain .000140, stress 1.34 MPa), plus trace width, branch choice, possible toe/grip compliance, and unverified engineering/true definitions.",
+    "action": "Exploratory printed-curve diagnostic only. Keep user-confirmed E=69000 MPa and the already true-stress/plastic-strain hardening input unchanged; do not infer an input error or repeat engineering-to-true conversion from this raster slope."
+  },
+  "native_loading": {
+    "duration_seconds": 0.01,
+    "physical_duration_at_2mm_per_min_seconds": 936.0000000000001,
+    "peak_speed_mm_per_s": 5850.0,
+    "ams_requested_time_step_seconds": 1e-06
+  },
+  "interpretation": [
+    "Early stress/stiffness mismatch precedes material damage in inspected actual frames. Changing fracture-locus coordinates cannot repair the undamaged elastic slope.",
+    "Removing the optional core X pin did not remove the early native stiffness excess: inspect both independent actual run curves before assigning cause.",
+    "Beam bending controls passed in stable cases, but they do not qualify the actual skewed, one-depth-layer lattice with contact and AMS.",
+    "Matched elastic small-strain lattice controls across CCX/native, timestep/AMS, duration and contact variants should precede inverse material fitting.",
+    "E=69000 MPa, nu=.3 and density=2.67e-9 Mg/mm3 are user-confirmed fixed inputs. The supplied hardening table is already true stress versus equivalent true plastic strain and must not be re-converted.",
+    "The exploratory coupon-raster slope is not a diagnosed material input error. Do not change E or fit material interpretation to the thin-wall validation curve.",
+    "No new definite dimensional/unit conversion bug was established by this read-only audit."
+  ]
+}

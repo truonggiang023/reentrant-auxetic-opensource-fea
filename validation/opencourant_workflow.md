@@ -131,6 +131,48 @@ reported explicitly rather than inventing an execution-time metadata hash.
 
 ## Current lattice result
 
+The free-X baseline uses the current boundary default and completed normally:
+10,002 cycles, 934.93 seconds on four threads, 254 eroded core elements and no
+engine error messages. Last stored force strain is .6499977; actual prescribed
+motion at the last history sample is .6499985. Execution-time hashes bind both
+decks and metadata to the native output. Its evidence is committed:
+
+- [Force/stress history and assessment](opencourant-thin-free-x-final.json)
+- [Paper stress comparison](opencourant-thin-free-x-comparison.png)
+- [Actual, erosion-filtered deformation frames](opencourant-thin-free-x-frames.png)
+- [Quantitative qualification](opencourant_thin_free_x_qualification.json)
+- [Exact generated input archive](opencourant-thin-free-x-inputs.tar.gz)
+
+Against both digitized experiments over strain .03–.64, RMS discrepancy is
+.6074 MPa with +.5858 MPa bias. At strain .12 it gives 1.1848 MPa versus
+.2812/.2591 MPa experimentally. Removing the interior X pin changes the curve
+by about 12% in relative L2 over the same interval and does not resolve this
+overprediction. The maximum core KE/IE after the first 5% of loading time is
+.609; over strain .12–.35 it is .0156, and over .35–.65 it is .0080. These
+selected windows do not establish loading-speed independence, work balance,
+or AMS/mesh convergence. This is **not a calibrated reproduction**.
+
+A completed rerun halving the AMS target to 5e-7 s changes the full force
+history by 16.80% in relative L2 and integrated nominal work by 5.70%; erosion
+changes from 254 to 243 elements. The [AMS sensitivity report](opencourant_ams_lattice_sensitivity.json)
+and [plot](opencourant-thin-ams-sensitivity.png) demonstrate that timestep
+convergence remains unresolved. Matching a plateau mean alone is insufficient.
+
+Reproduce this baseline with current defaults and a fresh prefix:
+
+```sh
+OMP_NUM_THREADS=4 python run_radioss.py \
+  --config configs/dong2019_brick_damage.json \
+  --output results/opencourant/free_x_replay --duration-seconds .01 \
+  --ams-time-step 1e-6 --drop-ccx-viscosity --run --timeout-seconds 1800
+```
+
+The archive preserves exact generated inputs, avoiding changes from future
+mesher or exporter versions. It contains project-generated decks, not solver
+binaries or images from the paper.
+
+## Earlier pinned baseline
+
 The corrected-law, legacy interior-X-pin baseline completed to strain .65:
 10,002 cycles, 976.37 seconds on four threads, 252 eroded core elements, no
 engine error messages and normal termination. Its last stored force point is

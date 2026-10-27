@@ -16,7 +16,7 @@ import numpy as np
 
 from reentrant_fea.geometry import core_polygon
 from reentrant_fea.mesh import mesh_wedges,mesh_bricks
-from reentrant_fea.plastic import from_reference
+from reentrant_fea.plastic import load_plastic
 from reentrant_fea.paper_contact_solver import write_paper_contact_deck
 from reentrant_fea.provenance import record_generation
 
@@ -27,7 +27,8 @@ ROOT = Path(__file__).resolve().parent
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config",default="configs/dong2019_contact.json")
-    ap.add_argument("--plastic",default="reference_setup_numeric_source.py")
+    ap.add_argument("--plastic",default="reference_setup_numeric_source.py",
+                    help="True stress/plastic strain: one Abaqus *Plastic block or literal PLASTIC_DATA Python source; neither is executed")
     ap.add_argument("--output",default="results/dong2019_contact.inp")
     ap.add_argument("--ccx",default=None)
     ap.add_argument("--run",action="store_true")
@@ -56,7 +57,7 @@ def main():
         imperfection[:,0]=args.imperfection_mm*np.sin(np.pi*yi)*np.cos(np.pi*yi)
     out=(ROOT/args.output).resolve()
     meta=write_paper_contact_deck(out,nodes,els,c,
-                                  from_reference(ROOT/args.plastic),
+                                  load_plastic(ROOT/args.plastic),
                                   imperfections=imperfection,
                                   self_contact=args.self_contact)
     generation=record_generation(
