@@ -150,3 +150,23 @@ Công cụ native elastic hiện có `--no-ams`, loại cả starter /AMS và en
 sinh; chưa có kết quả native không AMS cho full lattice trong đợt này.
 Độ cứng từ công native hiện có vẫn là diagnostic động, không tự động tương
 đương độ cứng tĩnh. Không dùng tỷ số độ cứng để sửa E vật liệu.
+
+## Đối chứng AMS cùng thời lượng
+
+Có thể chạy cặp đàn hồi sau trên shared mesh ở trên, tuần tự và dùng các
+thư mục mới:
+
+```sh
+python scripts/probe_courant_elastic_lattice.py \
+  --mesh "$ELASTIC_DIR/ccx/mesh_and_bcs.json" \
+  --output "$ELASTIC_DIR/no_ams_short" --duration .0004 \
+  --no-ams --solid 24 --threads 4 --timeout-seconds 300
+python scripts/probe_courant_elastic_lattice.py \
+  --mesh "$ELASTIC_DIR/ccx/mesh_and_bcs.json" \
+  --output "$ELASTIC_DIR/ams_short" --duration .0004 \
+  --ams-time-step 1e-6 --solid 24 --threads 4 --timeout-seconds 300
+```
+
+Đây là kiểm tra ảnh hưởng của AMS ở cùng tốc độ tải; thời lượng ngắn không
+mặc định đủ quasi-static. Đọc năng lượng và cân bằng lực trước khi so độ cứng
+suy từ công với lời giải tĩnh. Các kết quả không dùng để đổi E vật liệu.
