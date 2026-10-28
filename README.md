@@ -33,6 +33,13 @@ compiler. The bundled Windows 2.13 executable is not qualified for this material
 
 ## Generate and run
 
+Để kiểm tra chéo trước khi tiếp tục calibration, có sẵn hai **input
+Abaqus/Explicit cho thin wall t = 0,3 mm**: [bản đàn dẻo](abaqus/thin_t03_plastic.inp)
+và [bản damage giả thuyết](abaqus/thin_t03_damage_hypothesis.inp).
+[Hướng dẫn chạy và trích ODB](abaqus/README.md) có lệnh datacheck, chạy job,
+xuất CSV và vẽ so với paper. Chúng dùng đủ 178 điểm Plastic bạn cung cấp,
+giữ nguyên core mesh hiện tại và chưa được chạy/datacheck bằng Abaqus.
+
 An additional **experimental OpenCourant backend** now uses native solid
 erosion and TYPE25 all-face contact. Its installation, actual component tests,
 commands and unresolved lattice qualification are documented in
@@ -47,10 +54,13 @@ historical thin-wall comparison with `python plot_paper_comparison.py`.
 
 The completed OpenCourant **free-X thin-wall baseline** reached strain
 approximately 0.65 with 254 eroded elements. Its
-[stress comparison](validation/opencourant-thin-free-x-comparison.png) and
+[historical normal-component comparison](validation/opencourant-thin-free-x-comparison.png) and
 [actual deformation frames](validation/opencourant-thin-free-x-frames.png)
-show substantial differences from the paper: at strain 0.12, the model gives
-1.185 MPa versus approximately 0.281/0.259 MPa in the two experiments. See
+show substantial differences from the paper: at strain 0.12, the historical
+normal-component-only extraction gives 1.185 MPa versus approximately
+0.281/0.259 MPa in the two experiments. That extraction omits the vertical
+tangential contribution; it is not the total TYPE25 contact force. The complete
+force extraction requires reassessment from the retained raw output. See
 [the quantitative assessment](validation/opencourant_thin_free_x_qualification.json).
 The earlier [interior-X-pin baseline](validation/opencourant_thin_qualification.json)
 is retained separately. That unsupported pin is absent by default;
