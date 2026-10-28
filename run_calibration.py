@@ -15,7 +15,8 @@ import subprocess
 import sys
 import time
 
-from calibration_study import NATIVE_FORCE_COLUMN, ROOT
+from calibration_study import (NATIVE_FORCE_COLUMN, NATIVE_TANGENTIAL_COLUMN, ROOT,
+                               legacy_native_force_mapping, native_force_mapping)
 from reentrant_fea.plastic import load_plastic, validate_material
 
 
@@ -120,7 +121,8 @@ def commands(row, threads, timeout):
     positional = 2 if native else 1
     allowed_assess = {'--output': 1}
     if native:
-        allowed_assess.update({'--force-column': 1, '--force-sign': 1, '--force-kind': 1})
+        allowed_assess.update({'--force-column': 1, '--force-sign': 1, '--force-kind': 1,
+                               '--tangential-column': 1})
     opts = parsed_options(row['assess_argv'], assess_script, allowed_assess, positional)
     expected = [row['metadata'], row['history']] if native else [row['deck']]
     for actual, path in zip(row['assess_argv'][2:2+positional], expected):
@@ -131,7 +133,18 @@ def commands(row, threads, timeout):
     if native and (opts.get('--force-column') != NATIVE_FORCE_COLUMN
                    or opts.get('--force-sign') != '-1' or opts.get('--force-kind') != 'impulse'):
         raise ValueError('Native assessment must use the verified FY impulse channel')
-    return solve, [sys.executable, str(ROOT/assess_script), *row['assess_argv'][2:]]
+    if native:
+        legacy = legacy_native_force_mapping(row.get('force_mapping'))
+        tangent = opts.get('--tangential-column')
+        if tangent not in (None, NATIVE_TANGENTIAL_COLUMN) or (tangent is None and not legacy):
+            raise ValueError('Native assessment must use the verified top tangential impulse channel')
+        # A historical normal-only manifest can be resumed without rerunning
+        # physics: normalize only the derived assessment command in memory.
+        opts['--tangential-column'] = NATIVE_TANGENTIAL_COLUMN
+    assessment = [sys.executable, str(ROOT/assess_script), *row['assess_argv'][2:2+positional]]
+    for key, value in opts.items():
+        assessment.extend([key, str(value)])
+    return solve, assessment
 
 
 def receipt_path(row):
@@ -144,6 +157,7 @@ def verify_completed(row, *, require_receipt=True):
     config = check_inputs(row)
     if row.get('backend', 'ccx') == 'opencourant':
         from assess_courant import assess
+        legacy_mapping = legacy_native_force_mapping(row.get('force_mapping'))
         metadata = json.loads(Path(row['metadata']).read_text())
         if (metadata.get('source_config_sha256') != row['config_sha256']
                 or metadata.get('hardening_source_sha256') != row['hardening_source_sha256']
@@ -155,7 +169,10 @@ def verify_completed(row, *, require_receipt=True):
                 or metadata.get('target_nominal_strain') != config['compression_strain']):
             raise ValueError('Native generated model differs from requested study inputs')
         result = assess(row['metadata'], row['history'], force_column=NATIVE_FORCE_COLUMN,
+                        tangential_column=NATIVE_TANGENTIAL_COLUMN,
                         force_sign=-1, force_kind='impulse')
+        result['legacy_manifest_force_mapping'] = legacy_mapping
+        result['force_mapping_recomputed_from_bound_channels'] = True
         if not result.get('run_binding_verified') or not result.get('metadata_binding_verified'):
             raise ValueError('Native execution and metadata bindings are required for resume')
     else:
@@ -251,6 +268,10 @@ def execute(manifest_path, *, candidates=None, role='training', threads=2,
         solve, assess = commands(row, threads, timeout)
         plans.append(dict(candidate=row['candidate'], role=row['role'], solve_argv=solve,
                           assess_argv=assess, existing_outputs=existing_outputs(row)))
+        if row.get('backend', manifest.get('backend', 'ccx')) == 'opencourant':
+            plans[-1].update(
+                legacy_manifest_force_mapping=legacy_native_force_mapping(row.get('force_mapping')),
+                derived_force_mapping=native_force_mapping())
     if dry_run:
         return dict(dry_run=True, runs=plans, calibrated=False, solver_executed=False)
     journal_path = manifest_path.parent/'execution-journal.json'
@@ -263,6 +284,9 @@ def execute(manifest_path, *, candidates=None, role='training', threads=2,
         event = dict(candidate=row['candidate'], role=row['role'],
                      manifest_sha256=digest(manifest_path), started_at=datetime.now(timezone.utc).isoformat(),
                      solve_argv=plan['solve_argv'], assess_argv=plan['assess_argv'])
+        if 'derived_force_mapping' in plan:
+            event.update(derived_force_mapping=plan['derived_force_mapping'],
+                         legacy_manifest_force_mapping=plan['legacy_manifest_force_mapping'])
         journal['events'].append(event)
         try:
             if existing_outputs(row):

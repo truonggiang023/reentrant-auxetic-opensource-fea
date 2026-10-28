@@ -20,6 +20,28 @@ ROOT = Path(__file__).resolve().parent
 ROLE_INTERVALS = {'training': [.04, .45], 'holdout': [.03, .65]}
 NATIVE_ROLE_INTERVALS = {'training': [.04, .45], 'holdout': [.03, .64]}
 NATIVE_FORCE_COLUMN = 'Contact force and energy                 3 Contact 3                                var 64'
+NATIVE_TANGENTIAL_COLUMN = 'Contact force and energy                 3 Contact 3                                var 67'
+
+
+def native_force_mapping(*, legacy=False):
+    """The three-part writer's verified TYPE25 IMS=2 top-contact quantity."""
+    result = dict(csv_column=NATIVE_FORCE_COLUMN, compressive_sign=-1, channel_kind='impulse')
+    if not legacy:
+        result.update(tangential_csv_column=NATIVE_TANGENTIAL_COLUMN, component_operation='FN-FT')
+    return result
+
+
+def legacy_native_force_mapping(mapping):
+    """Validate the declared mapping; identify a historical normal-only study.
+
+    Legacy input/solver files remain unchanged. Reassessment always uses both
+    actual bound channels, and explicitly records the interpretation upgrade.
+    """
+    if mapping == native_force_mapping():
+        return False
+    if mapping == native_force_mapping(legacy=True):
+        return True
+    raise ValueError('Native study requires verified top FN/FT impulse channels, FN-FT and sign')
 
 
 def dump(path, data):
@@ -110,8 +132,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
                               metadata=str(metadata), history=str(history),
                               assessment=str(prefix.with_name(prefix.name+'.assessment.json')),
                               duration_seconds=actual_duration, ams_time_step=actual_ams,
-                              force_mapping=dict(csv_column=NATIVE_FORCE_COLUMN,
-                                                 compressive_sign=-1, channel_kind='impulse'))
+                              force_mapping=native_force_mapping())
                 record['solve_argv'] = ['python', 'run_radioss.py', '--config', str(config_path),
                                        '--plastic', record['hardening_source'], '--output', str(prefix),
                                        '--duration-seconds', str(actual_duration), '--drop-ccx-viscosity', '--run']
@@ -119,6 +140,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
                     record['solve_argv'] += ['--ams-time-step', str(actual_ams)]
                 record['assess_argv'] = ['python', 'assess_courant.py', str(metadata), str(history),
                                         '--force-column', NATIVE_FORCE_COLUMN, '--force-sign', '-1',
+                                        '--tangential-column', NATIVE_TANGENTIAL_COLUMN,
                                         '--force-kind', 'impulse', '--output', record['assessment']]
             records.append(record)
     manifest = {
@@ -151,7 +173,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
             'CCX compression cutoff is not transferred. Native endpoint extrapolation is a constant boundary convention, not additional measured data.',
             'Native characteristic length, solid formulation and initiation-increment integration differ from CCX.',
             'Accelerated loading and AMS require actual-core energy, speed and AMS response sensitivity; a passing global screen is insufficient.',
-            'Top interface FY channel var 64 stores cumulative impulse; negative time differences divided by time intervals give interval-average compressive force.',
+            'TYPE25 IMS=2 top-secondary force is FN-FT: FNY var64 and FTY var67 are cumulative impulses. Compression is -Delta(FNY-FTY)/Delta(time), not the normal component alone.',
             'Native holdout force fit ends at .64; interval-average force samples lie before the .65 deformation target and are never extrapolated to it.',
         ]
         manifest['native_qualification'] = {'qualified': False,
@@ -169,9 +191,7 @@ def score_native_record(row, config, saved_assessment, experiments, interval):
     source = Path(row.get('hardening_source', ROOT/'reference_setup_numeric_source.py'))
     validate_plastic_table(load_plastic(source))
     source_hash = digest(source)
-    expected_mapping = dict(csv_column=NATIVE_FORCE_COLUMN, compressive_sign=-1, channel_kind='impulse')
-    if row.get('force_mapping') != expected_mapping:
-        raise ValueError('Native study requires the verified top FY cumulative-impulse channel and sign')
+    legacy_mapping = legacy_native_force_mapping(row.get('force_mapping'))
     if (saved_assessment.get('metadata_sha256') != digest(metadata_path)
             or saved_assessment.get('history_sha256') != digest(history)):
         raise ValueError('Native assessment belongs to different metadata or history')
@@ -190,12 +210,15 @@ def score_native_record(row, config, saved_assessment, experiments, interval):
     # assess() verifies generated deck hashes and the .run.json binding to the
     # actual starter/engine/T01/CSV files, and then reconstructs the force curve.
     actual = assess(metadata_path, history, force_column=NATIVE_FORCE_COLUMN,
+                    tangential_column=NATIVE_TANGENTIAL_COLUMN,
                     force_sign=-1, force_kind='impulse')
     result = score_assessment(actual, experiments, interval)
     result.update(run_binding_verified=actual['run_binding_verified'],
                   metadata_binding_verified=actual.get('metadata_binding_verified', False),
                   metadata_sha256=actual['metadata_sha256'], history_sha256=actual['history_sha256'],
                   generation_config_matches=True, force_mapping=actual['force_mapping'],
+                  legacy_manifest_force_mapping=legacy_mapping,
+                  force_mapping_recomputed_from_bound_channels=True,
                   global_energy_screen=actual['global_energy_screen'],
                   core_energy_screen=actual['core_energy_screen'],
                   duration_seconds=metadata['duration_seconds'], ams=metadata.get('ams'),

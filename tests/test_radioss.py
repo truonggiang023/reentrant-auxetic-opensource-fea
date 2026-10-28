@@ -67,3 +67,18 @@ def test_advanced_mass_scaling_requires_explicit_valid_target_and_provenance(tmp
     assert not meta['experimental_agreement']
     assert meta['numerical_damping']['native_solid_defaults_active']
     assert meta['numerical_damping']['starter_reported_contact_critical_damping'] == .05
+
+
+def test_inner_y_platen_control_preserves_core_erosion_surface(tmp_path):
+    config = dict(CONFIG, platen_contact_surface='inner_y')
+    meta = write_radioss_deck(tmp_path/'inner', NODES, ELEMENTS, config,
+                              [(225., 0.), (300., 1.)], duration=.01,
+                              drop_ccx_viscosity=True)
+    text = (tmp_path/'inner_0000.rad').read_text()
+    assert '/SURF/PART/ALL/1' in text
+    assert '/SURF/PART/ALL/2' not in text
+    assert '/SURF/PART/ALL/3' not in text
+    lines = text.splitlines()
+    for part, expected in [(2, [2, 11, 12, 16, 15]), (3, [3, 17, 18, 22, 21])]:
+        assert list(map(int, lines[lines.index('/SURF/SEG/'+str(part))+2].split())) == expected
+    assert meta['platen_contact_surface'] == 'inner_y'

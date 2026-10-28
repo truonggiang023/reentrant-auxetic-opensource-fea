@@ -15,7 +15,20 @@ from reentrant_fea.radioss_results import (read_engine_out, read_history_csv,
                                           history_energy_screen, part_energy_screen)
 
 
-def assess(metadata_path, history_path, *, force_column=None, force_sign=None, force_kind=None):
+def assess(metadata_path, history_path, *, force_column=None, tangential_column=None,
+           force_sign=None, force_kind=None):
+    """Assess bound output and optionally reconstruct a verified force quantity.
+
+    For this writer's TYPE25 IMS=2 convention, force on the secondary is
+    ``FN-FT``. The optional tangential channel is subtracted before sign
+    selection and before one time difference of cumulative impulses. A legacy
+    single normal channel remains a normal-component diagnostic, not a total
+    contact force. No column numbers or force/impulse units are inferred.
+    """
+    if tangential_column is not None and force_column is None:
+        raise ValueError('A tangential column requires a normal force column')
+    if tangential_column is not None and tangential_column == force_column:
+        raise ValueError('Normal and tangential columns must be different')
     metadata_path = Path(metadata_path)
     metadata = json.loads(metadata_path.read_text())
     directory = metadata_path.parent
@@ -78,6 +91,8 @@ def assess(metadata_path, history_path, *, force_column=None, force_sign=None, f
     if force_column is not None:
         if force_column not in history or force_sign not in (-1, 1) or force_kind not in ('force', 'impulse'):
             raise ValueError('Select an existing channel, explicit sign and verified force/impulse kind')
+        if tangential_column is not None and tangential_column not in history:
+            raise ValueError('Selected tangential column is missing from the history CSV')
         amplitude = np.asarray(metadata.get('displacement_fraction_samples', []), dtype=float)
         if (amplitude.ndim != 2 or amplitude.shape[1] != 2 or len(amplitude) < 2
                 or not np.isfinite(amplitude).all() or np.any(np.diff(amplitude[:, 0]) <= 0)):
@@ -87,7 +102,10 @@ def assess(metadata_path, history_path, *, force_column=None, force_sign=None, f
             raise ValueError('Require positive nominal reference area')
         # Never extrapolate prescribed motion outside the generated curve.
         times = history['time']
-        forces = history[force_column]*force_sign
+        forces = history[force_column]
+        if tangential_column is not None:
+            forces = forces-history[tangential_column]
+        forces = forces*force_sign
         if force_kind == 'impulse':
             # REACY histories can be cumulative impulse, not force. These
             # differences are interval-averaged forces, not pointwise peaks.
@@ -103,6 +121,18 @@ def assess(metadata_path, history_path, *, force_column=None, force_sign=None, f
                                        area_mm2=area, channel_kind=force_kind,
                                        sampling='interval average' if force_kind == 'impulse' else 'sampled force',
                                        verification='caller-selected verified channel and physical quantity')
+        if tangential_column is not None:
+            result['force_mapping'].update(
+                tangential_csv_column=tangential_column, component_operation='FN-FT',
+                contact_force_quantity='total_force_on_secondary',
+                convention='TYPE25 IMS=2 secondary force; subtract FT from FN before sign and impulse differentiation')
+        else:
+            normal = (force_column.startswith('Contact force and energy')
+                      or force_column.lower() in ('fn', 'fny'))
+            result['force_mapping'].update(
+                component_operation='single_channel',
+                contact_force_quantity='normal_component_only' if normal else 'single_selected_channel',
+                total_contact_force_verified=False)
         result['last_recorded_force_nominal_strain'] = float(strains[-1]) if len(strains) else None
         sample_times = history['time'][(history['time'] >= amplitude[0, 0])
                                        & (history['time'] <= amplitude[-1, 0])]
@@ -117,13 +147,16 @@ def main():
     parser.add_argument('metadata', type=Path)
     parser.add_argument('history_csv', type=Path)
     parser.add_argument('--force-column')
+    parser.add_argument('--tangential-column',
+                        help='Verified TYPE25 IMS=2 FT channel; total secondary force is FN-FT')
     parser.add_argument('--force-sign', type=int, choices=(-1, 1))
     parser.add_argument('--force-kind', choices=('force', 'impulse'),
                         help='Required with a channel; nodal REACY may be cumulative impulse')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     result = assess(args.metadata, args.history_csv,
-                    force_column=args.force_column, force_sign=args.force_sign, force_kind=args.force_kind)
+                    force_column=args.force_column, tangential_column=args.tangential_column,
+                    force_sign=args.force_sign, force_kind=args.force_kind)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps({key: result[key] for key in ('completed', 'history_samples',

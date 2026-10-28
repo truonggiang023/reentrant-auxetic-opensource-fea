@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from scripts.digitize_dong2019 import PANELS, digitize_panel
-from plot_paper_comparison import read_history, read_reference, resolve_wall_mm
+from plot_paper_comparison import read_history, read_reference, resolve_wall_mm, solver_label
 
 
 def test_digitizer_maps_pixels_and_excludes_legend_and_right_ticks():
@@ -77,3 +77,16 @@ def test_known_legacy_assessment_matches_qualification_and_config_hash():
     assessment["input_sha256"] = "different-input"
     with pytest.raises(ValueError, match="no verified wall thickness"):
         resolve_wall_mm(assessment, root=root)
+
+
+def test_native_plot_distinguishes_total_contact_and_legacy_normal_component():
+    common = dict(backend='OpenCourant / Radioss format experimental', completed=True,
+                  quasi_static_validated=False)
+    total = dict(common, force_mapping=dict(contact_force_quantity='total_force_on_secondary',
+                                           component_operation='FN-FT'))
+    assert 'total FN-FT' in solver_label(total)[1]
+    assert 'quasi-static unverified' in solver_label(total)[1]
+    legacy = dict(common, force_mapping=dict(csv_column='Contact force and energy 3 var 64'))
+    assert 'normal component only' in solver_label(legacy)[1]
+    explicit = dict(common, force_mapping=dict(contact_force_quantity='normal_component_only'))
+    assert 'normal component only' in solver_label(explicit)[1]

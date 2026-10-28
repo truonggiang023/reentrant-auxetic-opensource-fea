@@ -80,7 +80,7 @@ def test_study_intervals_respect_thick_and_thin_reference_support(tmp_path):
 
 def test_native_study_records_backend_and_nontransferable_assumptions(tmp_path):
     from pathlib import Path
-    from calibration_study import NATIVE_FORCE_COLUMN, prepare
+    from calibration_study import NATIVE_FORCE_COLUMN, NATIVE_TANGENTIAL_COLUMN, prepare
     root = Path(__file__).resolve().parents[1]
     with pytest.raises(ValueError, match='explicit finite positive duration'):
         prepare(root/'configs/dong2019_brick_damage.json', tmp_path/'missing-duration', backend='opencourant')
@@ -96,7 +96,10 @@ def test_native_study_records_backend_and_nontransferable_assumptions(tmp_path):
         assert row['metadata'].endswith('.radioss.json')
         assert '--drop-ccx-viscosity' in row['solve_argv']
         assert row['force_mapping'] == dict(csv_column=NATIVE_FORCE_COLUMN,
+                                          tangential_csv_column=NATIVE_TANGENTIAL_COLUMN,
+                                          component_operation='FN-FT',
                                           compressive_sign=-1, channel_kind='impulse')
+        assert row['assess_argv'][row['assess_argv'].index('--tangential-column')+1] == NATIVE_TANGENTIAL_COLUMN
         assert not row['candidate'].startswith(('viscosity', 'residual'))
         prefix = Path(row['metadata']).name.removesuffix('.radioss.json')
         assert all(c.isalnum() or c in '_-' for c in prefix)
@@ -174,7 +177,7 @@ def test_native_score_recomputes_bound_history_and_keeps_physics_gate(tmp_path):
     import csv
     import hashlib
     import json
-    from calibration_study import NATIVE_FORCE_COLUMN, score_native_record
+    from calibration_study import NATIVE_FORCE_COLUMN, NATIVE_TANGENTIAL_COLUMN, score_native_record
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     config = {'ductile_damage': {'fracture_locus': [[0, .08], [.333, .047], [1, .018]],
                                 'viscosity_time': .005}}
@@ -187,9 +190,10 @@ def test_native_score_recomputes_bound_history_and_keeps_physics_gate(tmp_path):
     files['_0001.out'].write_text('NORMAL TERMINATION\n')
     with files['T01.csv'].open('w', newline='') as stream:
         writer = csv.writer(stream)
-        writer.writerow(['time', 'INTERNAL ENERGY', 'KINETIC ENERGY', NATIVE_FORCE_COLUMN])
+        writer.writerow(['time', 'INTERNAL ENERGY', 'KINETIC ENERGY', NATIVE_FORCE_COLUMN,
+                         NATIVE_TANGENTIAL_COLUMN])
         for time in np.linspace(0, 1, 41):
-            writer.writerow([time, 1, 0, -1900*time])
+            writer.writerow([time, 1, 0, -1900*time, 950*time])
     sha = {files[suffix].name: digest(files[suffix]) for suffix in ('_0000.rad', '_0001.rad')}
     metadata = dict(prefix='model', backend='OpenCourant', sha256=sha,
                     starter=str(files['_0000.rad']), source_config_sha256='config-hash',
@@ -208,11 +212,15 @@ def test_native_score_recomputes_bound_history_and_keeps_physics_gate(tmp_path):
                duration_seconds=1, ams_time_step=None,
                force_mapping=dict(csv_column=NATIVE_FORCE_COLUMN, compressive_sign=-1, channel_kind='impulse'))
     cached = dict(metadata_sha256=digest(metadata_path), history_sha256=digest(files['T01.csv']),
-                  completed=False, reaction_history=[{'strain': 0, 'nominal_stress_MPa': 999}])
-    references = [[[0, 1], [.65, 1]], [[0, 1], [.65, 1]]]
+                  completed=False, force_mapping={'contact_force_quantity': 'normal_component_only'},
+                  reaction_history=[{'strain': 0, 'nominal_stress_MPa': 1},
+                                    {'strain': .65, 'nominal_stress_MPa': 1}])
+    references = [[[0, 1.5], [.65, 1.5]], [[0, 1.5], [.65, 1.5]]]
     result = score_native_record(row, config, cached, references, [.03, .64])
     assert result['solver_completed'] and result['coverage_and_completion_passed']
     assert result['overlap_rmse_MPa'] < 1e-12
+    assert result['legacy_manifest_force_mapping']
+    assert result['force_mapping']['contact_force_quantity'] == 'total_force_on_secondary'
     assert result['completion_basis'] == 'observed explicit-solver history'
     assert not result['eligible_for_selection']
     assert result['qualification_blockers']

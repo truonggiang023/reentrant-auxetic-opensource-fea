@@ -52,20 +52,21 @@ The [paper-reference data](validation/paper_reference/README.md) and
 experiments, published FE and current simulations distinct. Generate the
 historical thin-wall comparison with `python plot_paper_comparison.py`.
 
-The completed OpenCourant **free-X thin-wall baseline** reached strain
-approximately 0.65 with 254 eroded elements. Its
-[historical normal-component comparison](validation/opencourant-thin-free-x-comparison.png) and
-[actual deformation frames](validation/opencourant-thin-free-x-frames.png)
-show substantial differences from the paper: at strain 0.12, the historical
-normal-component-only extraction gives 1.185 MPa versus approximately
-0.281/0.259 MPa in the two experiments. That extraction omits the vertical
-tangential contribution; it is not the total TYPE25 contact force. The complete
-force extraction requires reassessment from the retained raw output. See
-[the quantitative assessment](validation/opencourant_thin_free_x_qualification.json).
-The earlier [interior-X-pin baseline](validation/opencourant_thin_qualification.json)
-is retained separately. That unsupported pin is absent by default;
-`core_x_anchor=true` enables it only for boundary sensitivity studies.
-Calibration, numerical convergence and experimental agreement remain unresolved.
+The completed OpenCourant free-X baseline now has a corrected
+[total-force comparison](validation/opencourant-thin-total-force-comparison.png).
+TYPE25 secondary force uses FN−FT; the former normal-only plots are historical.
+At strain .12 the corrected stress is 1.390 MPa versus approximately .281/.259
+MPa in the experiments. Halving AMS changes the total-force curve by 14.97%
+relative L2. See the [assessment](validation/opencourant-thin-total-force-qualification.json).
+
+A matched inner-Y-only platen-contact control reached force strain .12044;
+at .12 it gives 1.252 MPa. This is an intentionally partial diagnostic, not a
+calibrated trajectory. The exporter now supports `platen_contact_surface=inner_y`
+via [this configuration](configs/dong2019_inner_y_contact.json). The legacy
+`all` setting remains the default so old studies remain reproducible.
+Core all-face self-contact is retained. Calibration and experimental agreement
+remain unresolved; the reported good early Abaqus response is useful external
+context, not an executed OpenCourant qualification.
 
 ```sh
 # Builtin J2 plasticity, wedge mesh, platen contact:

@@ -151,11 +151,12 @@ def main():
     if args.run:
         csv = run_generated(metadata, timeout=args.timeout_seconds)
         from assess_courant import assess
-        # This three-part writer's verified TYPE25 DEF Y channel is cumulative
-        # impulse. Differencing it gives interval-average force, never raw N.
+        # TYPE25 IMS=2 force on the core secondary is FN-FT. Both DEF Y
+        # channels are cumulative impulses; differentiate their difference once.
         result = assess(
             metadata_path, csv,
             force_column='Contact force and energy                 3 Contact 3                                var 64',
+            tangential_column='Contact force and energy                 3 Contact 3                                var 67',
             force_sign=-1, force_kind='impulse')
         metadata_path.with_name(metadata['prefix']+'.assessment.json').write_text(json.dumps(result,indent=2)+'\n')
         print('Solver stages terminated normally. Energy assessment:', result['global_energy_screen'])

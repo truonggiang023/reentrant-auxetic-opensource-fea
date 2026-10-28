@@ -27,6 +27,14 @@ def solver_label(assessment):
     if name == 'CalculiX':
         return name, f'Current CCX (accepted history, {complete})'
     qualification = '' if assessment.get('quasi_static_validated') is True else '; quasi-static unverified'
+    if name == 'OpenCourant':
+        mapping = assessment.get('force_mapping', {})
+        quantity = mapping.get('contact_force_quantity')
+        if quantity == 'total_force_on_secondary' and mapping.get('component_operation') == 'FN-FT':
+            return name, f'{name} total FN-FT\n({complete}{qualification})'
+        column = mapping.get('csv_column', '')
+        if quantity == 'normal_component_only' or column.startswith('Contact force and energy'):
+            return name, f'{name} legacy normal component only\n({complete}{qualification})'
     return name, f'{name} ({complete}{qualification})'
 
 
@@ -192,6 +200,7 @@ def main():
         "backend": backend,
         "case_label": args.case_label,
         "quasi_static_validated": assessment.get("quasi_static_validated"),
+        "force_mapping": assessment.get("force_mapping"),
         "accepted_reaction_samples": len(history),
         "recorded_strain_range": [float(history[0, 0]), float(history[-1, 0])],
         "last_converged_nominal_strain": assessment.get("last_converged_nominal_strain"),

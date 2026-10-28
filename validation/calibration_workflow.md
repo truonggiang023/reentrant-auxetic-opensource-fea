@@ -58,8 +58,8 @@ The current native study remains selection-blocked pending actual core/work
 balance, loading-speed, AMS and mesh/contact qualification.
 
 The completed native baseline and its step-halving control now demonstrate
-16.80% relative L2 difference in the stress history; see
-[the AMS report](opencourant_ams_lattice_sensitivity.json).
+14.97% relative L2 difference in corrected total force in the stress history; see
+[the AMS report](opencourant-thin-total-force-qualification.json).
 The [physical audit](opencourant_physical_discrepancy_audit.json) also finds
 early excess stiffness before damage, and a matched self-contact-off control
 leaves the strain .005–.12 response unchanged. Inverse fracture fitting cannot
@@ -147,3 +147,21 @@ labels; curve fitting cannot substitute for the morphology comparison.
 Parameter identifiability and estimated-locus uncertainty must remain separate
 from an observed curve match. No automated candidate ranking in this workflow
 sets `calibrated=true` or asserts experimental reproduction.
+
+## Current open-source calibration correction
+
+All new native studies and resumed legacy studies reconstruct the total
+secondary contact force as FN−FT before differentiating the impulse channels.
+The material table and E remain fixed. User observations from a separate
+Abaqus model are context only; this workflow does not require Abaqus.
+
+To investigate the tested platen surface control in a new native study:
+
+```sh
+python calibration_study.py prepare --help
+```
+
+Use `configs/dong2019_inner_y_contact.json` as the base config via the prepare
+command's config argument. The inner-Y control is not yet qualified for full
+collapse; selection remains blocked pending numerical qualification. Do not
+interpret a lower fitting error from an unqualified trajectory as calibration.

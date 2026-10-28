@@ -238,8 +238,16 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
         lines.append(_reals(time, fraction))
     _motion(lines, 1, 2, height*strain*(1 if tensile_coupon else -1))
     if not tensile_coupon:
+        platen_surface = config.get('platen_contact_surface', 'all')
+        if platen_surface not in ('all', 'inner_y'):
+            raise ValueError('platen_contact_surface must be all or inner_y')
         for part in (1, 2, 3):
-            lines.extend([f'/SURF/PART/ALL/{part}', f'All faces of part {part}', _ints(part)])
+            if part == 1 or platen_surface == 'all':
+                lines.extend([f'/SURF/PART/ALL/{part}', f'All faces of part {part}', _ints(part)])
+            else:
+                offsets = (3, 4, 8, 7) if part == 2 else (9, 10, 14, 13)
+                lines.extend([f'/SURF/SEG/{part}', f'Inner Y platen face {part}',
+                              _ints(part, *(ncore+i for i in offsets))])
         _contact(lines, 1, 1, 0, self_friction)
         _contact(lines, 2, 1, 2, friction)
         _contact(lines, 3, 1, 3, friction)
@@ -310,6 +318,7 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
         'position_mm': nodes[anchor_node-1].tolist() if anchor_node is not None else None,
         'qualification': 'optional legacy boundary sensitivity; the paper does not specify an interior X pin',
     }
+    metadata['platen_contact_surface'] = config.get('platen_contact_surface', 'all')
     metadata['hardening_extrapolation'] = {
         'convention': 'constant flow stress after the last supplied plastic strain, matching the CCX law',
         'original_point_count': len(plastic),
