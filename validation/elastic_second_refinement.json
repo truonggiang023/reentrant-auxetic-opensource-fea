@@ -1,0 +1,79 @@
+{
+  "source_mesh_sha256": "0a6f1ecda68e8850ceb84500244464f15b06a4e0db71f5f21edec3c88600d85d",
+  "refined_mesh_sha256": "3124e463717c2127d6e37e36e2d2502cf5619636a0917ed73dda29d45d20e22b",
+  "elements": 118272,
+  "nodes": 265182,
+  "cases": [
+    {
+      "element_type": "C3D8I",
+      "exit_code": 0,
+      "elapsed_wall_seconds": 45.260549029000686,
+      "input_sha256": "7c41172123848148ca800f461fdca3efffeda01edecc00674fcda1481bc3adcf",
+      "solver_reported_version": "2.20",
+      "solver_warning_count": 0,
+      "usable": true,
+      "top_total_reaction_N": [
+        -5.368474e-11,
+        -5.782662,
+        -2.795524e-12
+      ],
+      "bottom_total_reaction_N": [
+        -4.213545e-09,
+        5.782662,
+        1.452721e-12
+      ],
+      "y_force_balance_N": 0.0,
+      "stiffness_N_per_mm": 578.2662,
+      "nominal_effective_modulus_MPa": 14.608830315789474,
+      "reaction_work_Nmm": 0.02891331,
+      "solver_internal_energy_Nmm": 0.02891331,
+      "relative_reported_energy_minus_work": 0.0,
+      "solver_total_volume_mm3": 10191.14,
+      "output_sha256": {
+        "c3d8i.dat": "c086ecc3826536c43ebf1fcd86f15857a1bc53b26467c7f2a210c87032403dae",
+        "c3d8i.log": "4d4e4e78179e823e1aa48ad7270bbdbaa84d16b442fa0a71f8544e69ba5e73aa",
+        "c3d8i.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+        "c3d8i.frd": "47d1cc183af8b55d201cb427f1c67146203b7635fc404349be5940035d58eb87"
+      },
+      "previous_stiffness_N_per_mm": 583.6818,
+      "relative_change": -0.00927834309721487
+    },
+    {
+      "element_type": "C3D8R",
+      "exit_code": 0,
+      "elapsed_wall_seconds": 11.038652418999845,
+      "input_sha256": "e223239f6612ce7dc81d61d547bcef65dd68ddb13ba3b77dd805bb39c761a404",
+      "solver_reported_version": "2.20",
+      "solver_warning_count": 0,
+      "usable": true,
+      "top_total_reaction_N": [
+        4.344663e-12,
+        -5.648645,
+        -5.520149e-11
+      ],
+      "bottom_total_reaction_N": [
+        -2.379654e-10,
+        5.648645,
+        -1.562812e-12
+      ],
+      "y_force_balance_N": 0.0,
+      "stiffness_N_per_mm": 564.8645,
+      "nominal_effective_modulus_MPa": 14.270261052631579,
+      "reaction_work_Nmm": 0.028243225,
+      "solver_internal_energy_Nmm": 0.02808719,
+      "relative_reported_energy_minus_work": -0.005524687779104504,
+      "solver_total_volume_mm3": 10191.14,
+      "output_sha256": {
+        "c3d8r.dat": "7ef8c8975014bd1f229098e1a91de1055eceea1450fba43ca63114b4940131aa",
+        "c3d8r.log": "3a8fb63e3aa6696429040361a09204f8f8e088c8ea024c5b664d13c69673208e",
+        "c3d8r.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+        "c3d8r.frd": "35ab2988a632b29ef9872564e8fe019883bb71a89231d90a688cf101c854abed"
+      },
+      "previous_stiffness_N_per_mm": 543.3955,
+      "relative_change": 0.0395089764269303
+    }
+  ],
+  "calibrated": false,
+  "experimental_agreement": false,
+  "interpretation": "Elastic reference diagnostic only; no contact/plasticity/damage and no material fit."
+}

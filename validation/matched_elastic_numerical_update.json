@@ -1,0 +1,209 @@
+{
+  "status": "Additional numerical prerequisites for calibration; no material selection or experimental agreement established",
+  "source_reports_sha256": {
+    "validation/matched_elastic_mesh_convergence.json": "2ef9c117a5640094209c9acdec945ea2deacecf8cf0636cc62de1b3fe1742c25",
+    "validation/matched_elastic_ccx_audit.json": "1632b8be1f2f4eeda79b80eb9df80d98f328dbb892f44fcaaf865f7a4b8398be",
+    "validation/matched_elastic_native_audit.json": "c54b89f68ca9ae5adcccf22d48412fc9cb5b29ec5b62f1d7296c04ab80e056cb",
+    "validation/opencourant_implicit_capability.json": "d3aee00187c84246edff7d4da90325479b34ae775bad1b8e6b4d46e165f5cabb"
+  },
+  "material": {
+    "young_MPa": 69000.0,
+    "poisson": 0.3,
+    "native_density_Mg_per_mm3": 2.67e-09,
+    "parameters_fitted": false
+  },
+  "protocol": "Same retained core geometry; all core U3 fixed, bottom Uy fixed, top Uy=-.01 mm, original one-bottom-node Ux gauge. No contact, plasticity or damage.",
+  "static_refinement": {
+    "coarse_elements": 7392,
+    "refined_elements": 29568,
+    "coarse_nodes": 21870,
+    "refined_nodes": 73406,
+    "original_node_coordinates_and_IDs_preserved": true,
+    "depth_planes_preserved_mm": [
+      0.0,
+      25.0
+    ],
+    "refinement_levels_tested": 1,
+    "cases": [
+      {
+        "element_type": "C3D8R",
+        "coarse_stiffness_N_per_mm": 448.4803,
+        "stiffness_N_per_mm": 543.3955,
+        "relative_fine_minus_coarse_stiffness": 0.21163738964676915,
+        "relative_reported_energy_minus_work": -0.020761857615677736,
+        "usable": true
+      },
+      {
+        "element_type": "C3D8I",
+        "coarse_stiffness_N_per_mm": 584.0973,
+        "stiffness_N_per_mm": 583.6818,
+        "relative_fine_minus_coarse_stiffness": -0.0007113540843282085,
+        "relative_reported_energy_minus_work": 0.0,
+        "usable": true
+      }
+    ],
+    "conclusion": "C3D8R changes by21.16%; C3D8I changes by-0.0711% on one refinement. This is not full elastic, nonlinear, contact or fracture mesh-convergence proof."
+  },
+  "native_half_AMS": {
+    "source_diagnostic_path": "/workspace/fea-research/matched-elastic-native24-half-step/diagnostic.json",
+    "source_diagnostic_sha256": "f3f6a6718526fdbdcb3cfbfcc504f17adb998244a93c4221b9fb3113654b6dd8",
+    "completed": true,
+    "execution_metadata_input_output_hashes_verified": true,
+    "duration_seconds": 0.004,
+    "core_elements": 7392,
+    "core_nodes": 21870,
+    "baseline_AMS_step_seconds": 1e-06,
+    "half_AMS_step_seconds": 5e-07,
+    "baseline_work_equivalent_stiffness_N_per_mm": 1006.2032297697035,
+    "half_step_work_equivalent_stiffness_N_per_mm": 1006.2180298407438,
+    "relative_half_minus_baseline_work_stiffness": 1.4708828795617634e-05,
+    "half_step_energy_equivalent_stiffness_N_per_mm": 1006.1948297293834,
+    "refined_C3D8I_static_stiffness_N_per_mm": 583.6818,
+    "relative_half_native_work_stiffness_minus_refined_C3D8I": 0.7239153762216741,
+    "max_late_kinetic_internal_ratio": 4.9735939430225773e-05,
+    "baseline_nodal_force_balance_residual_N": 20.23466462473077,
+    "half_step_nodal_force_balance_residual_N": 5.092561773171663,
+    "nodal_reaction_differentiation_qualified": false,
+    "baseline_integrated_impulse_regression": {
+      "formula": "I(t)=k*integral(displacement dt)+m_eff*velocity+offset",
+      "time_fraction_interval": [
+        0.25,
+        0.95
+      ],
+      "stiffness_N_per_mm": 999.8481928453577,
+      "effective_mass_Mg": 0.00201269625581252,
+      "offset_Ns": 7.965755494527772e-05,
+      "impulse_rmse_Ns": 4.487799480291713e-05,
+      "qualification": "Diagnostic spring/inertia approximation; not an independent static-stiffness validation"
+    },
+    "half_step_integrated_impulse_regression": {
+      "formula": "I(t)=k*integral(displacement dt)+m_eff*velocity+offset",
+      "time_fraction_interval": [
+        0.25,
+        0.95
+      ],
+      "stiffness_N_per_mm": 1004.6317714314648,
+      "effective_mass_Mg": 0.0005111434349077761,
+      "offset_Ns": 2.0184721370201856e-05,
+      "impulse_rmse_Ns": 1.1241798188277102e-05,
+      "qualification": "Diagnostic spring/inertia approximation; not an independent static-stiffness validation"
+    },
+    "half_step_run_metadata_sha256": "f974f0e72dff8e4fa3f5fe74f08dbb764b73081a1faa657975b4cbf5751bdc3c",
+    "executed_generator_source_sha256": "8df169c8adf49012f0d15cd96a4acec2819bbcb5b86229d4f0c142a899e92026",
+    "conclusion": "This work-equivalent measure is insensitive to one AMS halving; raw differentiated nodal force still fails balance. Work/energy agreement and small reported KE do not establish equivalence to static equilibrium or plastic collapse."
+  },
+  "excluded_native_attempts": [
+    {
+      "case": "matched-elastic-native24-refined",
+      "solid_formulation": 24,
+      "mesh": "refined",
+      "requested_duration_seconds": 0.004,
+      "timeout_seconds": 2400,
+      "completed": false,
+      "execution_binding_verified": false,
+      "usable_as_stiffness_evidence": false,
+      "reason": "Wall-time timeout before a completed bound run; no diagnostic stiffness extracted.",
+      "historical_scheduling_note": "These two jobs ran alongside a contact control on a four-CPU quota; wall time is not a formulation-performance comparison.",
+      "retained_sha256": {
+        "elastic-starter.log": "4dbc8ddcaff337aecb8a96456c1f99333282ed08bef6e356cefa7303f94aef74",
+        "elastic_0001.rad": "4fd6dea9a3913d6137875287c294d171868ccccb23a72e0e99c211fe034fb159",
+        "elastic_0000.out": "38a7ab99a821ef8e3c7bf482eb8864f210b38e6dbaf4a39e8eaf7830ecb50462",
+        "elastic-engine.log": "f9fc8d7047304f2a8824fa654b528f7e1e2d34e33efd29711a86c73a8f790eed",
+        "elastic_0001.out": "fbda8408c0dc3186dcf9f66a82f965d8d9c82d54cb464fc4ac41c752543524a3",
+        "elastic.radioss.json": "ae25f5b9e321b31ece1decdaf322767be526855f911ff30fbbe16e7b18654137",
+        "elastic_0000.rad": "a5909a1626aceac7f9f0f13175883a34ffff3af2eb16d39aeec1a536a8988bce",
+        "matched-elastic-native24-refined.log": "1528075a52a113770f53715abf2e62298e4ba87ef052b1b8c0e86333dd7a4a3b"
+      }
+    },
+    {
+      "case": "matched-elastic-native14",
+      "solid_formulation": 14,
+      "mesh": "coarse",
+      "requested_duration_seconds": 0.004,
+      "timeout_seconds": 2400,
+      "completed": false,
+      "execution_binding_verified": false,
+      "usable_as_stiffness_evidence": false,
+      "reason": "Wall-time timeout before a completed bound run; no diagnostic stiffness extracted.",
+      "historical_scheduling_note": "These two jobs ran alongside a contact control on a four-CPU quota; wall time is not a formulation-performance comparison.",
+      "retained_sha256": {
+        "elastic-starter.log": "a6a7348d5d4056b92b513c6c50bb8d44a9f190e9cd628babac3ec3404be47105",
+        "elastic_0001.rad": "4fd6dea9a3913d6137875287c294d171868ccccb23a72e0e99c211fe034fb159",
+        "elastic_0000.out": "7cec6d27947a8bef6ff22cf0ede847409b0392fdaa87dd7470dae36960215039",
+        "elastic-engine.log": "f9fc8d7047304f2a8824fa654b528f7e1e2d34e33efd29711a86c73a8f790eed",
+        "elastic_0001.out": "95da0a18331f953ff9008d9b9d18e9a31f4537b6c7af12a85219ac410ae1f3ad",
+        "elastic.radioss.json": "c7c584c07048bf2006bf9c7b68ecbcd845ac12f6e8483ca31fe938dd1bbe59f8",
+        "elastic_0000.rad": "3d1fc5e55468d290a8b939a9033ea9879dba0b9bddac2fd8dc060016c49833f7",
+        "matched-elastic-native14.log": "1420a581dd39b0bf391cf736d3bb7a04c1bfdcf3204631614625d2ba5d78a333"
+      }
+    }
+  ],
+  "implicit_capability": {
+    "report": "validation/opencourant_implicit_capability.json",
+    "all_five_tested_cases_require_MUMPS": true,
+    "runtime_engine_exits_before_equilibrium_solve": true,
+    "implicit_static_qualified": false,
+    "qualification": "Official tested GNU runtime reports Fatal error: MUMPS required; this is a capability failure, not an observed static-convergence failure."
+  },
+  "input_and_output_archive": "validation/matched_elastic_numerical_inputs.tar.gz",
+  "input_and_output_archive_sha256": "d476fc401c1ff822d34fd38f22cbfac02faa056e971e64a1df6ee63e7a62bb1d",
+  "archived_files_sha256": {
+    "coarse_mesh_and_bcs.json": "f95ea4c46a45721905c8a9244daed2b930ebe09dac17503b069ab2708307bfbe",
+    "excluded_matched-elastic-native14/elastic-engine.log": "f9fc8d7047304f2a8824fa654b528f7e1e2d34e33efd29711a86c73a8f790eed",
+    "excluded_matched-elastic-native14/elastic-starter.log": "a6a7348d5d4056b92b513c6c50bb8d44a9f190e9cd628babac3ec3404be47105",
+    "excluded_matched-elastic-native14/elastic.radioss.json": "c7c584c07048bf2006bf9c7b68ecbcd845ac12f6e8483ca31fe938dd1bbe59f8",
+    "excluded_matched-elastic-native14/elastic_0000.out": "7cec6d27947a8bef6ff22cf0ede847409b0392fdaa87dd7470dae36960215039",
+    "excluded_matched-elastic-native14/elastic_0000.rad": "3d1fc5e55468d290a8b939a9033ea9879dba0b9bddac2fd8dc060016c49833f7",
+    "excluded_matched-elastic-native14/elastic_0001.out": "95da0a18331f953ff9008d9b9d18e9a31f4537b6c7af12a85219ac410ae1f3ad",
+    "excluded_matched-elastic-native14/elastic_0001.rad": "4fd6dea9a3913d6137875287c294d171868ccccb23a72e0e99c211fe034fb159",
+    "excluded_matched-elastic-native14/matched-elastic-native14.log": "1420a581dd39b0bf391cf736d3bb7a04c1bfdcf3204631614625d2ba5d78a333",
+    "excluded_matched-elastic-native24-refined/elastic-engine.log": "f9fc8d7047304f2a8824fa654b528f7e1e2d34e33efd29711a86c73a8f790eed",
+    "excluded_matched-elastic-native24-refined/elastic-starter.log": "4dbc8ddcaff337aecb8a96456c1f99333282ed08bef6e356cefa7303f94aef74",
+    "excluded_matched-elastic-native24-refined/elastic.radioss.json": "ae25f5b9e321b31ece1decdaf322767be526855f911ff30fbbe16e7b18654137",
+    "excluded_matched-elastic-native24-refined/elastic_0000.out": "38a7ab99a821ef8e3c7bf482eb8864f210b38e6dbaf4a39e8eaf7830ecb50462",
+    "excluded_matched-elastic-native24-refined/elastic_0000.rad": "a5909a1626aceac7f9f0f13175883a34ffff3af2eb16d39aeec1a536a8988bce",
+    "excluded_matched-elastic-native24-refined/elastic_0001.out": "fbda8408c0dc3186dcf9f66a82f965d8d9c82d54cb464fc4ac41c752543524a3",
+    "excluded_matched-elastic-native24-refined/elastic_0001.rad": "4fd6dea9a3913d6137875287c294d171868ccccb23a72e0e99c211fe034fb159",
+    "excluded_matched-elastic-native24-refined/matched-elastic-native24-refined.log": "1528075a52a113770f53715abf2e62298e4ba87ef052b1b8c0e86333dd7a4a3b",
+    "fine_ccx/c3d8i.dat": "80301cba778e18874404738bf11de4030b4b0023ad21158872dad30f9956c5e5",
+    "fine_ccx/c3d8i.inp": "c43aa9a0db7487ac0dcb325c5755e6c4d90d3cb433402f0780ebcf8bc11f5e1b",
+    "fine_ccx/c3d8i.log": "2dd0b0b90f0732678fdfe9508cb13314e468a03d38eb48c25559f607cd78ca80",
+    "fine_ccx/c3d8i.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+    "fine_ccx/c3d8r.dat": "67900faaf23061365dd4b33ad399ba4cbcb6592ef23f84a62a1039a1c76a01fd",
+    "fine_ccx/c3d8r.inp": "cc683817d231fcbf1ddf4ebacb9782574bbd91928cd0c494d19195f9b8d63782",
+    "fine_ccx/c3d8r.log": "d14d9e70dbfb9d3d01f531a90eb2078b8300c8938a74864edf50ae98c8d4e964",
+    "fine_ccx/c3d8r.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+    "fine_ccx/mesh_and_bcs.json": "0a6f1ecda68e8850ceb84500244464f15b06a4e0db71f5f21edec3c88600d85d",
+    "native_half_step/diagnostic.json": "f3f6a6718526fdbdcb3cfbfcc504f17adb998244a93c4221b9fb3113654b6dd8",
+    "native_half_step/elastic-convert.log": "7c3df07ae475ecc161785c2bea3c9270b763b988b7dbb0d021668da56216486a",
+    "native_half_step/elastic-engine.log": "995881a53634c138ac9277a09b0a1bd2780e6a28de1772b7efb19121af7bf3d0",
+    "native_half_step/elastic-starter.log": "0a3bd7216bd3ed3e17f52c7e548557fd7518a0e7632e741a654654e382d9429a",
+    "native_half_step/elastic.radioss.json": "df436640e847ee6ee8e70c5e04f005783c558e75214677510ac5f6098f0a46a2",
+    "native_half_step/elastic.run.json": "f974f0e72dff8e4fa3f5fe74f08dbb764b73081a1faa657975b4cbf5751bdc3c",
+    "native_half_step/elasticT01": "2fc3c3b4e2a1f482619c2f6e91353b1d9f2bb167d18aaec90f99b3fec9548798",
+    "native_half_step/elasticT01.csv": "f7079f67eff33b48f04c0187b3b23cd1147e92d0846bb784a7b9244ebfc297b3",
+    "native_half_step/elastic_0000.out": "b6c6c19fbacac63580af5d0500cf505d7f8eee494edb4de62bc8aa0e46f13871",
+    "native_half_step/elastic_0000.rad": "2e37aa1d39efa3958d306f195e33891f3c6568815ec0d1d19536953f2f40cc96",
+    "native_half_step/elastic_0001.out": "f9b5ea3826a2a521e483f2d71dbad2915f465cd34041f93d7f4c14978072fc1c",
+    "native_half_step/elastic_0001.rad": "4401f10b7d04fca1f1b8aecaa5154bf8235cb1ebf5d40f756ae265b6544a61f5",
+    "source/matched_elastic_ccx_audit.json": "1632b8be1f2f4eeda79b80eb9df80d98f328dbb892f44fcaaf865f7a4b8398be",
+    "source/matched_elastic_mesh_convergence.json": "2ef9c117a5640094209c9acdec945ea2deacecf8cf0636cc62de1b3fe1742c25",
+    "source/matched_elastic_native_audit.json": "c54b89f68ca9ae5adcccf22d48412fc9cb5b29ec5b62f1d7296c04ab80e056cb",
+    "source/probe_elastic_mesh_refinement.py": "c54a1aa284700d0ef80c8fe59021625f65057243384cc297e7b6c62825d60f04",
+    "source/probe_matched_elastic_lattice.py": "2852035a6fe5f8cd5f53865282a67f21fe3d820a7a6461a2829c38c092fd93cf"
+  },
+  "original_executed_native_generator_archived_as": "source/probe_courant_elastic_lattice_executed.py",
+  "archive_omissions": [
+    "CCX FRD visualization files remain in research storage; their observed hashes are retained in matched_elastic_mesh_convergence.json.",
+    "Native animation and restart binaries omitted.",
+    "Excluded timeout histories are unassessed and not offered as completed response evidence."
+  ],
+  "calibrated": false,
+  "quasi_static_validated": false,
+  "experimental_agreement": false,
+  "limitations": [
+    "No material parameters or paper curve used to tune these diagnostics.",
+    "One refinement and one AMS-halving comparison do not qualify full lattice contact/fracture response.",
+    "Generation and analysis script versions are retained separately; no retrospective execution metadata created."
+  ]
+}

@@ -64,3 +64,89 @@ và solver output đã quan sát không được sửa lại để gán provenan
 Kết quả xác nhận sự nhạy với discretization/formulation trên cùng geometry,
 không xác định được fracture locus và không chứng minh experimental agreement.
 Giải quyết sensitivity này trước khi chọn material candidate từ một curve fit.
+
+## Đối chứng bổ sung: refinement và AMS
+
+[Báo cáo tổng hợp mới](matched_elastic_numerical_update.json) giữ các kiểm tra
+hash của lưới, input, output và metadata đã chạy.
+[Archive bằng chứng](matched_elastic_numerical_inputs.tar.gz) chứa shared mesh, input/output số của
+hai bài static lưới mịn, cùng T01/CSV và execution binding của bài native giảm
+nửa bước AMS. Archive cũng giữ script native đúng phiên bản đã tạo run; không
+sửa metadata cũ để gán hash của script mới. Các FRD, animation và restart lớn
+không nằm trong archive này; báo cáo ghi rõ các phần bỏ qua.
+
+Một refinement conforming chia mỗi quad thành bốn, giữ nguyên ID/tọa độ của
+mọi node cũ, gauge Ux tại node 1293, hai mặt Z=0/25 mm, diện tích và thể tích.
+Lưới thay đổi từ 7.392 thành 29.568 bricks (21.870 thành 73.406 nodes). Hai
+static solves đều hoàn tất không có error/warning; cân bằng phản lực Y bằng
+không trong độ chính xác output:
+
+| Phần tử CCX | k lưới cũ, N/mm | k lưới mịn, N/mm | Thay đổi |
+| --- | ---: | ---: | ---: |
+| C3D8R | 448,4803 | 543,3955 | +21,1637% |
+| C3D8I | 584,0973 | 583,6818 | −0,0711% |
+
+ELSE của C3D8R lưới mịn còn thấp hơn F·delta/2 khoảng 2,076%; C3D8I khớp
+trong độ chính xác output. Xem [chi tiết refinement](matched_elastic_mesh_convergence.json).
+Một cấp refinement chưa chứng minh
+hội tụ đàn hồi tổng quát, và càng chưa chứng minh hội tụ khi contact, plasticity,
+fracture hoặc biến dạng lớn hoạt động. Không dùng các số này để thay đổi E.
+
+Giữ nguyên lưới cũ, solid24, độ dịch chuyển 0,01 mm và ramp 0,004 s, giảm bước
+AMS từ 1e-6 xuống 5e-7 s cho **work-equivalent stiffness** lần lượt
+1.006,2032 và 1.006,2180 N/mm: thay đổi khoảng **+0,00147%**. Tuy nhiên, giá
+trị native sau giảm bước vẫn cao hơn k static C3D8I lưới mịn khoảng **72,39%**.
+Đây là so sánh hai đại lượng diagnostic của các formulation khác nhau, chưa
+phải phép chứng minh solver nào đúng hoặc nguyên nhân của sai khác với paper.
+
+Nodal-impulse differentiation vẫn không đạt kiểm tra cân bằng: residual tối
+đa cuối ramp giảm từ khoảng 20,23 xuống 5,09 N. Vì vậy, không lấy trung bình
+đường nodal-force này làm static reference. Work/energy gần nhau và KE/IE nhỏ
+không đủ để bỏ qua thay đổi inertial operator của AMS hoặc kết luận đã hội tụ
+đường force–strain khi collapse. Bài đàn hồi không xác định fracture locus.
+
+Để tái chạy hai kiểm tra trên, sau khi đã tạo lưới CCX bằng các lệnh đầu trang:
+
+```sh
+python scripts/probe_elastic_mesh_refinement.py \
+  --mesh "$ELASTIC_DIR/ccx/mesh_and_bcs.json" \
+  --coarse-report "$ELASTIC_DIR/ccx/ccx_elastic_report.json" \
+  --output "$ELASTIC_DIR/refined-ccx" --threads 2
+
+python scripts/probe_courant_elastic_lattice.py \
+  --mesh "$ELASTIC_DIR/ccx/mesh_and_bcs.json" \
+  --output "$ELASTIC_DIR/native24-half-AMS" --solid 24 --duration .004 \
+  --ams-time-step 5e-7 --threads 4 --timeout-seconds 1800
+```
+
+Chạy tuần tự và dùng thư mục mới. Hai thử nghiệm khác — native solid24 trên
+lưới refinement và native solid14 trên lưới cũ — đã timeout ở giới hạn 2.400 s.
+Chúng không có completed execution binding và bị loại khỏi bằng chứng stiffness.
+Khi chạy các thử nghiệm đó có ba job dùng chung quota bốn CPU; thời gian này
+không phải benchmark hiệu năng các formulation.
+
+## Khả năng implicit của runtime đang dùng
+
+[Năm thử nghiệm cube implicit](opencourant_implicit_capability.json) với
+solid14/17/18/24, có cả PCG và MUMPS, đều được starter chấp nhận nhưng engine
+thoát trước khi giải cân bằng với thông báo **`Fatal error: MUMPS required`**.
+Đây là thiếu khả năng của bản GNU executable đã thử, không phải một kết quả
+không hội tụ static và không cung cấp stiffness reference. Input và failure log
+được giữ trong [archive riêng](opencourant_implicit_capability_inputs.tar.gz).
+Không suy ra rằng cứ đổi keyword sang implicit là giải quyết được calibration;
+một executable có MUMPS sẽ cần qualification riêng.
+
+## Mức tinh lưới thứ hai
+
+Đã chạy thêm 118.272 phần tử trên cùng hình học và cùng điều kiện biên,
+không plasticity/damage/contact. C3D8I cho 578,2662 N/mm (giảm 0,928% so với
+29.568 phần tử); C3D8R cho 564,8645 N/mm (tăng 3,953%). Hai formulation còn
+chênh khoảng 2,32%; chưa coi đây là chứng minh hội tụ của bài toán collapse.
+Xem [kết quả thực](elastic_second_refinement.json) và
+[plot độ cứng](elastic_refinement_comparison.png).
+
+Công cụ native elastic hiện có `--no-ams`, loại cả starter /AMS và engine
+/DT/AMS để kiểm tra độc lập ảnh hưởng của mass scaling. Đã kiểm tra deck được
+sinh; chưa có kết quả native không AMS cho full lattice trong đợt này.
+Độ cứng từ công native hiện có vẫn là diagnostic động, không tự động tương
+đương độ cứng tĩnh. Không dùng tỷ số độ cứng để sửa E vật liệu.

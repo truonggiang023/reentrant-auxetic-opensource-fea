@@ -1,0 +1,216 @@
+{
+  "status": "Native implicit capability probe; no static solution or calibration established",
+  "script": "scripts/probe_courant_implicit.py",
+  "script_sha256": "bae82874007d5dba385540a155f418b0cdbaebcd8d32b20d5b2368434a9dbb16",
+  "runtime_executables_sha256": {
+    "/workspace/opencourant/runtime/OpenCourant/exec/starter_linux64_gf": "0bbea37273656b270bea53cf756b115bcd5d9a8875a3c41283922a3b927719d1",
+    "/workspace/opencourant/runtime/OpenCourant/exec/engine_linux64_gf": "54cc9fc2a7cea6f1215afb6da9109d368650ff1fa7985625cb111f47d7e92be4"
+  },
+  "geometry": {
+    "cube_side_mm": 1.0,
+    "bricks": 8,
+    "nodes": 27,
+    "free_interior_y_dofs": 9
+  },
+  "material": {
+    "young_MPa": 69000.0,
+    "poisson": 0.3,
+    "density_Mg_per_mm3": 2.67e-09
+  },
+  "loading": {
+    "top_y_mm": 0.001,
+    "bottom_y_mm": 0.0,
+    "all_xz_fixed": true
+  },
+  "analytical_check_if_a_future_run_succeeds": {
+    "constrained_y_modulus_MPa": 92884.61538461538,
+    "expected_top_force_N": 92.88461538461537
+  },
+  "cases": [
+    {
+      "solid": 14,
+      "solver": 1,
+      "stages": [
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/starter_linux64_gf",
+          "exit_code": 0
+        },
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/engine_linux64_gf",
+          "exit_code": 2
+        }
+      ],
+      "elapsed_wall_seconds": 3.383578166998632,
+      "source_inputs_sha256": {
+        "cube_0000.rad": "cb79a9287b31c3993df7c4eb18974dce0271ef6b431782c5a8b96838704a404d",
+        "cube_0001.rad": "43df0524cbfbd968c85123b4b731faa1a10160368271f4929f10b9529d7f1aca"
+      },
+      "metadata_sha256_before_execution": "e4d439887e000358066b030ae7ea3417c970a8ae261c8a203fc315c49704fcb8",
+      "metadata_unchanged": true,
+      "output_sha256": {
+        "cube_0000.out": "b8a36d406405a2ae8c11d005d5ae6bce06c75eb2ef3931f153c9558002a6ea03",
+        "cube_0001.out": "01c9b3e35d5c8f003251d09eaaba901973f29c7b3c0b3a90378f90a73ddd040c",
+        "starter_linux64_gf.log": "10d46b74ecb34e4cda8514e983488f01568e0575a14a04bdc5c598a4dbcfd549",
+        "engine_linux64_gf.log": "470aff7d5b7948c7517b3ca9ce6357b40fb4db847e751d32f82df7a238ba0ba1"
+      },
+      "engine_normal_termination": false,
+      "engine_error_lines": [],
+      "explicit_mumps_required_failure": true,
+      "usable_as_static_stiffness_evidence": false,
+      "reason": "Runtime explicitly reports MUMPS required before equilibrium solve",
+      "starter_input_accepted": true
+    },
+    {
+      "solid": 14,
+      "solver": 2,
+      "stages": [
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/starter_linux64_gf",
+          "exit_code": 0
+        },
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/engine_linux64_gf",
+          "exit_code": 2
+        }
+      ],
+      "elapsed_wall_seconds": 4.661902523999743,
+      "source_inputs_sha256": {
+        "cube_0000.rad": "cb79a9287b31c3993df7c4eb18974dce0271ef6b431782c5a8b96838704a404d",
+        "cube_0001.rad": "6e3bab535f4cd21d0170f26268ec628fdc208266d86f87b07a804ced14f7a531"
+      },
+      "metadata_sha256_before_execution": "349f0931b4ee0a1451a17ac39cb61b6820410d501de013a1ed590c9d247c0c3a",
+      "metadata_unchanged": true,
+      "output_sha256": {
+        "cube_0000.out": "db11873fdbd090fab826044871a8007638cb88f0db0e4506c6c353fe4e47fbdd",
+        "cube_0001.out": "c1745fa00f30a15967762bfd1c0840549d5e20057654de3a4c589c59d4a4ceb9",
+        "starter_linux64_gf.log": "6546a3dd8f67d26b4addd0ac1ad83c04794ff1bbb5b2653d768a2a06eab6e30a",
+        "engine_linux64_gf.log": "470aff7d5b7948c7517b3ca9ce6357b40fb4db847e751d32f82df7a238ba0ba1"
+      },
+      "engine_normal_termination": false,
+      "engine_error_lines": [],
+      "explicit_mumps_required_failure": true,
+      "usable_as_static_stiffness_evidence": false,
+      "reason": "Runtime explicitly reports MUMPS required before equilibrium solve",
+      "starter_input_accepted": true
+    },
+    {
+      "solid": 17,
+      "solver": 1,
+      "stages": [
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/starter_linux64_gf",
+          "exit_code": 0
+        },
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/engine_linux64_gf",
+          "exit_code": 2
+        }
+      ],
+      "elapsed_wall_seconds": 4.596029378997628,
+      "source_inputs_sha256": {
+        "cube_0000.rad": "b32c0be0ba94b91d39d8d8805a3b39ded8ce55d7961d08d2a34483b13a25228d",
+        "cube_0001.rad": "43df0524cbfbd968c85123b4b731faa1a10160368271f4929f10b9529d7f1aca"
+      },
+      "metadata_sha256_before_execution": "f30efb0a711018554b80650ec9627e2841d6a84130ecf4cf927863f69809c3cb",
+      "metadata_unchanged": true,
+      "output_sha256": {
+        "cube_0000.out": "dd14a09dfd11dd3c88d6bbcd7185c1c1f2c66f94eea7aec7393462cabf01c708",
+        "cube_0001.out": "01c9b3e35d5c8f003251d09eaaba901973f29c7b3c0b3a90378f90a73ddd040c",
+        "starter_linux64_gf.log": "fc6fae2d74337ea54d50dc259e3e27c067f11cc8ac069d06b569b0721f812f5f",
+        "engine_linux64_gf.log": "470aff7d5b7948c7517b3ca9ce6357b40fb4db847e751d32f82df7a238ba0ba1"
+      },
+      "engine_normal_termination": false,
+      "engine_error_lines": [],
+      "explicit_mumps_required_failure": true,
+      "usable_as_static_stiffness_evidence": false,
+      "reason": "Runtime explicitly reports MUMPS required before equilibrium solve",
+      "starter_input_accepted": true
+    },
+    {
+      "solid": 18,
+      "solver": 1,
+      "stages": [
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/starter_linux64_gf",
+          "exit_code": 0
+        },
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/engine_linux64_gf",
+          "exit_code": 2
+        }
+      ],
+      "elapsed_wall_seconds": 1.9555787770004827,
+      "source_inputs_sha256": {
+        "cube_0000.rad": "dfe60e190c7062cdb33c9d5312c84c6f7aaf4a905a976687d1d2a1a3f8905e3b",
+        "cube_0001.rad": "43df0524cbfbd968c85123b4b731faa1a10160368271f4929f10b9529d7f1aca"
+      },
+      "metadata_sha256_before_execution": "8d8a0fb20c9ed354f3c71c6c3cf16abde658cce0e5c9630a98ff0a06625f3a89",
+      "metadata_unchanged": true,
+      "output_sha256": {
+        "cube_0000.out": "94ca1af7749a0f54f8c8e4a9e52a5ebd83e35955eefb357b17bf758a2ecc6592",
+        "cube_0001.out": "01c9b3e35d5c8f003251d09eaaba901973f29c7b3c0b3a90378f90a73ddd040c",
+        "starter_linux64_gf.log": "06a1b106751e113c998d924700da35e906b4279645f296e1f3833ebecd1c0f12",
+        "engine_linux64_gf.log": "470aff7d5b7948c7517b3ca9ce6357b40fb4db847e751d32f82df7a238ba0ba1"
+      },
+      "engine_normal_termination": false,
+      "engine_error_lines": [],
+      "explicit_mumps_required_failure": true,
+      "usable_as_static_stiffness_evidence": false,
+      "reason": "Runtime explicitly reports MUMPS required before equilibrium solve",
+      "starter_input_accepted": true
+    },
+    {
+      "solid": 24,
+      "solver": 1,
+      "stages": [
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/starter_linux64_gf",
+          "exit_code": 0
+        },
+        {
+          "executable": "/workspace/opencourant/runtime/OpenCourant/exec/engine_linux64_gf",
+          "exit_code": 2
+        }
+      ],
+      "elapsed_wall_seconds": 2.9808009320040583,
+      "source_inputs_sha256": {
+        "cube_0000.rad": "096847abbde84f10729200ccf6868c8393bee2b5a8f3458d688ebb0d83113661",
+        "cube_0001.rad": "43df0524cbfbd968c85123b4b731faa1a10160368271f4929f10b9529d7f1aca"
+      },
+      "metadata_sha256_before_execution": "792a1726862ba5c88f11e0adb4bd7ef66ecb980c31313fe138a28f9cda3f31fa",
+      "metadata_unchanged": true,
+      "output_sha256": {
+        "cube_0000.out": "568b65741b79d18f09ee6765086c1d2f1b78ef8fbbb3068482744c96e70efc3d",
+        "cube_0001.out": "01c9b3e35d5c8f003251d09eaaba901973f29c7b3c0b3a90378f90a73ddd040c",
+        "starter_linux64_gf.log": "bd99c34ef3f88c96a631c03ba98cba0c9fd40f401622b63467c95a0ba59cd018",
+        "engine_linux64_gf.log": "470aff7d5b7948c7517b3ca9ce6357b40fb4db847e751d32f82df7a238ba0ba1"
+      },
+      "engine_normal_termination": false,
+      "engine_error_lines": [],
+      "explicit_mumps_required_failure": true,
+      "usable_as_static_stiffness_evidence": false,
+      "reason": "Runtime explicitly reports MUMPS required before equilibrium solve",
+      "starter_input_accepted": true
+    }
+  ],
+  "all_cases_explicitly_require_mumps": true,
+  "implicit_static_qualified": false,
+  "qualification": "This official GNU executable cannot supply the proposed implicit reference in these tested cases. A separate MUMPS-enabled build would need its own runtime and numerical qualification.",
+  "input_and_failure_log_archive": "validation/opencourant_implicit_capability_inputs.tar.gz",
+  "input_and_failure_log_archive_sha256": "ec3538f1265d984a6f431a624563709a48c55b2ca599cd854a2a438db0fa113a",
+  "related_source_audit": {
+    "repository_commit": "bad6688602d770e019b75773d2d5a48b4f9bd918",
+    "scope": "Related OpenRadioss source snapshot, not asserted to be the exact source of the pinned OpenCourant executable. Actual runtime stderr establishes the MUMPS-required failure.",
+    "files_sha256": {
+      "engine/source/engine/resol.F": "c7002fad89c5df71ce8a78a0b2173d3e63e9fa33ae802333edb1ed13ab9143fb",
+      "engine/source/implicit/imp_glob_k.F": "7a6630fe353463ada0d2e0066073970694e8bb6625a05cac9a14850bd9e3d30e",
+      "engine/source/implicit/imp_init.F": "d2480eec5cb7ad61cb44c6cff290c74b9e349619e5434b2aefa22d54dad90ec0",
+      "engine/build_script.sh": "3701d60d1b057f64889a7b1582aac9c7dbd80acbbf67ddcf29e3585874ba7b9c"
+    },
+    "observations": [
+      "resol.F wraps the implicit IMP_SOLV call in MUMPS5; the alternative branch writes Fatal error: MUMPS required.",
+      "imp_glob_k.F contains a commented-out SZKE3 HEPH stiffness call and unsupported-element reporting; HEPH static equivalence must not be assumed even with a future implicit-enabled build.",
+      "imp_init.F limits consistent tangent availability to solid formulations14/17. This is a related-source support concern, not a current binary equilibrium result."
+    ]
+  }
+}
