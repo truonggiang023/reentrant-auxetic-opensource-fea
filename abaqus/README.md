@@ -151,3 +151,12 @@ python export_abaqus.py --output-dir results/abaqus_physical_speed \
 
 Exporter đọc core từ archive đã commit, không chạy lại Gmsh. Dùng thư mục
 output mới cho mỗi biến thể để giữ nguyên dữ liệu đã chạy.
+
+## Script CAE từ file gốc, strain 0,12
+
+Bộ riêng [run_strain012.py](run_strain012.py) được tạo từ
+`reference_setup_numeric_source.py`, giữ coupling mặt ngoài platen → RP và
+xuất RF2/U2. Xem [hướng dẫn chạy](README_VI.md) và
+[exporter ODB](export_abaqus_curve.py). Bộ này giữ các lựa chọn vật liệu,
+damage, mesh và mass scaling của script gốc; không thay thế hai deck thin_t03
+ở trên và không phải một mô hình đồng nhất với native OpenCourant.
