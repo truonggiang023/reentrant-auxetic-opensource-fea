@@ -103,8 +103,16 @@ def write_paper_contact_deck(
 
     lower, lower_ids = plate(x0,x1,ymin-gap-thick,ymin-gap,ncore+1)
     upper, upper_ids = plate(x0,x1,ymax+gap,ymax+gap+thick,ncore+9)
+    bottom_rp, top_rp, bottom_rot, top_rot = range(ncore + 17, ncore + 21)
+    for nid, y in ((bottom_rp, ymin-gap-thick), (top_rp, ymax+gap+thick),
+                   (bottom_rot, 0.), (top_rot, 0.)):
+        upper.append(f"{nid}, {(x0+x1)/2:.12g}, {y:.12g}, {(zmin+zmax)/2:.12g}")
+    area = float(config.get('reference_area', (xmax-xmin)*(zmax-zmin)))
+    if not np.isfinite(area) or area <= 0:
+        raise ValueError('reference_area must be finite and positive')
     lines = ["*HEADING", "Dong2019 candidate: sliding platen / large deformation",
-             "** Units: mm, N, MPa; stress=top reaction/(76*25) only for exact paper envelope",
+             "** Units: mm, N, MPa; compression-positive engineering RP curve",
+             f"** REFERENCE_AREA_MM2={area:.12g}",
              "*NODE"] + node_lines + lower + upper
     lines.append(f"*ELEMENT,TYPE={element_type},ELSET=CORE")
     for eid, el in enumerate(elements,1):
@@ -136,6 +144,13 @@ def write_paper_contact_deck(
     upper_load=upper_ids if rigid_platens else [upper_ids[i] for i in (2,3,6,7)]
     _nset(lines,"BOTTOM_PLATEN_NODES",lower_load)
     _nset(lines,"TOP_PLATEN_NODES",upper_load)
+    _nset(lines, "RP_BOTTOM_PLATEN", [bottom_rp])
+    _nset(lines, "RP_TOP_PLATEN", [top_rp])
+    _nset(lines, "PLATEN_ROTATIONS", [bottom_rot, top_rot])
+    # Only outer faces are coupled by default: inner steel faces remain elastic.
+    # CCX represents kinematic coupling with rigid-body MPCs and rotation nodes.
+    lines += [f"*RIGID BODY,NSET=BOTTOM_PLATEN_NODES,REF NODE={bottom_rp},ROT NODE={bottom_rot}",
+              f"*RIGID BODY,NSET=TOP_PLATEN_NODES,REF NODE={top_rp},ROT NODE={top_rot}"]
     z_faces = (list(range(1,ncore+1)) if config.get('plane_strain',True) else
                [i+1 for i,p in enumerate(nodes) if abs(p[2]-zmin)<tol or abs(p[2]-zmax)<tol])
     _nset(lines,"CORE_PLANE_STRAIN",z_faces)
@@ -187,17 +202,18 @@ def write_paper_contact_deck(
         lines += [f'*CONTACT PAIR,INTERACTION=SLIDING,TYPE={contact_type}',
                   f'WALL_SLAVE_{i},WALL_MASTER_{i}']
 
-    lines += ["*BOUNDARY","BOTTOM_PLATEN_NODES,1,3,0.",
-              "TOP_PLATEN_NODES,1,1,0.","TOP_PLATEN_NODES,3,3,0.",
+    lines += ["*BOUNDARY","RP_BOTTOM_PLATEN,1,3,0.", "PLATEN_ROTATIONS,1,3,0.",
+              "RP_TOP_PLATEN,1,1,0.","RP_TOP_PLATEN,3,3,0.",
               "CORE_PLANE_STRAIN,3,3,0.", "CORE_X_ANCHOR,1,1,0.",
               "*STEP,NLGEOM=YES,INC=100000",
               "*STATIC",
               f"{config.get('initial_increment',1e-5):.12g}, 1., {config.get('minimum_increment',1e-6):.12g}, {config.get('maximum_increment',.002):.12g}",
               "*BOUNDARY",
-              f"TOP_PLATEN_NODES,2,2,{-float(config['compression_strain'])*height:.12g}",
+              f"RP_TOP_PLATEN,2,2,{-float(config['compression_strain'])*height:.12g}",
               ("*NODE FILE,GLOBAL=YES,TIME POINTS=TARGET_FRAMES" if times and target_output_only else "*NODE FILE,GLOBAL=YES"),"U,RF",
               "*EL FILE",("S,E,SDV" if damage else "S,E,PEEQ"),
-              "*NODE PRINT,NSET=TOP_PLATEN_NODES,TOTALS=ONLY","RF",
+              "*NODE PRINT,NSET=RP_TOP_PLATEN", "U,RF",
+              "*NODE PRINT,NSET=RP_BOTTOM_PLATEN", "U,RF",
               "*EL PRINT,ELSET=CORE", ("S,SDV" if damage else "S,PEEQ"),
               "*CONTACT FILE", "CDIS,CSTR",
               "*END STEP"]
@@ -208,7 +224,9 @@ def write_paper_contact_deck(
         path.with_suffix('.material.dat').write_text(material_data,encoding='utf8')
     return {"path":str(path),"core_nodes":ncore,"core_elements":len(elements), "element_type":element_type,
             "top_faces":len(core_top),"bottom_faces":len(core_bottom),
-            "initial_height":height,"nominal_area":float(config.get("reference_area",76.0*25.0)),
+            "initial_height":height,"nominal_area":area,
             "self_contact_experimental":bool(self_contact), "wall_contact_pairs":len(wall_pairs), "rigid_platen_kinematics":rigid_platens,
+            "top_reference_node":top_rp, "bottom_reference_node":bottom_rp,
+            "curve_source":"reference-point RF2 and relative U2; compression positive",
             "plane_strain":bool(config.get("plane_strain",True)), "x_anchor_node":int(anchor+1),
             "target_strains":[.12,.35,.65], "damage_model":("compiled finite-strain J2 crack-band damage; retained residual elements" if damage else "J2 plasticity only"), "damage_parameters":damage_info}

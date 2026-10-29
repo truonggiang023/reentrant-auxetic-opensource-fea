@@ -101,7 +101,7 @@ def read_core_deck(path):
         if line.startswith('*USER MATERIAL') and int(line.split('CONSTANTS=')[1])>21:
             raise ValueError('Unsafe oversized USER MATERIAL table; rerun through the sidecar interface')
         if line.startswith('*'):mode='';continue
-        if line.startswith('TOP_PLATEN_NODES,2,2,'):applied=-float(line.split(',')[-1])
+        if line.startswith(('TOP_PLATEN_NODES,2,2,', 'RP_TOP_PLATEN,2,2,')):applied=-float(line.split(',')[-1])
         values=line.split(',')
         if mode=='nodes':nodes[int(values[0])]=np.array(list(map(float,values[1:4])))
         elif mode=='core':elements.append(list(map(int,values[1:])))

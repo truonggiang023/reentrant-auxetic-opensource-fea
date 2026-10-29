@@ -67,9 +67,9 @@ frames must not be presented as deformation evidence.
 
 Units are mm, N and MPa. Compression is along Y and extrusion along Z. The
 paper-oriented deck fixes all core U3 DOFs and removes one in-plane rigid
-translation with a centreline roller. Only the outer steel platen faces receive
-the prescribed/support displacement; their contact faces remain elastically
-free. Static time is pseudo-time, not experimental seconds.
+translation with a centreline roller. The outer steel platen faces are kinematically coupled to reference points.
+Displacement/support conditions act on those points, with rotations fixed;
+the inner steel contact faces remain elastically free. Static time is pseudo-time, not experimental seconds.
 
 The C3D8R mesher uses Gmsh quad recombination and conforming refinement. Wedges
 and fully integrated C3D8 bricks are also available. Geometry and mesh convergence
@@ -87,3 +87,47 @@ The legacy `reentrant-fea`/`--advanced` writers and standalone Python material-p
 prototypes remain for comparison. The compiled material workflow is
 `run_paper.py` with an explicit `ductile_damage` configuration, rather than the
 legacy advanced writer's unsupported damage switch.
+
+## Compare CalculiX and Abaqus through platen reference points
+
+Both workflows couple each **outer platen surface** to one reference point;
+this does not tie the honeycomb surface to the platen. Sliding contact remains
+between the core and the inner platen faces. CalculiX uses `*RIGID BODY` MPCs on
+outer-face nodes (not the whole steel volume by default); Abaqus already uses
+`Coupling(..., couplingType=KINEMATIC)` on the corresponding outer surfaces.
+
+Regenerate and rerun old CalculiX decks, then export the accepted DAT history:
+
+```sh
+python run_paper.py --config configs/dong2019_contact.json --run
+python export_curve.py results/dong2019_contact.inp
+python assess_run.py results/dong2019_contact.inp --output results/assessment.json
+```
+
+Run `reference_setup_numeric_source.py` in Abaqus to create the model, then
+submit/complete its job. The setup writes `rp_curve_metadata.json` containing
+that model's initial height, reference area and step name. Export its ODB with:
+
+```sh
+abaqus python export_abaqus_curve.py job.odb --metadata rp_curve_metadata.json
+# For an existing ODB, supply its actual dimensions and step explicitly:
+# abaqus python export_abaqus_curve.py job.odb --height H0 --area A0 --step STEP
+```
+
+Both CSVs use compression-positive engineering measures:
+`strain = -(U2_top - U2_bottom)/H0` and `stress = -RF2_top/A0` (MPa).
+H0 is the initial **core** height, excluding platens. A0 comes from the chosen
+reference-area convention (the paper configs use 1900 mm²); without a configured
+area, CalculiX uses the initial core envelope width × depth. The exports also
+include both reactions and their sum, so imbalance can be checked. Abaqus RF2/U2
+histories must share sampling times. CalculiX exports only accepted increments
+and rejects missing RP histories instead of substituting pseudo-time strain.
+`assess_run.py` now requires the regenerated RP deck/history as well.
+
+Compare at strain 0.12 using matching material, geometry, mesh, contact, boundary
+conditions and area. Coupling alone does not guarantee agreement: Abaqus uses
+Explicit while this CalculiX workflow is static, and the current platen thickness,
+mesh and contact formulations differ. For Explicit, check kinetic/internal energy
+and force balance before treating a curve as quasi-static. The RP curve is a
+structural response; it is not a local true-stress/plastic-strain material table.
+No stiffness or plasticity parameters have been fitted by this change.

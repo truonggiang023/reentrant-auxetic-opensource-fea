@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 from reentrant_fea.ccx_results import completed_increments
+from reentrant_fea.rp_curve import ccx_rp_history
 from reentrant_fea.frd import committed_fields,read_core_deck,projected_overlap,contact_envelope
 
 
@@ -32,14 +33,12 @@ def assess(deck, targets=(.12,.35,.65), tolerance=.002):
                        projected_contact=projected_overlap(nodes,elements,data),
                        experimental_mode_agreement='not established')
         frames.append(row)
-    forces=[];max_damage=None;max_peeq=None;mode=None
+    forces, reference_area = ccx_rp_history(deck)
+    max_damage=None;max_peeq=None;mode=None
     accepted=[row[2] for row in inc]
     def committed(time):return any(abs(time-t)<=max(1e-10,abs(t)*6e-6) for t in accepted)
     lines=deck.with_suffix('.dat').read_text().splitlines()
     for i,line in enumerate(lines):
-        if 'total force' in line and 'TOP_PLATEN_NODES' in line and i+2<len(lines):
-            t=float(line.split()[-1]);rf=float(lines[i+2].split()[1])
-            if committed(t):forces.append({'strain':t/meta['period']*meta['end_nominal_strain'],'reaction_y_N':rf,'nominal_stress_MPa':-rf/1900.})
         if line.strip().startswith('internal state variables'):
             mode='sdv' if committed(float(line.split()[-1])) else None;continue
         if mode=='sdv':
@@ -56,7 +55,8 @@ def assess(deck, targets=(.12,.35,.65), tolerance=.002):
             'frames':frames,'contact':contact,'reaction_history':forces,
             'max_recorded_integration_point_damage':max_damage,
             'max_recorded_integration_point_peeq':max_peeq,
-            'stress_area_convention_mm2':1900.,
+            'stress_area_convention_mm2':reference_area,
+            'curve_source':'coupled platen reference-point RF2 and relative U2',
             'qualification':'solver evidence only; calibration, full-contact validity and experimental agreement are not established'}
     if latest is not None:
         time,strain,data=latest

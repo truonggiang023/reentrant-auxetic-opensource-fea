@@ -49,8 +49,9 @@ def test_closed_wall_gap_transmits_contact(tmp_path):
         for t,name,data in fields(deck.with_suffix('.frd')):
             if name=='DISP':u=data
         gap=.001+u[9][0]-u[2][0]
-        lines=deck.with_suffix('.dat').read_text().splitlines()
-        forces=[float(lines[i+2].split()[1]) for i,line in enumerate(lines) if 'total force' in line]
+        from reentrant_fea.rp_curve import ccx_rp_history
+        rows, _ = ccx_rp_history(deck)
+        forces = [row['reaction_y_N'] for row in rows]
         results.append((gap,forces,contact_envelope(deck.with_suffix('.frd'))))
     assert results[0][0]<-.001  # Closure exceeds the initial 0.001 mm void.
     assert results[1][0]>results[0][0]/2

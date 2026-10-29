@@ -37,10 +37,12 @@ def test_contact_compression_solver(tmp_path, strain, contact_type):
     # Synthetic locus for plumbing only, not an AlSi10Mg calibration.
     indices=initiation_indices(deck.with_suffix('.dat'),[(-100.,.5),(100.,.5)])
     assert max(row[3] for row in indices)>0
-    lines=deck.with_suffix('.dat').read_text().splitlines()
-    reactions=[float(lines[i+2].split()[1]) for i,line in enumerate(lines)
-               if 'total force (fx,fy,fz)' in line]
-    assert reactions and reactions[-1]<-1.  # Compression actually transmits force.
+    from reentrant_fea.rp_curve import ccx_rp_history
+    rows, area = ccx_rp_history(deck)
+    assert rows[-1]['strain'] == pytest.approx(strain)
+    assert rows[-1]['reaction_y_N'] < -1.
+    assert rows[-1]['nominal_stress_MPa'] == pytest.approx(-rows[-1]['reaction_y_N']/area)
+    assert abs(rows[-1]['force_balance_y_N']) < abs(rows[-1]['reaction_y_N'])*1e-4
 
 @pytest.mark.parametrize('table', [[(200,.01),(210,.1)],[(200,0),(190,.1)],[(200,0),(float('nan'),.1)]])
 def test_invalid_hardening(table):

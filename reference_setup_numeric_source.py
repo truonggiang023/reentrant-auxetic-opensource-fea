@@ -5223,3 +5223,19 @@ if SAVE_CAE:
 
 
     print('CAE saved to: %s' % cae_path)
+
+# Reuse the exact model dimensions when exporting the coupled-RP ODB histories.
+# Run export_abaqus_curve.py in Abaqus Python after the job has completed.
+if CREATE_STEEL_PLATENS:
+    import json
+    with open('rp_curve_metadata.json', 'w') as curve_metadata_file:
+        json.dump({
+            'initial_height_mm': SPECIMEN_HEIGHT,
+            'reference_area_mm2': REFERENCE_CROSS_SECTION_AREA,
+            'step': STEP_NAME,
+            'top_set': 'RP_TOP_PLATEN',
+            'bottom_set': 'RP_BOTTOM_PLATEN',
+            'strain_convention': '-(U2_top-U2_bottom)/H0',
+            'stress_convention': '-RF2_top/A0',
+            'coupling': 'kinematic outer platen surface to reference point'
+        }, curve_metadata_file, indent=2)

@@ -3,7 +3,7 @@ import pytest
 from reentrant_fea.paper_contact_solver import write_paper_contact_deck
 
 
-def test_paper_deck_has_sliding_platens_without_rigid_grips(tmp_path):
+def test_paper_deck_has_sliding_platens_with_outer_face_reference_points(tmp_path):
     # Two triangular prisms form a rectangular slab, with Y-normal end faces.
     nodes=np.array([
         [0.,0.,0.],[1.,0.,0.],[1.,1.,0.],[0.,1.,0.],
@@ -17,9 +17,11 @@ def test_paper_deck_has_sliding_platens_without_rigid_grips(tmp_path):
     assert "*ELEMENT,TYPE=C3D8,ELSET=PLATENS" in s
     assert "CORE_TOP,TOP_PLATEN_CONTACT" in s
     assert "CORE_BOTTOM,BOTTOM_PLATEN_CONTACT" in s
-    assert "TOP_PLATEN_NODES,2,2,-0.65" in s
+    assert "RP_TOP_PLATEN,2,2,-0.65" in s
     assert "CORE_PLANE_STRAIN,3,3,0." in s
-    assert "*RIGID BODY" not in s
+    assert "*RIGID BODY,NSET=TOP_PLATEN_NODES,REF NODE=26,ROT NODE=28" in s
+    assert "*NODE PRINT,NSET=RP_TOP_PLATEN\nU,RF" in s
+    assert info["nominal_area"] == 2.
     assert "*DAMAGE" not in s  # no false damage claim
     assert info["top_faces"]>0 and info["bottom_faces"]>0
 
