@@ -22,6 +22,17 @@ không tuyên bố archive này tự chứa toàn bộ lịch sử kiểm chứn
 | 0,3 mm, nhanh | 0,01 | 1,18505 | 35,217% | 222,267% |
 | 0,3 mm, chậm | 0,04 | 1,28147 | 2,003% | 18,296% |
 
+Printed energy-error screen cũng được giữ riêng: max absolute error sau
+startup lần lượt là 5,4%/3,4% cho thick nhanh/chậm và 27,3%/13,3% cho thin
+nhanh/chậm. Chỉ thick chậm đạt ngưỡng 5% của screen này. Các giá trị lớn
+đầu quá trình cần được xem cùng absolute work/energy; không lọc bỏ chúng
+để thay đổi kết luận chấp nhận. Không thấy zero/negative-volume hoặc
+nonfinite warning trong bốn engine outputs này.
+
+JSON bên ngoài archive đã được bổ sung các diagnostics này từ cùng raw
+outputs. Archive là snapshot của bản report ban đầu tại commit d9b0030;
+raw inputs/outputs và receipts trong archive không thay đổi.
+
 Observed force intervals kết thúc hơi trước strain 0,12; không extrapolate
 để tạo giá trị đúng 0,12. Hai đường thực nghiệm tại 0,12 là 5,625/4,340 MPa
 cho mẫu 1 mm, và 0,28123/0,25912 MPa cho mẫu 0,3 mm. Đây là dữ liệu số hóa

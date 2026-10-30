@@ -3,7 +3,7 @@
   "calibrated": false,
   "quasi_static_validated": false,
   "qualification": "Use curve and energy diagnostics together; passing solver/energy screens is not full quasi-static or fracture qualification.",
-  "comparison_script_sha256": "cf6c63ea8d1b6e1229689e17d7a4b674becc692544932ba42e6d77f009d6893b",
+  "comparison_script_sha256": "849738e2aa4b989a8e2cb9daabdbabe5c5757d28be8241006d6217d00050de7b",
   "strain_measure": "Observed relative top/bottom RP DY divided by actual core height",
   "stress_measure": "Signed interval reaction from one time derivative of REACY, divided by declared nominal area",
   "paper_references": {
@@ -266,6 +266,30 @@
         "quasi_static_validated": false,
         "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
       },
+      "printed_energy_screen": {
+        "sampled_energy_screen_passed": true,
+        "reasons": [],
+        "sample_count_after_startup": 38,
+        "max_kinetic_internal_ratio": 0.0026109391124871,
+        "max_abs_energy_error_percent": 3.4,
+        "max_added_original_mass_ratio": 0.0,
+        "thresholds": {
+          "kinetic_internal_ratio": 0.05,
+          "abs_energy_error_percent": 5.0,
+          "added_original_mass_ratio": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "sampled screen only; core energies, hourglass/contact work and speed sensitivity still required"
+      },
+      "numerical_warning_flags": {
+        "zero_or_negative_volume": false,
+        "nonfinite_value_reported": false,
+        "review_required": false,
+        "matching_engine_line_count": 0,
+        "matching_engine_lines": [],
+        "qualification": "Warnings remain visible independently of completion and dense kinetic-energy ratios; inspect numerical validity before accepting a fit"
+      },
       "core_elements": 6818,
       "core_nodes": 19530,
       "source_config_sha256": "94120124c27acbec0edab72d801e6c18b8dc49989b5b007ed42dd52742e8bab9",
@@ -400,6 +424,32 @@
         "quasi_static_validated": false,
         "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
       },
+      "printed_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "sampled global energy error exceeds limit"
+        ],
+        "sample_count_after_startup": 10,
+        "max_kinetic_internal_ratio": 0.020343664347459413,
+        "max_abs_energy_error_percent": 5.4,
+        "max_added_original_mass_ratio": 0.0,
+        "thresholds": {
+          "kinetic_internal_ratio": 0.05,
+          "abs_energy_error_percent": 5.0,
+          "added_original_mass_ratio": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "sampled screen only; core energies, hourglass/contact work and speed sensitivity still required"
+      },
+      "numerical_warning_flags": {
+        "zero_or_negative_volume": false,
+        "nonfinite_value_reported": false,
+        "review_required": false,
+        "matching_engine_line_count": 0,
+        "matching_engine_lines": [],
+        "qualification": "Warnings remain visible independently of completion and dense kinetic-energy ratios; inspect numerical validity before accepting a fit"
+      },
       "core_elements": 6818,
       "core_nodes": 19530,
       "source_config_sha256": "94120124c27acbec0edab72d801e6c18b8dc49989b5b007ed42dd52742e8bab9",
@@ -533,6 +583,33 @@
         "last_recorded_eroded_elements": 0.0,
         "quasi_static_validated": false,
         "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "printed_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "sampled global energy error exceeds limit",
+          "sampled kinetic/internal energy ratio exceeds limit"
+        ],
+        "sample_count_after_startup": 39,
+        "max_kinetic_internal_ratio": 0.12231204527081649,
+        "max_abs_energy_error_percent": 13.3,
+        "max_added_original_mass_ratio": 0.0,
+        "thresholds": {
+          "kinetic_internal_ratio": 0.05,
+          "abs_energy_error_percent": 5.0,
+          "added_original_mass_ratio": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "sampled screen only; core energies, hourglass/contact work and speed sensitivity still required"
+      },
+      "numerical_warning_flags": {
+        "zero_or_negative_volume": false,
+        "nonfinite_value_reported": false,
+        "review_required": false,
+        "matching_engine_line_count": 0,
+        "matching_engine_lines": [],
+        "qualification": "Warnings remain visible independently of completion and dense kinetic-energy ratios; inspect numerical validity before accepting a fit"
       },
       "core_elements": 7392,
       "core_nodes": 21870,
@@ -669,6 +746,33 @@
         "last_recorded_eroded_elements": 0.0,
         "quasi_static_validated": false,
         "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "printed_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "sampled global energy error exceeds limit",
+          "sampled kinetic/internal energy ratio exceeds limit"
+        ],
+        "sample_count_after_startup": 10,
+        "max_kinetic_internal_ratio": 0.5622599704579024,
+        "max_abs_energy_error_percent": 27.3,
+        "max_added_original_mass_ratio": 0.0,
+        "thresholds": {
+          "kinetic_internal_ratio": 0.05,
+          "abs_energy_error_percent": 5.0,
+          "added_original_mass_ratio": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "sampled screen only; core energies, hourglass/contact work and speed sensitivity still required"
+      },
+      "numerical_warning_flags": {
+        "zero_or_negative_volume": false,
+        "nonfinite_value_reported": false,
+        "review_required": false,
+        "matching_engine_line_count": 0,
+        "matching_engine_lines": [],
+        "qualification": "Warnings remain visible independently of completion and dense kinetic-energy ratios; inspect numerical validity before accepting a fit"
       },
       "core_elements": 7392,
       "core_nodes": 21870,

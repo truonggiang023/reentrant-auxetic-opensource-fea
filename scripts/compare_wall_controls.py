@@ -9,12 +9,14 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import re
 
 import numpy as np
 
 from assess_courant import assess
 from calibration_study import reference_curves
 from reentrant_fea.calibration import curve, curve_objective
+from reentrant_fea.radioss_results import read_engine_out, energy_screen
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -83,6 +85,22 @@ def discrepancy(values, experiments, interval):
     return result
 
 
+def numerical_warnings(text):
+    patterns = {
+        'zero_or_negative_volume': r'\b(?:ZERO\s+OR\s+NEGATIVE|NEGATIVE)\s+VOLUME\b',
+        'nonfinite_value_reported': r'\b(?:nan|inf(?:inity)?|non[- ]?finite)\b',
+    }
+    flags = {name: bool(re.search(pattern, text, re.I))
+             for name, pattern in patterns.items()}
+    matching = [line.strip() for line in text.splitlines()
+                if any(re.search(pattern, line, re.I) for pattern in patterns.values())]
+    flags.update(review_required=any(flags.values()),
+                 matching_engine_line_count=len(matching),
+                 matching_engine_lines=matching[:20],
+                 qualification='Warnings remain visible independently of completion and dense kinetic-energy ratios; inspect numerical validity before accepting a fit')
+    return flags
+
+
 def compare(cases, reference_dir=ROOT/'validation/paper_reference'):
     """Return a report and unmodified observed curves for LABEL/PREFIX pairs."""
     reference_dir = Path(reference_dir)
@@ -119,6 +137,10 @@ def compare(cases, reference_dir=ROOT/'validation/paper_reference'):
         if not (actual['completed'] and actual.get('run_binding_verified')
                 and actual.get('metadata_binding_verified')):
             raise ValueError(f'{label}: require completed solver and bound metadata/outputs')
+        # assess() has just verified this output against its execution receipt.
+        engine_path = Path(str(prefix)+'_0001.out')
+        printed_energy = energy_screen(read_engine_out(engine_path), metadata['duration_seconds'])
+        warnings = numerical_warnings(engine_path.read_text(errors='replace'))
         values = curve([[row['strain'], row['nominal_stress_MPa']]
                         for row in actual['reaction_history']], label)
         curves[label] = values
@@ -151,6 +173,7 @@ def compare(cases, reference_dir=ROOT/'validation/paper_reference'):
             paper_discrepancy=difference,
             global_energy_screen=actual['global_energy_screen'],
             core_energy_screen=actual['core_energy_screen'],
+            printed_energy_screen=printed_energy, numerical_warning_flags=warnings,
             core_elements=metadata.get('core_elements'), core_nodes=metadata.get('core_nodes'),
             source_config_sha256=metadata.get('source_config_sha256'),
             hardening_source_sha256=metadata.get('hardening_source_sha256'),

@@ -12,7 +12,8 @@ from scripts import compare_wall_controls as mod
 REFERENCE = Path(__file__).resolve().parents[1]/'validation/paper_reference'
 
 
-def case(tmp_path, monkeypatch, *, wall=1., completed=True, bound=True):
+def case(tmp_path, monkeypatch, *, wall=1., completed=True, bound=True,
+         energy_error=1., warning='', dense_energy_passed=False):
     prefix = tmp_path/'control'
     metadata = dict(wall_mm=wall, fracture_locus=None, duration_seconds=.04,
                     height_mm=48.7, reference_area_mm2=1900., sha256={},
@@ -21,9 +22,14 @@ def case(tmp_path, monkeypatch, *, wall=1., completed=True, bound=True):
     Path(str(prefix)+'.radioss.json').write_text(json.dumps(metadata))
     Path(str(prefix)+'T01.csv').write_text('actual test fixture\n')
     Path(str(prefix)+'.run.json').write_text('{}')
+    engine = ['CYCLE TIME TIME-STEP ELEMENT ERROR I-ENERGY K-ENERGY T K-ENERGY R EXT-WORK MAS.ERR']
+    engine += [f'{i*100} {i*.004:.6f} 1e-6 SOLID 1 {energy_error}% 1.0 .001 0.0 1.001 0.0 1.0 0.0'
+               for i in range(11)]
+    engine += [warning, 'NORMAL TERMINATION']
+    Path(str(prefix)+'_0001.out').write_text('\n'.join(engine)+'\n')
     actual = dict(completed=completed, run_binding_verified=bound,
                   metadata_binding_verified=bound,
-                  global_energy_screen={'sampled_energy_screen_passed': False},
+                  global_energy_screen={'sampled_energy_screen_passed': dense_energy_passed},
                   core_energy_screen={'sampled_energy_screen_passed': True},
                   last_observed_nominal_strain=.1199998,
                   reaction_history=[dict(strain=x, nominal_stress_MPa=y, time=t)
@@ -99,3 +105,29 @@ def test_reference_rms_normalization_is_invariant_to_stress_unit_scale():
     assert first['overlap_rmse_MPa'] == pytest.approx(1000*second['overlap_rmse_MPa'])
     assert first['relative_RMSE_to_reference_RMS'] == pytest.approx(second['relative_RMSE_to_reference_RMS'])
     assert first['relative_RMSE_to_reference_RMS'] > 0
+
+
+def test_printed_energy_error_and_volume_warning_survive_passing_dense_screens(tmp_path, monkeypatch):
+    prefix = case(tmp_path, monkeypatch, energy_error=-8.5,
+                  warning='WARNING ZERO OR NEGATIVE VOLUME IN SOLID ELEMENT 42',
+                  dense_energy_passed=True)
+    report, _, _ = mod.compare([('control', prefix)], REFERENCE)
+    result = report['cases'][0]
+    assert result['core_energy_screen']['sampled_energy_screen_passed']
+    assert result['global_energy_screen']['sampled_energy_screen_passed']
+    assert not result['printed_energy_screen']['sampled_energy_screen_passed']
+    assert result['printed_energy_screen']['max_abs_energy_error_percent'] == 8.5
+    assert any('energy error exceeds limit' in reason
+               for reason in result['printed_energy_screen']['reasons'])
+    assert result['numerical_warning_flags']['zero_or_negative_volume']
+    assert result['numerical_warning_flags']['review_required']
+    assert '42' in result['numerical_warning_flags']['matching_engine_lines'][0]
+    assert not report['calibrated']
+
+
+def test_nonfinite_warning_is_visible_without_matching_ordinary_finite_word(tmp_path, monkeypatch):
+    prefix = case(tmp_path, monkeypatch, warning='WARNING NON-FINITE residual: NaN')
+    report, _, _ = mod.compare([('control', prefix)], REFERENCE)
+    flags = report['cases'][0]['numerical_warning_flags']
+    assert flags['nonfinite_value_reported'] and flags['review_required']
+    assert not mod.numerical_warnings('finite element integration')['review_required']
