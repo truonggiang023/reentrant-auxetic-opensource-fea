@@ -35,12 +35,14 @@ jobs:
           sudo apt-get install -y libglu1-mesa liblapack3 gcc
           python -m pip install -e '.[dev,post]'
       - name: Verify official OpenCourant runtime and smoke reference
+        id: runtime
         run: bash scripts/setup_opencourant.sh
       - name: Run Python and native component regressions
         run: |
           source "$OPENCOURANT_INSTALL_ROOT/env.sh"
-          python -m pytest -q -ra --junitxml=results/ci-pytest.xml --basetemp=results/ci-pytest
+          python -m pytest -q -ra --junitxml=results/ci-pytest.xml --basetemp=results/ci-pytest | tee results/ci-pytest.log
       - name: Compare direct-face and surface-to-RP reactions at strain 0.12
+        if: ${{ !cancelled() && steps.runtime.outcome == 'success' }}
         run: |
           source "$OPENCOURANT_INSTALL_ROOT/env.sh"
           python scripts/probe_rp_coupling.py --output-dir results/ci-native-rp
@@ -50,9 +52,21 @@ jobs:
           python - <<'PY'
           import json
           import os
+          import xml.etree.ElementTree as ET
           from pathlib import Path
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
               out.write('OpenCourant component tests and direct-face/RBE2 coupon check.\n\n')
+              junit = Path('results/ci-pytest.xml')
+              if junit.exists():
+                  root = ET.parse(junit).getroot()
+                  for suite in root.iter('testsuite'):
+                      out.write('Pytest counts: ' + json.dumps({k: suite.get(k) for k in ('tests', 'failures', 'errors', 'skipped')}) + '\n\n')
+                  for case in list(root.iter('testcase')):
+                      for error in case.findall('error') + case.findall('failure'):
+                          message = (error.text or error.get('message', 'Unknown test failure'))[:6000]
+                          out.write(f"Failure in {case.get('classname')}.{case.get('name')}:\n\n```text\n{message}\n```\n\n")
+                          escaped = message.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+                          print('::error title=Pytest failure::' + escaped)
               report = Path('results/ci-native-rp/comparison.json')
               if report.exists():
                   data = json.loads(report.read_text())
@@ -68,6 +82,7 @@ jobs:
           if-no-files-found: warn
           path: |
             results/ci-pytest.xml
+            results/ci-pytest.log
             results/ci-pytest/
             results/ci-native-rp/
             ${{ runner.temp }}/opencourant/runtime-validation.json
