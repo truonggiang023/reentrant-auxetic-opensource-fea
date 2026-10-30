@@ -290,6 +290,11 @@ the next controlled structured-mesh J2 study, numerical qualification, thick-wal
 fitting and independent 0.3 mm validation. Its prepared decks passed the starter;
 their engines have not run. `structured_refinement_levels` now refines both
 along and across walls, with geometry/conformity checks.
+The completed [1 mm/0.3 mm comparison](validation/wall_comparison_012.md)
+adds matched thick elastic controls and RP/J2 curves through observed strain
+0.12. Thick slow loading passes core/global energy screens but still misses
+the experimental fracture drop. Separate full-curve J2/damage trials on
+GitHub retain their diagnostic scope and publish only receipt-verified results.
 The Abaqus physical-speed
 variant and its execution limitations are described in
 [the Abaqus instructions](abaqus/README_PAPER_VELOCITY.md).

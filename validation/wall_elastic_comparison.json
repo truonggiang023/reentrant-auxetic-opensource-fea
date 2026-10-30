@@ -1,0 +1,238 @@
+{
+  "status": "Completed independently receipt-verified matched elastic controls; not fracture/contact calibration",
+  "calibrated": false,
+  "quasi_static_full_model_validated": false,
+  "scope": "Contactfree ELAST cores: topY=-0.01mm, allZ constrained, bottomY fixed, onebottomX translation gauge; native HEPH24 vs exactmesh CCX2.20 C3D8I",
+  "cases": [
+    {
+      "name": "thick_original",
+      "wall_mm": 1.0,
+      "mesh_family": "original",
+      "native_k_work_N_per_mm": 41242.71796480868,
+      "native_k_energy_N_per_mm": 41242.69796471268,
+      "static_C3D8I_k_N_per_mm": 40526.53,
+      "native_relative_stiffness_difference": 0.017672077150663545,
+      "native_max_late_KE_IE": 2.9811278239790116e-06,
+      "native_nodal_reaction_differentiation_qualified": true,
+      "native_final_external_work_Nmm": 2.062126,
+      "native_final_internal_energy_Nmm": 2.062125,
+      "native_cycles": 40002,
+      "native_duration_s": 0.004,
+      "native_ams": {
+        "enabled": true,
+        "scope": "all",
+        "selected_part_ids": [
+          1
+        ],
+        "part_group_id": 0,
+        "requested_time_step_seconds": 1e-07,
+        "time_step_scale_factor": 0.67,
+        "pcg_relative_tolerance": 0.0001,
+        "pcg_maximum_iterations": 1000,
+        "timestep_sensitivity_required": true,
+        "modifies_inertial_operator": true
+      },
+      "core_nodes": 19530,
+      "core_elements": 6818,
+      "core_volume_mm3": 32314.86,
+      "reference_area_mm2": 1900.0,
+      "height_mm": 48.7,
+      "shared_json_coordinate_roundoff_mm": 0.0,
+      "verification": {
+        "static_input_output_hashes_verified": true,
+        "native_input_metadata_output_executable_hashes_verified": true,
+        "actual_static_native_coordinates_identical": true,
+        "shared_mesh_and_boundary_matching_verified": true,
+        "elastic_material_matching_verified": true,
+        "no_native_contact_plasticity_damage_verified": true,
+        "stiffness_recomputed_from_actual_history": true,
+        "actual_static_boundary_sets_and_values_verified": true
+      },
+      "source_sha256": {
+        "results/thick_common_cause/elastic_original/static/ccx_elastic_report.json": "191c3fb1c6080077c4aec5494d648166c5fe0f3f08cf2659e36a457f1be4014d",
+        "results/thick_common_cause/elastic_original/native/diagnostic.json": "afec686532cf776f450674365fcd4c0217b4b7addd93583ae1320244d669f900",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_original/static/mesh_and_bcs.json": "98db41b80f21f43bffb7addd99f33d71c29396018c46d203696544f3c99ec171",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_original/native/elastic.radioss.json": "f4e0b72ee6977f78041c8af2a2e245e4cbdaf9dfaad98197563b7703048deccd",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_original/native/elastic.run.json": "250c434a3200c72f9c8c41ee46ccfd33ac11077fff8d3ad69b587871131075f8",
+        "results/thick_common_cause/elastic_original/static/c3d8i.inp": "081ed14dce820168cf4382018e96cb1e7bfd96136f3e13bca856b5d3b27010c1",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_original/native/elasticT01.csv": "8e32ab8e266b2b0f29d88af71c8c0467c9e515bb06cb1a637c9a143bedde8145",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_original/native/elastic_0001.out": "b84dad6c718ad4f7ce4644f73afda36bbcce411991f83ca5b9847c7ae5fc977c"
+      }
+    },
+    {
+      "name": "thick_structured",
+      "wall_mm": 1.0,
+      "mesh_family": "structured",
+      "native_k_work_N_per_mm": 37956.44219070389,
+      "native_k_energy_N_per_mm": 37956.4221906079,
+      "static_C3D8I_k_N_per_mm": 36636.85,
+      "native_relative_stiffness_difference": 0.03601816724701745,
+      "native_max_late_KE_IE": 3.4001810302383183e-06,
+      "native_nodal_reaction_differentiation_qualified": true,
+      "native_final_external_work_Nmm": 1.897813,
+      "native_final_internal_energy_Nmm": 1.897812,
+      "native_cycles": 40002,
+      "native_duration_s": 0.004,
+      "native_ams": {
+        "enabled": true,
+        "scope": "all",
+        "selected_part_ids": [
+          1
+        ],
+        "part_group_id": 0,
+        "requested_time_step_seconds": 1e-07,
+        "time_step_scale_factor": 0.67,
+        "pcg_relative_tolerance": 0.0001,
+        "pcg_maximum_iterations": 1000,
+        "timestep_sensitivity_required": true,
+        "modifies_inertial_operator": true
+      },
+      "core_nodes": 36702,
+      "core_elements": 14622,
+      "core_volume_mm3": 32314.86,
+      "reference_area_mm2": 1900.0,
+      "height_mm": 48.7,
+      "shared_json_coordinate_roundoff_mm": 0.0,
+      "verification": {
+        "static_input_output_hashes_verified": true,
+        "native_input_metadata_output_executable_hashes_verified": true,
+        "actual_static_native_coordinates_identical": true,
+        "shared_mesh_and_boundary_matching_verified": true,
+        "elastic_material_matching_verified": true,
+        "no_native_contact_plasticity_damage_verified": true,
+        "stiffness_recomputed_from_actual_history": true,
+        "actual_static_boundary_sets_and_values_verified": true
+      },
+      "source_sha256": {
+        "results/thick_common_cause/elastic_structured/static/ccx_elastic_report.json": "a5ec056d7eeb5e005f936c6662d75ca99a549fa3cae4fefe9486e0b7cd930378",
+        "results/thick_common_cause/elastic_structured/native/diagnostic.json": "a98b9b934b301f12c86bceda6173c0f9d09db481a3a058ca7403d056d4e60ee9",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_structured/static/mesh_and_bcs.json": "f0484762b4ccca73fb7ff7a3247b2f237461d1e648861b739c02f93ef4464418",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_structured/native/elastic.radioss.json": "4fcb06d86e0e81eaad20a373d3df1a5ee2c137f159036f57de5f1d4817c11720",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_structured/native/elastic.run.json": "40d1cd444d21c6eec9490516fe5cdc2ecdb8e1e011b6bc550757bf6f718bebf9",
+        "results/thick_common_cause/elastic_structured/static/c3d8i.inp": "7a662f2ed6a25b8e55c94ae094e46f54c8da70de71d38e5720a09d402be27176",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_structured/native/elasticT01.csv": "98562c0954a475313e9817b10891fc0a1473c81c0a04ef807b0e4faa1dc499ab",
+        "/workspace/reentrant-auxetic-opensource-fea/results/thick_common_cause/elastic_structured/native/elastic_0001.out": "a8e1fde4ab6fd78049e488c41e76a8508e461bb19d213cbfc3bae48c5f9994c7"
+      }
+    },
+    {
+      "name": "thin_original",
+      "wall_mm": 0.3,
+      "mesh_family": "original",
+      "native_k_work_N_per_mm": 1006.2094297994671,
+      "native_k_energy_N_per_mm": 1006.2048297773871,
+      "static_C3D8I_k_N_per_mm": 584.0973,
+      "native_relative_stiffness_difference": 0.7226743383327865,
+      "native_max_late_KE_IE": 3.8705260243408525e-05,
+      "native_nodal_reaction_differentiation_qualified": true,
+      "native_final_external_work_Nmm": 0.05031023,
+      "native_final_internal_energy_Nmm": 0.05031,
+      "native_cycles": 275567,
+      "native_duration_s": 0.004,
+      "native_ams": {
+        "enabled": false,
+        "requested_time_step_seconds": null,
+        "time_step_scale_factor": 0.67,
+        "pcg_relative_tolerance": 0.0001,
+        "pcg_maximum_iterations": 1000,
+        "timestep_sensitivity_required": false,
+        "modifies_inertial_operator": false
+      },
+      "core_nodes": 21870,
+      "core_elements": 7392,
+      "core_volume_mm3": 10191.14,
+      "reference_area_mm2": 1900.0,
+      "height_mm": 48.0,
+      "shared_json_coordinate_roundoff_mm": 0.0,
+      "verification": {
+        "static_input_output_hashes_verified": true,
+        "native_input_metadata_output_executable_hashes_verified": true,
+        "actual_static_native_coordinates_identical": true,
+        "shared_mesh_and_boundary_matching_verified": true,
+        "elastic_material_matching_verified": true,
+        "no_native_contact_plasticity_damage_verified": true,
+        "stiffness_recomputed_from_actual_history": true,
+        "actual_static_boundary_sets_and_values_verified": true
+      },
+      "source_sha256": {
+        "results/revision_paper/shared/ccx_elastic_report.json": "8e7281b2178c3ec106bd6617c8dc41c4d321974d46a3f077b57711af184559f5",
+        "results/revision_paper/elastic_noams_complete/diagnostic.json": "ddc3ff19b9830ac642c21ef15f77dfb201c8b1d6f87175f90188ff779021bd96",
+        "/workspace/reentrant-auxetic-opensource-fea/results/revision_paper/shared/mesh_and_bcs.json": "6de52f1c1cbb4ecff88051808563553df8d7ff665cb7ce005f7aa5ac33674cb6",
+        "/workspace/reentrant-auxetic-opensource-fea/results/revision_paper/elastic_noams_complete/elastic.radioss.json": "52e7ce6c89858d16d5dcc8be0a37e3086413d06656de8681a853ff928af3e2c2",
+        "/workspace/reentrant-auxetic-opensource-fea/results/revision_paper/elastic_noams_complete/elastic.run.json": "3edf5377030804907dfd1d44a0bbba8ed32940905833332c8da5bd0f5e77cf14",
+        "results/revision_paper/shared/c3d8i.inp": "3a45a674f1877835f04c90b4bd8e63bfb3cb81563f84fbd9b0aad4e84edd1693",
+        "/workspace/reentrant-auxetic-opensource-fea/results/revision_paper/elastic_noams_complete/elasticT01.csv": "a9356a61115228ba62f61b195aa7d610d055cc977f90d2e4ade4a4362dcb9163",
+        "/workspace/reentrant-auxetic-opensource-fea/results/revision_paper/elastic_noams_complete/elastic_0001.out": "ec0559d3fd0091db31d52585f63820721cd43262801959ed941fdb23a75ef05e"
+      }
+    },
+    {
+      "name": "thin_structured",
+      "wall_mm": 0.3,
+      "mesh_family": "structured",
+      "native_k_work_N_per_mm": 590.1698328117982,
+      "native_k_energy_N_per_mm": 590.1552327417179,
+      "static_C3D8I_k_N_per_mm": 585.1354,
+      "native_relative_stiffness_difference": 0.008603876661364529,
+      "native_max_late_KE_IE": 7.150465570394802e-05,
+      "native_nodal_reaction_differentiation_qualified": false,
+      "native_final_external_work_Nmm": 0.02950835,
+      "native_final_internal_energy_Nmm": 0.02950762,
+      "native_cycles": 40002,
+      "native_duration_s": 0.004,
+      "native_ams": {
+        "enabled": true,
+        "scope": "all",
+        "selected_part_ids": [
+          1
+        ],
+        "part_group_id": 0,
+        "requested_time_step_seconds": 1e-07,
+        "time_step_scale_factor": 0.67,
+        "pcg_relative_tolerance": 0.0001,
+        "pcg_maximum_iterations": 1000,
+        "timestep_sensitivity_required": true,
+        "modifies_inertial_operator": true
+      },
+      "core_nodes": 29126,
+      "core_elements": 10544,
+      "core_volume_mm3": 10191.14,
+      "reference_area_mm2": 1900.0,
+      "height_mm": 48.0,
+      "shared_json_coordinate_roundoff_mm": 5.000089231543825e-11,
+      "verification": {
+        "static_input_output_hashes_verified": true,
+        "native_input_metadata_output_executable_hashes_verified": true,
+        "actual_static_native_coordinates_identical": true,
+        "shared_mesh_and_boundary_matching_verified": true,
+        "elastic_material_matching_verified": true,
+        "no_native_contact_plasticity_damage_verified": true,
+        "stiffness_recomputed_from_actual_history": true,
+        "actual_static_boundary_sets_and_values_verified": true
+      },
+      "source_sha256": {
+        "results/calibration_completion/structured/static_fixed/ccx_report.json": "8ccf9420307ecc3d22081082278d00cb7eca5e787ad316c07e252bd2c353461f",
+        "results/calibration_completion/structured/native_slow_ams/diagnostic.json": "f9899ae60a304ab94463bbade0b2250aeb1a17740488f30fa8921df7d0fa4413",
+        "/workspace/reentrant-auxetic-opensource-fea/results/calibration_completion/structured/mesh.json": "11e605a7764b5d25e9de9ae3be860fecf91e1c13c40491a34ee9674085c19742",
+        "/workspace/reentrant-auxetic-opensource-fea/results/calibration_completion/structured/native_slow_ams/elastic.radioss.json": "5b7659bd4db5b4e5cd129b27eb837a5202772f2ba4885adc105ad0f034f064de",
+        "/workspace/reentrant-auxetic-opensource-fea/results/calibration_completion/structured/native_slow_ams/elastic.run.json": "e7176b01c0dc2b8e0018d65d05a045b9a3c911f2d95b4f3b94ab9c5031be6578",
+        "results/calibration_completion/structured/static_fixed/c3d8i.inp": "9d9a297b3ff511989c31ddb5a0bd3a42e88a34f7b79c5260ac36ea81ee02097f",
+        "/workspace/reentrant-auxetic-opensource-fea/results/calibration_completion/structured/native_slow_ams/elasticT01.csv": "fab14e7b204de44ea47f538ac327308fd98faab070ce8f29c5190e8fa222fc8b",
+        "/workspace/reentrant-auxetic-opensource-fea/results/calibration_completion/structured/native_slow_ams/elastic_0001.out": "9ac3956284f6f2ec25460319b1ddefa2fe229b0cf79ad24d623062241b8f4847"
+      }
+    }
+  ],
+  "thick_static_structured_minus_original_relative": -0.09597860956760917,
+  "interpretation": [
+    "Thick native/static workstiffness excess is +1.767% original and +3.602% structured; thick does not repeat thin originalmesh +72.27% excess.",
+    "A universal wall-independent solver stiffness multiplier is not supported; thin originalmesh is substantially more sensitive to discretization/formulation.",
+    "Thick C3D8I stiffness changes about -9.60% between meshfamilies despite identical reported volume; neither is established meshconverged.",
+    "Tiny late KE and work/energy consistency support only this small elastic component, not full quasi-static/contact/fracture qualification."
+  ],
+  "limitations": [
+    "No experimental agreement inferred from exactmesh numerical agreement.",
+    "Native finitegeometry vs static linearized geometry and AMS distinctions remain.",
+    "These bonded-face contactfree controls do not identify nonlinear platen/contact, fracture or specimen area normalization errors.",
+    "OnebottomX pin is only a rigidtranslation gauge for this benchmark, not a fullmodel paper boundary.",
+    "Reused thin raw nodal differentiation remains unqualified; work/energy stiffness is the comparison measure.",
+    "Thin original is noAMS, other three cases AMS1e-7; no crosscase universal quasi-static qualification claimed."
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "source": "reference_setup_numeric_source.py",
+  "method": "AST-extracted original pure line-intersection/offset/column functions; exact Shapely union of original ring and rectangular ligament logic; Abaqus not imported or run",
+  "records": [
+    {
+      "wall_mm": 0.3,
+      "original_area_mm2": 407.64550215574405,
+      "native_area_mm2": 407.64550215574405,
+      "symmetric_difference_area_mm2": 0.0,
+      "relative_symmetric_difference": 0.0,
+      "hausdorff_distance_mm": 7.105427357601002e-15,
+      "original_bounds": [
+        -0.3656326347652619,
+        -0.15,
+        76.13151406452977,
+        47.85
+      ],
+      "native_bounds": [
+        -0.3656326347652619,
+        -0.15,
+        76.13151406452977,
+        47.85
+      ],
+      "original_connected_components": 1,
+      "native_connected_components": 1,
+      "original_holes": 50,
+      "native_holes": 50,
+      "width_mm": 76.49714669929503,
+      "height_mm": 48.0,
+      "physical_cross_section_envelope_mm2": 1912.4286674823757,
+      "nominal_reference_area_mm2": 1900,
+      "area_ratio": 1.0065414039380924,
+      "relative_density": 0.11101871108511467,
+      "original_model_platen_width_mm": 76.0,
+      "native_platen_width_mm": 78.49714669929503,
+      "original_model_platen_thickness_mm": 25.0,
+      "native_platen_thickness_mm": 10,
+      "core_centerline_height_mm": 47.7,
+      "original_height_expression": "8*N_ROWS - 0.30 (literal .30; independentofwall thickness)",
+      "original_steel_mass_kg": 0.7457500000000001,
+      "native_steel_mass_kg": 0.308101300794733,
+      "original_platen_left_overhang_deficit_each_side_mm": 0.24857334964751487
+    },
+    {
+      "wall_mm": 1.0,
+      "original_area_mm2": 1292.5944683971456,
+      "native_area_mm2": 1292.5944683971456,
+      "symmetric_difference_area_mm2": 0.0,
+      "relative_symmetric_difference": 0.0,
+      "hausdorff_distance_mm": 1.4210854715202004e-14,
+      "original_bounds": [
+        -1.2187754492175422,
+        -0.5000000000000001,
+        76.98465687898205,
+        48.2
+      ],
+      "native_bounds": [
+        -1.2187754492175422,
+        -0.5,
+        76.98465687898205,
+        48.2
+      ],
+      "original_connected_components": 1,
+      "native_connected_components": 1,
+      "original_holes": 50,
+      "native_holes": 50,
+      "width_mm": 78.2034323281996,
+      "height_mm": 48.7,
+      "physical_cross_section_envelope_mm2": 1955.08580820499,
+      "nominal_reference_area_mm2": 1900,
+      "area_ratio": 1.0289925306342051,
+      "relative_density": 0.33939662340123516,
+      "original_model_platen_width_mm": 76.0,
+      "native_platen_width_mm": 80.2034323281996,
+      "original_model_platen_thickness_mm": 25.0,
+      "native_platen_thickness_mm": 10,
+      "core_centerline_height_mm": 47.7,
+      "original_height_expression": "8*N_ROWS - 0.30 (literal .30; independentofwall thickness)",
+      "original_steel_mass_kg": 0.7457500000000001,
+      "native_steel_mass_kg": 0.3147984718881834,
+      "original_platen_left_overhang_deficit_each_side_mm": 1.1017161640997983
+    }
+  ],
+  "source_sha256": "d8786cd6b608ed115c4539577b423ef6bee059cb3f1be358291d51c81fc6955e",
+  "scope": "Equality to user supplied originalgeometry, not proof of equality to paperthick specimen.",
+  "cross_solver_differences": {
+    "original_platen_width_mm": 76,
+    "original_platen_thickness_mm": 25,
+    "original_platen_global_mesh_mm": 2,
+    "native_platen": "width=coreenvelope+2margin, thickness10mm, oneHEPHbrick",
+    "original_contact": "general allsurfaces, core/steel friction.35 and selfsameproperty",
+    "native_completed_thin_contact": "selfcoreallfaces plussteelinner_y only; friction.35",
+    "original_core_u3": "frontandback faces only",
+    "native_depth1_u3": "allcore nodes; samefront/backnodalsetsforoneextrusionlayer; cannotrepresentinternalZwarping",
+    "original_coupling": "outersteelfaceskinematicalltranslations/rotations fixed excepttopU2",
+    "native_coupling": "outersteelfacesRBE2; topU2prescribed, topXZ/rotationsfixed, bottomfixed",
+    "original_loading": "Explicitimplementation, accelerated1s, wholemodelvariablemassscalingtarget1e-5s; physicalspeedmodefalse",
+    "native_completed_thin_loading": "acceleratedsmoothstep .01/.04s, coreonlyAMS1e-6s; numericalphysicsnotmatched",
+    "original_and_native_reference_area_mm2": 1900,
+    "material": "SameE69000MPa/nu.3/rho2.67e-9Mg/mm3/178pointtrueflowstressplasticstrains; nativeuniaxialtestsalreadyverifyordering/clamping"
+  }
+}
