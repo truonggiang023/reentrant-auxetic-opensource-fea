@@ -40,6 +40,7 @@ jobs:
       - name: Run Python and native component regressions
         run: |
           source "$OPENCOURANT_INSTALL_ROOT/env.sh"
+          mkdir -p results
           python -m pytest -q -ra --junitxml=results/ci-pytest.xml --basetemp=results/ci-pytest | tee results/ci-pytest.log
       - name: Compare direct-face and surface-to-RP reactions at strain 0.12
         if: ${{ !cancelled() && steps.runtime.outcome == 'success' }}
@@ -60,7 +61,9 @@ jobs:
               if junit.exists():
                   root = ET.parse(junit).getroot()
                   for suite in root.iter('testsuite'):
-                      out.write('Pytest counts: ' + json.dumps({k: suite.get(k) for k in ('tests', 'failures', 'errors', 'skipped')}) + '\n\n')
+                      counts = json.dumps({k: suite.get(k) for k in ('tests', 'failures', 'errors', 'skipped')})
+                      out.write('Pytest counts: ' + counts + '\n\n')
+                      print('::notice title=Pytest results::' + counts)
                   for case in list(root.iter('testcase')):
                       for error in case.findall('error') + case.findall('failure'):
                           message = (error.text or error.get('message', 'Unknown test failure'))[:6000]
@@ -71,6 +74,7 @@ jobs:
               if report.exists():
                   data = json.loads(report.read_text())
                   out.write(f"Coupon passed: {data['passed']}; relative force RMS difference: {100*data['relative_force_rms']:.6f}%.\n\n")
+                  print(f"::notice title=RP coupling coupon::Passed: {data['passed']}; relative force RMS: {100*data['relative_force_rms']:.6f}%; calibrated: False")
               out.write('Experimental calibration remains incomplete. The fast coupon is not a quasi-static qualification. Abaqus is not installed/licensed on this runner; its scripts receive contract tests only. CalculiX integrations skip when their executables are unavailable.\n')
           PY
       - name: Upload solver evidence and reaction curves
