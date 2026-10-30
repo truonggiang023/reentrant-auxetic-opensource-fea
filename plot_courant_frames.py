@@ -3,7 +3,8 @@
 
 The official anim_to_vtk converter supplies deformed coordinates and explicit
 erosion status. No interpolation between frames or deformation amplification is
-performed. Strains follow the exact imposed-displacement samples in metadata.
+performed. RP cases use receipt-bound observed relative RP motion; legacy
+non-RP cases retain the explicitly labelled imposed-displacement fallback.
 """
 from __future__ import annotations
 
@@ -17,6 +18,9 @@ import subprocess
 import tempfile
 
 import numpy as np
+
+from assess_courant import assess
+from reentrant_fea.radioss_results import read_history_csv
 
 
 def _block(text, header, size, dtype=float):
@@ -55,25 +59,36 @@ def read_frame(text):
     npoints = int(points_header.group(1)); ncells, nitems = map(int, cells_header.groups())
     points = _block(text, r"^POINTS \d+ \w+\s*$", 3*npoints).reshape(-1, 3)
     values = _block(text, r"^CELLS \d+ \d+\s*$", nitems, int)
-    if nitems != ncells*9:
-        raise ValueError("Only eight-node hexahedral animation cells are supported")
-    values = values.reshape(ncells, 9)
-    if not np.all(values[:, 0] == 8):
-        raise ValueError("Only eight-node hexahedral animation cells are supported")
-    cells = values[:, 1:]
-    if np.any(cells < 0) or np.any(cells >= npoints):
-        raise ValueError("Invalid VTK connectivity")
     types = _block(text, r"^CELL_TYPES \d+\s*$", ncells, int)
-    if not np.all(types == 12):
-        raise ValueError("Require VTK_HEXAHEDRON cell type")
+    if not np.isin(types, [12, 3]).all():
+        raise ValueError("Require physical VTK_HEXAHEDRON cells; only RP connector lines may be excluded")
+    connectivity = []
+    offset = 0
+    for kind in types:
+        expected = 8 if kind == 12 else 2
+        if offset >= len(values) or values[offset] != expected or offset+expected >= len(values):
+            raise ValueError("Invalid VTK cell connectivity or unsupported element size")
+        row = values[offset+1:offset+1+expected]
+        if np.any(row < 0) or np.any(row >= npoints):
+            raise ValueError("Invalid VTK connectivity")
+        connectivity.append(row)
+        offset += expected+1
+    if offset != nitems:
+        raise ValueError("VTK cell connectivity count differs from header")
     displacement = _block(text, r"^VECTORS Displacement \w+\s*$", 3*npoints).reshape(-1, 3)
     scalar = lambda name: _block(text, rf"^SCALARS {name} \w+ 1\s*\nLOOKUP_TABLE \w+\s*$", ncells)
-    erosion = scalar("EROSION_STATUS")
+    element_ids = scalar("ELEMENT_ID")
+    solid = types == 12
+    if not solid.any() or np.any(element_ids[~solid] != 0):
+        raise ValueError("Only zero-ELEMENT_ID RP connector lines may be excluded from physical hex rendering")
+    cells = np.asarray([row for row, keep in zip(connectivity, solid) if keep], dtype=int)
+    erosion = scalar("EROSION_STATUS")[solid]
     if not np.isin(erosion, [0, 1]).all():
         raise ValueError("Unsupported erosion status; expected 0=eroded, 1=active")
     return {"time": frame_time(text), "points": points, "initial_points": points-displacement,
-            "cells": cells, "active": erosion == 1, "part_id": scalar("PART_ID"),
-            "element_id": scalar("ELEMENT_ID"), "damage": scalar("3DELEM_MAX_DAMAGE_ELEMENT")}
+            "cells": cells, "active": erosion == 1, "part_id": scalar("PART_ID")[solid],
+            "element_id": element_ids[solid], "damage": scalar("3DELEM_MAX_DAMAGE_ELEMENT")[solid],
+            "excluded_rp_connector_cells": int(np.count_nonzero(~solid))}
 
 
 def front_polygons(frame, part=1, tol=1e-3):
@@ -104,6 +119,61 @@ def strain_at_time(time, metadata):
     if time < samples[0, 0]-1e-10 or time > samples[-1, 0]+1e-10:
         raise ValueError("Frame timestamp falls outside imposed loading history")
     return float(np.interp(time, samples[:, 0], samples[:, 1])*metadata["target_nominal_strain"])
+
+
+def observed_strain_at_time(time, samples):
+    """Interpolate raw observed RP samples only inside their measured coverage."""
+    values = np.asarray(samples, dtype=float)
+    if (values.ndim != 2 or values.shape[1] != 2 or len(values) < 2
+            or not np.isfinite(values).all() or not np.isfinite(time)
+            or np.any(np.diff(values[:, 0]) <= 0)):
+        raise ValueError("Invalid observed RP strain samples")
+    if time < values[0, 0] or time > values[-1, 0]:
+        raise ValueError("Frame timestamp falls outside observed RP history coverage; no extrapolation")
+    return float(np.interp(time, values[:, 0], values[:, 1]))
+
+
+def wall_for_plot(metadata, *, paper_pdf=None):
+    wall = float(metadata.get("wall_mm", float("nan")))
+    if not np.isfinite(wall) or not any(np.isclose(wall, w) for w in (.3, 1.)):
+        raise ValueError("Require verified wall_mm=0.3 or 1 for native frame rendering")
+    if paper_pdf is not None and not np.isclose(wall, .3):
+        raise ValueError("Paper morphology crops support thin-wall Fig. 11(b) only; thick-wall paper-pdf comparison is unsupported")
+    return wall
+
+
+def strain_source(metadata_path, metadata):
+    """Return raw observed samples for RP cases, or a labelled legacy fallback."""
+    if metadata.get("platen_reference_points") is not True:
+        return None, dict(
+            source="Legacy non-RP fallback: piecewise-linear imposed displacement_fraction_samples at VTK TIME multiplied by target_nominal_strain; not an observed RP measurement.",
+            observed_RP_measurement=False, completion_verified_by_strain_source=False)
+    metadata_path = Path(metadata_path)
+    prefix = metadata["prefix"]
+    history_path = metadata_path.parent/(prefix+"T01.csv")
+    actual = assess(metadata_path, history_path, force_source="rp")
+    if not (actual["completed"] and actual.get("run_binding_verified")
+            and actual.get("metadata_binding_verified")):
+        raise ValueError("RP frames require completed receipt-bound solver evidence and metadata")
+    history = read_history_csv(history_path)
+    mapping = actual["force_mapping"]
+    top = mapping["top_displacement_column"]
+    bottom = mapping["bottom_displacement_column"]
+    height = float(metadata["height_mm"])
+    if not np.isfinite(height) or height <= 0:
+        raise ValueError("Require a positive actual core height")
+    samples = np.column_stack((history["time"], -(history[top]-history[bottom])/height))
+    # Validate the same interpolation contract before inspecting animations.
+    observed_strain_at_time(float(samples[0, 0]), samples)
+    receipt = metadata_path.parent/(prefix+".run.json")
+    return samples, dict(
+        source="Receipt-bound raw T01 top/bottom RP DY; strain=-(U2_top-U2_bottom)/initial core height, interpolated only within observed time coverage; no extrapolation or frame interpolation.",
+        observed_RP_measurement=True, completion_verified_by_strain_source=True,
+        history=str(history_path), history_sha256=hashlib.sha256(history_path.read_bytes()).hexdigest(),
+        execution_receipt_sha256=hashlib.sha256(receipt.read_bytes()).hexdigest(),
+        observed_time_coverage_seconds=samples[[0, -1], 0].tolist(),
+        observed_strain_coverage=samples[[0, -1], 1].tolist(),
+        top_displacement_column=top, bottom_displacement_column=bottom)
 
 
 def projected_diagnostics(polygons, element_ids, tolerance=1e-8):
@@ -216,12 +286,12 @@ def main():
                     help="Optional user-supplied Dong PDF for a separate Fig. 11(b) morphology comparison")
     args = ap.parse_args()
     metadata = json.loads(args.metadata.read_text())
-    if not np.isclose(metadata.get("wall_mm", float("nan")), .3):
-        raise ValueError("This plot requires verified thin-wall metadata (wall_mm=0.3)")
+    wall = wall_for_plot(metadata, paper_pdf=args.paper_pdf)
     if not args.targets or not np.isfinite(args.targets).all() or min(args.targets) < 0:
         raise ValueError("Require finite nonnegative target strains")
     if not np.isfinite(args.maximum_strain_error) or args.maximum_strain_error <= 0:
         raise ValueError("Require positive maximum strain error")
+    observed_samples, source = strain_source(args.metadata, metadata)
     prefix = metadata["prefix"]
     files = [p for p in args.metadata.parent.glob(prefix+"A*")
              if re.fullmatch(re.escape(prefix)+r"A\d+", p.name)]
@@ -233,7 +303,9 @@ def main():
         try:
             text = convert(path, args.converter)
             time = frame_time(text)
-            available.append((strain_at_time(time, metadata), time, path))
+            strain = (observed_strain_at_time(time, observed_samples) if observed_samples is not None
+                      else strain_at_time(time, metadata))
+            available.append((strain, time, path))
         except ValueError as exc:
             failures.append(str(exc))
     if not available:
@@ -266,7 +338,7 @@ def main():
             for part in (2, 3):
                 platens, _ = front_polygons(frame, part=part)
                 ax.add_collection(PolyCollection(platens, facecolors="#aab2bc", edgecolors="#4b5563", linewidths=.5))
-            # The existing geometry spans the same initial 48 mm height.
+            # Use the actual initial geometry; thick and thin heights differ.
             initial = frame["initial_points"]
             used = np.unique(frame["cells"][frame["active"]])
             current = frame["points"][used]
@@ -279,6 +351,7 @@ def main():
             summary.update(animation=str(path), animation_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
                            actual_strain=strain, actual_time_seconds=time, strain_error=strain-target,
                            total_core_cells=int(core.sum()), eroded_core_cells=eroded,
+                           excluded_rp_connector_cells=frame["excluded_rp_connector_cells"],
                            active_core_front_faces=len(polygons),
                            active_max_element_damage=float(np.max(colors)) if len(colors) else None,
                            projected_geometry=projected_diagnostics(polygons, frame["element_id"][indices]))
@@ -293,7 +366,7 @@ def main():
     if collections:
         cax = fig.add_axes([.935, .25, .012, .43])
         fig.colorbar(collections[0], cax=cax, label="Active-element damage (solver output)")
-    title = "Thin-wall t=0.3 mm — OpenCourant actual deformed frames"
+    title = f"Wall t={wall:g} mm — OpenCourant actual deformed frames"
     if args.case_label:
         title += "\n"+args.case_label
     fig.suptitle(title, fontsize=13, y=.98)
@@ -303,12 +376,13 @@ def main():
         fig.savefig(args.output.with_suffix(suffix), dpi=210)
     report = {"metadata": str(args.metadata), "metadata_sha256": hashlib.sha256(args.metadata.read_bytes()).hexdigest(),
               "case_label": args.case_label,
+              "wall_mm": wall,
               "calibrated": metadata.get("calibrated") is True,
               "ams": metadata.get("ams"),
               "quasi_static_validated_by_this_plot": False,
               "converter": str(args.converter), "converter_sha256": hashlib.sha256(args.converter.read_bytes()).hexdigest(),
-              "method": "Official ASCII VTK conversion; deformed POINTS rendered directly; EROSION_STATUS==1 required; front face selected from initial POINTS-Displacement Z.",
-              "strain_source": "Piecewise-linear interpolation of exact imposed displacement_fraction_samples at actual VTK TIME, multiplied by target_nominal_strain; no mesh interpolation.",
+              "method": "Official ASCII VTK conversion; physical hexes use deformed POINTS directly; EROSION_STATUS==1 required; initial POINTS-Displacement Z selects the front; zero-ELEMENT_ID RP connector lines are excluded and counted.",
+              "strain_source": source["source"], "strain_source_verification": source,
               "frames": summaries, "conversion_failures": failures,
               "experimental_mode_agreement": "not established", "deformation_amplification": 1,
               "eroded_elements_rendered": False, "mesh_interpolation": False}

@@ -1,0 +1,97 @@
+{
+  "metadata": "results/calibration_completion/rp_rate_slow.radioss.json",
+  "metadata_sha256": "ff3688d84ab9111e9f9954a3fe97ff9cf123999823eb9f56f035a1063076a71c",
+  "case_label": "J2 without damage; original mesh; T=0.04 s; calibration incomplete",
+  "wall_mm": 0.3,
+  "calibrated": false,
+  "ams": {
+    "enabled": true,
+    "scope": "core",
+    "selected_part_ids": [
+      1
+    ],
+    "part_group_id": 50,
+    "requested_time_step_seconds": 1e-06,
+    "time_step_scale_factor": 0.67,
+    "pcg_relative_tolerance": 0.0001,
+    "pcg_maximum_iterations": 1000,
+    "timestep_sensitivity_required": true,
+    "modifies_inertial_operator": true
+  },
+  "quasi_static_validated_by_this_plot": false,
+  "converter": "/workspace/opencourant/runtime/OpenCourant/exec/anim_to_vtk_linux64_gf",
+  "converter_sha256": "9c97eee2991f6949d16477831cc684165f53b790f498cbef51b8e8fd67bf28ae",
+  "method": "Official ASCII VTK conversion; physical hexes use deformed POINTS directly; EROSION_STATUS==1 required; initial POINTS-Displacement Z selects the front; zero-ELEMENT_ID RP connector lines are excluded and counted.",
+  "strain_source": "Receipt-bound raw T01 top/bottom RP DY; strain=-(U2_top-U2_bottom)/initial core height, interpolated only within observed time coverage; no extrapolation or frame interpolation.",
+  "strain_source_verification": {
+    "source": "Receipt-bound raw T01 top/bottom RP DY; strain=-(U2_top-U2_bottom)/initial core height, interpolated only within observed time coverage; no extrapolation or frame interpolation.",
+    "observed_RP_measurement": true,
+    "completion_verified_by_strain_source": true,
+    "history": "results/calibration_completion/rp_rate_slowT01.csv",
+    "history_sha256": "6e80f492ed51efc0f7d1ba07bf17ec5a3448752c774ee9b77232ba6a8d7ec575",
+    "execution_receipt_sha256": "2a10a4d48c4effa95869822e35985b90938ccc8e61e3930eb6df3ebabc2432bc",
+    "observed_time_coverage_seconds": [
+      0.0,
+      0.0399
+    ],
+    "observed_strain_coverage": [
+      -0.0,
+      0.11999970833333333
+    ],
+    "top_displacement_column": "Loading face nodal histories             21888 load-node-21888                          var 76",
+    "bottom_displacement_column": "Loading face nodal histories             21887 load-node-21887                          var 70"
+  },
+  "frames": [
+    {
+      "target_strain": 0.06,
+      "available": true,
+      "animation": "results/calibration_completion/rp_rate_slowA051",
+      "animation_sha256": "612ea04a1fc20e5c5a311b7a10b1fe295f5553ce87bcf0cf32d6bcee76ab8102",
+      "actual_strain": 0.060005625,
+      "actual_time_seconds": 0.020001,
+      "strain_error": 5.625000000002156e-06,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 0,
+      "excluded_rp_connector_cells": 8,
+      "active_core_front_faces": 7392,
+      "active_max_element_damage": 0.0,
+      "projected_geometry": {
+        "active_front_faces": 7392,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 0,
+        "max_overlap_mm2": 0.0,
+        "sum_pair_overlap_mm2": 0.0,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    },
+    {
+      "target_strain": 0.12,
+      "available": true,
+      "animation": "results/calibration_completion/rp_rate_slowA100",
+      "animation_sha256": "b02e13ee3e6851fe7591bccfa2c0c844de586e55d8a84192553e0df2ad021306",
+      "actual_strain": 0.1199988125,
+      "actual_time_seconds": 0.0396,
+      "strain_error": -1.1874999999994529e-06,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 0,
+      "excluded_rp_connector_cells": 8,
+      "active_core_front_faces": 7392,
+      "active_max_element_damage": 0.0,
+      "projected_geometry": {
+        "active_front_faces": 7392,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 0,
+        "max_overlap_mm2": 0.0,
+        "sum_pair_overlap_mm2": 0.0,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    }
+  ],
+  "conversion_failures": [
+    "Frame timestamp falls outside observed RP history coverage; no extrapolation"
+  ],
+  "experimental_mode_agreement": "not established",
+  "deformation_amplification": 1,
+  "eroded_elements_rendered": false,
+  "mesh_interpolation": false
+}

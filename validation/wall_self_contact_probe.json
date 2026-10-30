@@ -1,0 +1,91 @@
+{
+  "status": "Completed paired small-wall numerical contact probe",
+  "cases": [
+    {
+      "name": "regular_none",
+      "shear": 0.0,
+      "contact": false,
+      "work_equivalent_stiffness_N_per_mm": 35.4019,
+      "energy_equivalent_stiffness_N_per_mm": 25.39902,
+      "final_KE_IE": 0.3938292107333275,
+      "final_contact_energy_Nmm": 0.0,
+      "max_absolute_contact_energy_Nmm": 0.0,
+      "cycles": 13780,
+      "normal_termination": true,
+      "receipt_hashes_verified": true,
+      "metadata_sha256": "61ab128a42d97e3676e68f3f675180ea20a03f25643a96ade1c2b5b44fe6166e",
+      "receipt_sha256": "3267a4253548e82fb40bac0a4de4306c3be645c5f10240e60cb1e55bbffd0f2f"
+    },
+    {
+      "name": "regular_selfcontact",
+      "shear": 0.0,
+      "contact": true,
+      "work_equivalent_stiffness_N_per_mm": 35.4019,
+      "energy_equivalent_stiffness_N_per_mm": 25.39902,
+      "final_KE_IE": 0.3938292107333275,
+      "final_contact_energy_Nmm": 0.0,
+      "max_absolute_contact_energy_Nmm": 0.0,
+      "cycles": 13780,
+      "normal_termination": true,
+      "receipt_hashes_verified": true,
+      "metadata_sha256": "1e30098e75cb1136e7a2a87b87d3b09e202e29fb7edab9e784ab2b7fed468c3c",
+      "receipt_sha256": "3a8ab5a469e9c56513e0fbb5b853df63d284e7afb109522ee3dd41f1934d16ef"
+    },
+    {
+      "name": "skew_none",
+      "shear": 0.25,
+      "contact": false,
+      "work_equivalent_stiffness_N_per_mm": 38.092,
+      "energy_equivalent_stiffness_N_per_mm": 30.13074,
+      "final_KE_IE": 0.26422417770024903,
+      "final_contact_energy_Nmm": 0.0,
+      "max_absolute_contact_energy_Nmm": 0.0,
+      "cycles": 14204,
+      "normal_termination": true,
+      "receipt_hashes_verified": true,
+      "metadata_sha256": "1e3ec31b0f1af9ba294ec12b5de87c91fdafc0b8ab169bc05e3089cd124f4d76",
+      "receipt_sha256": "24fecae41cfbdae823c92a4ae3cc0903da541841637f4f3580949a1ddb793318"
+    },
+    {
+      "name": "skew_selfcontact",
+      "shear": 0.25,
+      "contact": true,
+      "work_equivalent_stiffness_N_per_mm": 38.092,
+      "energy_equivalent_stiffness_N_per_mm": 30.13074,
+      "final_KE_IE": 0.26422417770024903,
+      "final_contact_energy_Nmm": 0.0,
+      "max_absolute_contact_energy_Nmm": 0.0,
+      "cycles": 14204,
+      "normal_termination": true,
+      "receipt_hashes_verified": true,
+      "metadata_sha256": "6d32a0b1dffc16d74cd763762d16d3b9a22031c09f1fb773476a47f75e6ea25b",
+      "receipt_sha256": "687410ec2ec092bcbb0d2d93cbfd3ab1f868ddc26fdef4fbaaaefcb682363e08"
+    }
+  ],
+  "comparisons": [
+    {
+      "shear": 0.0,
+      "relative_work_stiffness_selfcontact_minus_none": 0.0,
+      "relative_energy_stiffness_selfcontact_minus_none": 0.0,
+      "input_pairs_identical_except_selfcontact_blocks_verified": true,
+      "maximum_absolute_T01_difference_all_channels_at_printed_precision": 1.0000000000699553e-11
+    },
+    {
+      "shear": 0.25,
+      "relative_work_stiffness_selfcontact_minus_none": 0.0,
+      "relative_energy_stiffness_selfcontact_minus_none": 0.0,
+      "input_pairs_identical_except_selfcontact_blocks_verified": true,
+      "maximum_absolute_T01_difference_all_channels_at_printed_precision": 1.0000000001733684e-18
+    }
+  ],
+  "calibrated": false,
+  "quasi_static_validated": false,
+  "scope": "20 connected regular/skew solids, 2acrosswall and10along, depth25mm, ELAST69000/.3, bendingdelta.001mm, duration1e-4s, noAMS, globalstep_scale.3; pairs differ only by ALLface TYPE25 selfcontact",
+  "failed_trial": "Initial default step-scale case failed with negativevolume/time-step errors and is preserved inregular_none; no result accepted from it.",
+  "limitations": [
+    "Short dynamic bending probe; work-equivalent stiffness is not a static material stiffness.",
+    "No disconnected adjacent members/no actual selfimpact; cannot qualify honeycomb crosswall contact or fracture.",
+    "A null result rules out only artificial stiffness in these connectedwall cases, not all TYPE25 contact errors."
+  ],
+  "interpretation": "No artificial work/energy stiffness or contactenergy observed when TYPE25(allfacesinclinternal) is added in these two connectedwall cases at available history precision. This does not rule out honeycomb contactgap, disconnectedmembers, edgecontact or postfracture contact errors."
+}

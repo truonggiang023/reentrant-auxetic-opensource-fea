@@ -79,6 +79,23 @@ experimental seating/toe. Không suy ra E mới từ một phép chia hai slope.
 
 ## Những lỗi chung đã kiểm tra và những giả thiết còn mở
 
+[Khung biến dạng 1 mm](wall_thick_j2_frames.png) và
+[0,3 mm](wall_thin_j2_frames.png) lấy từ completed slow J2 runs ở observed
+strain gần 0,06/0,12. Displacement amplification bằng 1; không có eroded
+elements. Strain được đo từ raw RP DY đã kiểm tra receipt, không extrapolate
+frame cuối ra ngoài history coverage. Các zero-ID RBE2 connector lines được
+loại khỏi phần physical hex rendering và ghi số lượng trong JSON. Projected
+overlap là diagnostic front projection, chưa phải kiểm chứng contact 3D.
+Các binary animation inputs không nằm trong archive raw control ở trên;
+JSON ghi hash của từng animation đã dùng.
+
+[Probe self-contact nhỏ](wall_self_contact_probe.json) so sánh hai connected
+wall beams có/không TYPE25 self-contact: không có thay đổi work/energy stiffness
+ở độ chính xác output, contact energy bằng 0. Probe động ngắn này chưa phải
+quasi-static qualification và chưa loại trừ lỗi gap/edge/new-face contact trong
+toàn honeycomb. Trial timestep mặc định thất bại được giữ riêng; các cặp
+được báo cáo dùng cùng global timestep scale0,3, không AMS.
+
 [Audit hình học](wall_geometry_equivalence.json) xác nhận core Python bằng
 core từ thuật toán offset/ring/ligament trong file Abaqus gốc ở cả hai wall:
 symmetric-difference area bằng 0. Cả hai dùng actual height để tính stroke
