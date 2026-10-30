@@ -253,3 +253,12 @@ The legacy `reentrant-fea`/`--advanced` writers and standalone Python material-p
 prototypes remain for comparison. The compiled material workflow is
 `run_paper.py` with an explicit `ductile_damage` configuration, rather than the
 legacy advanced writer's unsupported damage switch.
+
+## Paper-following calibration revision
+
+See [the revised evidence report](validation/paper_calibration_revision.md) and
+[full Fig.12(b) comparison](validation/paper_calibration_revision.png).
+The matched no-AMS elastic control still exceeds the static C3D8I reference
+stiffness by 72.27%; inverse fracture fitting remains blocked. New study
+preparation accepts `--holdout-end-strain .78` to assess the late visible
+thin-wall response, preserving thick-wall training and independent holdout roles.

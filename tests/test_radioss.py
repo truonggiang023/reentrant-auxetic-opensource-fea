@@ -98,3 +98,22 @@ def test_rp_coupling_moves_only_outer_platen_faces(tmp_path):
     assert meta['core_nodes']==8
     # All original solid elements retain their connectivity; RPs add no solids.
     assert meta['core_elements']==1
+
+
+@pytest.mark.parametrize('coupled,support_requested,expected_support', [
+    (False, False, False), (False, True, True),
+    (True, False, True), (True, True, True)])
+def test_support_history_is_opt_in_except_for_platen_rps(tmp_path, coupled, support_requested, expected_support):
+    cfg = dict(young=69000., poisson=.3, compression_strain=.12,
+               platen_reference_points=coupled, support_reaction_history=support_requested)
+    meta = write_radioss_deck(tmp_path/'case', NODES, ELEMENTS, cfg,
+                              [(225., 0.), (300., .2)], duration=.001)
+    lines = (tmp_path/'case_0000.rad').read_text().splitlines()
+    start = lines.index('/TH/NODE/3')+3
+    stop = next(i for i in range(start, len(lines)) if lines[i].startswith('/'))
+    history_nodes = [int(line[:10]) for line in lines[start:stop]]
+    expected = meta['loading_face_nodes'] + (meta['bottom_support_nodes'] if expected_support else [])
+    assert history_nodes == expected
+    assert meta['support_reaction_history'] is expected_support
+    # Support-node identities remain available even when not requested in T01.
+    assert meta['bottom_support_nodes']

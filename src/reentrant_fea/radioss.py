@@ -273,7 +273,9 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
                   _ints(*range(1, 2 if tensile_coupon else 4)),
                   '/TH/NODE/3', 'Loading face nodal histories',
                   ''.join(f'{variable:<10}' for variable in ('DX', 'DY', 'DZ', 'REACX', 'REACY', 'REACZ'))])
-    lines.extend(_ints(node, 0)+f'load-node-{node}' for node in upper+lower)
+    support_history = bool(config.get('support_reaction_history', False)) or coupled
+    history_nodes = upper+lower if support_history else upper
+    lines.extend(_ints(node, 0)+f'load-node-{node}' for node in history_nodes)
     lines.append('/END')
     starter.write_text('\n'.join(lines)+'\n')
     engine_lines = ['#RADIOSS ENGINE', f'/RUN/{prefix}/1', _reals(duration),
@@ -292,7 +294,7 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
                     displacement_fraction_samples=amplitude_samples,
                     time_history_interval_seconds=duration/400,
                     loading_face_nodes=upper, bottom_support_nodes=lower,
-                    platen_reference_points=coupled,
+                    platen_reference_points=coupled, support_reaction_history=support_history,
                     loading_node_variables=['DX', 'DY', 'DZ', 'REACX', 'REACY', 'REACZ'],
                     reaction_history_semantics='REAC and interface force channels are cumulative impulses; differentiate in time to obtain interval-averaged forces',
                     interface_force_history_units='N*s',

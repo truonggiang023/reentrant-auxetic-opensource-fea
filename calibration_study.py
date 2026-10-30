@@ -60,8 +60,11 @@ def reference_curves(path):
     return list(curves.values())
 
 
-def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, plastic=None):
+def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, plastic=None,
+            holdout_end_strain=.65):
     """Write configurations and exact follow-up commands without launching solves."""
+    if not np.isfinite(holdout_end_strain) or not .65 <= holdout_end_strain < 1:
+        raise ValueError('Holdout end strain must lie in [.65, 1)')
     if backend not in ('ccx', 'opencourant'):
         raise ValueError('Select ccx or opencourant backend')
     if backend == 'ccx' and duration is not None:
@@ -95,7 +98,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
         for wall, role in ((1., 'training'), (.3, 'holdout')):
             config = fracture_candidate(source, low, high)
             config['wall'] = wall
-            config['compression_strain'] = .5 if role == 'training' else .65
+            config['compression_strain'] = .5 if role == 'training' else float(holdout_end_strain)
             if backend == 'ccx':
                 config['ductile_damage'].update(nuisance)
             name = f'{candidate}_{role}'
@@ -148,6 +151,9 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
         'base_config': str(base.resolve()), 'working_directory': str(ROOT), 'backend': backend,
         'hardening_source': str(plastic_source), 'hardening_source_sha256': plastic_sha256,
         'fit_intervals': deepcopy_intervals(),
+        'holdout_end_strain': float(holdout_end_strain),
+        'deformation_targets': {'training': .5, 'holdout': float(holdout_end_strain)},
+        'late_response_scope': 'End strain controls run coverage; late densification is assessed separately from the historical fit interval. No extrapolation or altered training/holdout role.',
         'geometry_qualification': {
             'qualified': False,
             'reason': 'Inherited centerline geometry with wall changed; verify dimensions, relative density and mesh against each paper specimen before material fitting',
@@ -160,7 +166,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
             'Backend-specific numerical sensitivity variants test robustness and are excluded from material-candidate selection.',
             'A low curve error cannot compensate for invalid deletion/contact or establish a unique fracture locus.',
             'Changing wall alone changes outer dimensions and relative density; thick-wall hypotheses need geometry qualification before candidate selection.',
-            'Thick-wall reference Fig12(a) ends at strain .5; its fit interval is .04–.45, with the thin holdout assessed over .03–.65.',
+            'Thick-wall reference Fig12(a) ends at strain .5; training fit interval .04–.45. Thin run end is declared separately in deformation_targets; fit intervals do not define full densification coverage.',
             'The paper reports tensile fracture strain near .047 and uses .047 in ductile initiation; do not infer that its plotted total strain is a measured equivalent plastic-strain history.',
         ], 'runs': records,
     }
@@ -174,7 +180,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
             'Native characteristic length, solid formulation and initiation-increment integration differ from CCX.',
             'Accelerated loading and AMS require actual-core energy, speed and AMS response sensitivity; a passing global screen is insufficient.',
             'TYPE25 IMS=2 top-secondary force is FN-FT: FNY var64 and FTY var67 are cumulative impulses. Compression is -Delta(FNY-FTY)/Delta(time), not the normal component alone.',
-            'Native holdout force fit ends at .64; interval-average force samples lie before the .65 deformation target and are never extrapolated to it.',
+            'Native holdout force fit ends at .64; interval-average force samples precede the configured deformation end and are never extrapolated to it.',
         ]
         manifest['native_qualification'] = {'qualified': False,
             'reason': 'Actual full-lattice core energy, loading-speed and AMS response sensitivity remain unresolved'}
@@ -346,9 +352,14 @@ def score(manifest, reference_dir):
                        and assessment.get('config_wall_mm') == row['wall_mm']
                        and assessment.get('hardening_source_sha256') == source_sha256)
             item['score']['generation_config_matches'] = binding
+            binding_blockers = []
+            if not execution_bound:
+                binding_blockers.append('CCX execution receipt is absent; cached assessment is diagnostic only')
             if not binding:
+                binding_blockers.append('assessment lacks matching generation-config, wall or hardening-source provenance')
+            if binding_blockers:
                 item['score']['eligible_for_selection'] = False
-                item['score']['binding_blocker'] = 'assessment lacks matching generation-config, wall or hardening-source provenance'
+                item['score']['binding_blocker'] = '; '.join(binding_blockers)
         except ValueError as error:
             item['score'] = {'eligible_for_selection': False, 'reason': str(error)}
         evaluated.append(item)
@@ -392,6 +403,8 @@ def main():
                           help='Explicit loading duration in seconds for native OpenCourant studies')
     generate.add_argument('--ams-time-step', type=float,
                           help='Native AMS step; changes inertial response and requires sensitivity checks')
+    generate.add_argument('--holdout-end-strain', type=float, default=.65,
+                          help='End strain for thin holdout; use .78 to cover the visible late Fig12(b) rise. Historical fit interval is unchanged.')
     rank = commands.add_parser('score')
     rank.add_argument('manifest', type=Path)
     rank.add_argument('--reference-dir', type=Path, default=ROOT/'validation/paper_reference')
@@ -399,7 +412,8 @@ def main():
     args = parser.parse_args()
     if args.command == 'prepare':
         result = prepare(args.config, args.output, backend=args.backend,
-                         duration=args.duration, ams_time_step=args.ams_time_step, plastic=args.plastic)
+                         duration=args.duration, ams_time_step=args.ams_time_step, plastic=args.plastic,
+                         holdout_end_strain=args.holdout_end_strain)
         print(f"Prepared {len(result['runs'])} configurations; simulations have not run.")
     else:
         result = score(json.loads(args.manifest.read_text()), args.reference_dir)

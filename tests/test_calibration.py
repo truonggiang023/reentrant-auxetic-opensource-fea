@@ -230,3 +230,77 @@ def test_native_score_recomputes_bound_history_and_keeps_physics_gate(tmp_path):
     cached['history_sha256'] = digest(files['T01.csv'])
     with pytest.raises(ValueError, match='changed since execution'):
         score_native_record(row, config, cached, references, [.03, .64])
+
+
+@pytest.mark.parametrize('receipt_state', ['absent', 'verified', 'invalid'])
+def test_ccx_candidate_selection_requires_verified_execution_receipt(tmp_path, monkeypatch, receipt_state):
+    """Matching cached curve/input hashes alone cannot establish an executed solve."""
+    import hashlib
+    import json
+    from pathlib import Path
+    from calibration_study import prepare, score
+    from reentrant_fea.paper_contact_solver import write_paper_contact_deck
+    from reentrant_fea.plastic import load_plastic
+    root = Path(__file__).resolve().parents[1]
+    manifest = prepare(root/'configs/dong2019_brick_damage.json', tmp_path/'study')
+    row = next(r for r in manifest['runs'] if r['candidate'] == 'locus_0_1' and r['role'] == 'training')
+    manifest['runs'] = [row]
+    # Force the selection branch: an unqualified geometry would mask this bug.
+    manifest['geometry_qualification'] = {'qualified': True}
+    cfg = json.loads(Path(row['config']).read_text())
+    nodes = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0],
+                      [0,0,1],[1,0,1],[1,1,1],[0,1,1]], float)
+    deck = Path(row['deck'])
+    write_paper_contact_deck(deck, nodes, np.arange(8).reshape(1,8), cfg,
+                             load_plastic(row['hardening_source']))
+    digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+    cached = dict(completed=True, errors=[], last_converged_nominal_strain=.5,
+                  input_sha256=digest(deck), material_sidecar_sha256=digest(deck.with_suffix('.material.dat')),
+                  generation_config_sha256=row['config_sha256'], config_wall_mm=row['wall_mm'],
+                  hardening_source_sha256=row['hardening_source_sha256'],
+                  reaction_history=[{'strain': 0., 'nominal_stress_MPa': 0.},
+                                    {'strain': .5, 'nominal_stress_MPa': 10.}])
+    assessment = Path(row['assessment'])
+    assessment.parent.mkdir(parents=True)
+    assessment.write_text(json.dumps(cached))
+    verified_calls = []
+    def verify(actual_row):
+        verified_calls.append(actual_row)
+        if receipt_state == 'invalid':
+            raise ValueError('CCX output changed since verified execution')
+        return cached
+    monkeypatch.setattr('run_calibration.verify_completed', verify)
+    if receipt_state != 'absent':
+        assessment.with_name(assessment.name+'.execution.json').write_text('{}')
+    result = score(manifest, root/'validation/paper_reference')
+    scored = result['evaluated'][0]['score']
+    assert bool(verified_calls) == (receipt_state != 'absent')
+    if receipt_state == 'verified':
+        assert scored['execution_binding_verified'] and scored['eligible_for_selection']
+        assert result['selection']['selected_candidate'] == row['candidate']
+    else:
+        assert not scored['eligible_for_selection']
+        assert result['selection']['selected_candidate'] is None
+        if receipt_state == 'absent':
+            assert scored['solver_completed'] and scored['full_interval_covered']
+            assert not scored['execution_binding_verified']
+            assert 'receipt is absent' in scored['binding_blocker']
+        else:
+            assert 'changed since verified execution' in scored['reason']
+
+
+def test_extended_holdout_keeps_training_and_fit_roles(tmp_path):
+    from pathlib import Path
+    from calibration_study import prepare, ROOT
+    result = prepare(ROOT/'configs/dong2019_brick_damage.json', tmp_path/'extended',
+                     backend='opencourant', duration=.01, holdout_end_strain=.78)
+    import json
+    for row in result['runs']:
+        cfg = json.loads(Path(row['config']).read_text())
+        assert cfg['compression_strain'] == (.5 if row['role']=='training' else .78)
+        assert not cfg['ductile_damage']['calibrated']
+    assert result['fit_intervals']['holdout'] == [.03,.64]
+    assert result['holdout_end_strain'] == .78
+    with pytest.raises(ValueError, match='Holdout end strain'):
+        prepare(ROOT/'configs/dong2019_brick_damage.json', tmp_path/'invalid',
+                holdout_end_strain=1.)

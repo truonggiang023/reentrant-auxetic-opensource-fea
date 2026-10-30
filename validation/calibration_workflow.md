@@ -165,3 +165,52 @@ Use `configs/dong2019_inner_y_contact.json` as the base config via the prepare
 command's config argument. The inner-Y control is not yet qualified for full
 collapse; selection remains blocked pending numerical qualification. Do not
 interpret a lower fitting error from an unqualified trajectory as calibration.
+
+## Revision for the full Fig. 12(b) curve
+
+The revision report is [paper_calibration_revision.json](paper_calibration_revision.json)
+and the [full-range comparison](paper_calibration_revision.png). Recreate with:
+
+```sh
+MPLCONFIGDIR=/workspace/mplconfig python revise_paper_calibration.py \
+  --assessment validation/opencourant-thin-total-force-assessment.json \
+  --assessment results/check012/assessment.json \
+  --output validation/paper_calibration_revision
+```
+
+The second input is a local, separate CalculiX RP J2 trajectory. Omit that
+argument when its original files are unavailable. The plotted trajectories are
+not a matched solver pair. No stiffness/damage input is fitted by this command.
+Reference errors use both experiments; the blue paper FE trace is context only.
+
+`paper_metrics.curve_metrics` separately reports early slope (.005–.02),
+plateau mean (.1–.55), stresses at .12/.35/.65/.75, observed-range absorption
+and a full-coverage energy-efficiency densification diagnostic. These windows
+and definitions are investigator choices, not recovered paper definitions.
+Missing coverage stays unavailable. Different observed starting strains imply
+different energy origins; do not compare their integrals as total absorbed
+energy from zero. Digitization uncertainty remains in the reference provenance.
+
+To prepare a native study that reaches the visible final rise rather than
+stopping at .65:
+
+```sh
+python calibration_study.py prepare --backend opencourant \
+  --config configs/dong2019_inner_y_contact.json --duration .01 \
+  --holdout-end-strain .78 --output results/new-full-curve-study
+```
+
+This prepares hypotheses only. It leaves training at .5, keeps the existing
+fit intervals, and does not change the thick-training/thin-holdout roles.
+Duration .01 is an accelerated numerical choice requiring qualification, not
+physical loading at 2 mm/min. No AMS is requested in this command. Geometry,
+core/work balance, loading-speed and mesh/contact prerequisites still block
+selection. The supplied .3 mm figure alone cannot complete the paper's
+thick-training/thin-validation calibration.
+
+Candidate selection now requires verified CCX execution receipts; matching
+cached assessment flags and input hashes alone are diagnostic only. Native
+qualification blockers have not been bypassed. Bottom native reaction
+histories are requested with `support_reaction_history=true` (automatically
+on for `platen_reference_points=true`), preserving legacy top-only histories
+for existing diagnostic scripts.

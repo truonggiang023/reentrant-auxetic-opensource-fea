@@ -64,6 +64,15 @@ def generate(mesh_path, output, duration, ams_step, solid):
         elif original[i] == '/IMPDISP/1':
             lines += original[i:i+3]+[_reals(1, displacement, 0, 0)]
             i += 4
+        elif original[i] == '/TH/NODE/3':
+            # The shared writer now includes supported bottom nodes in this
+            # history too. Keep this diagnostic's loading block top-only;
+            # analyze() pairs it with the separate bottom block added below.
+            lines += original[i:i+3]
+            lines += [_ints(n, 0)+f'load-node-{n}' for n in top]
+            i += 3
+            while i < len(original) and not original[i].startswith('/'):
+                i += 1
         else:
             lines.append(original[i])
             i += 1

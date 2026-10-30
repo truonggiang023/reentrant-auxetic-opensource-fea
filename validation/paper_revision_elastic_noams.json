@@ -1,0 +1,2505 @@
+{
+  "status": "completed matched elastic controls; fracture calibration still blocked",
+  "calibrated": false,
+  "experimental_agreement": false,
+  "source_sha256": {
+    "results/revision_paper/elastic_noams_complete/elastic.radioss.json": "52e7ce6c89858d16d5dcc8be0a37e3086413d06656de8681a853ff928af3e2c2",
+    "results/revision_paper/shared/ccx_elastic_report.json": "8e7281b2178c3ec106bd6617c8dc41c4d321974d46a3f077b57711af184559f5",
+    "/workspace/reentrant-auxetic-opensource-fea/validation/matched_elastic_native_audit.json": "c54b89f68ca9ae5adcccf22d48412fc9cb5b29ec5b62f1d7296c04ab80e056cb"
+  },
+  "exact_core_mesh_and_boundary_match": true,
+  "native_noams": {
+    "status": "matched elastic diagnostic, not calibrated or experimental validation",
+    "metadata": "results/revision_paper/elastic_noams_complete/elastic.radioss.json",
+    "metadata_sha256": "52e7ce6c89858d16d5dcc8be0a37e3086413d06656de8681a853ff928af3e2c2",
+    "mesh_sha256": "6de52f1c1cbb4ecff88051808563553df8d7ff665cb7ce005f7aa5ac33674cb6",
+    "completed": true,
+    "metadata_execution_binding_verified": true,
+    "solid_formulation": 24,
+    "duration_seconds": 0.004,
+    "ams": {
+      "enabled": false,
+      "requested_time_step_seconds": null,
+      "time_step_scale_factor": 0.67,
+      "pcg_relative_tolerance": 0.0001,
+      "pcg_maximum_iterations": 1000,
+      "timestep_sensitivity_required": false,
+      "modifies_inertial_operator": false
+    },
+    "core_nodes": 21870,
+    "core_elements": 7392,
+    "raw_nodal_late_stiffness_N_per_mm": 1004.3447177490406,
+    "raw_nodal_late_stiffness_range_N_per_mm": [
+      1002.4226403441237,
+      1006.4318071748988
+    ],
+    "raw_nodal_nominal_effective_modulus_MPa": 25.372919185238917,
+    "nominal_reference_area_mm2": 1900.0,
+    "executed_metadata_reference_area_mm2": 1900.0,
+    "area_normalization_note": "Effective moduli use the shared 1900 mm2 convention; executed inputs and metadata are preserved.",
+    "work_equivalent_stiffness_N_per_mm": 1006.2094297994636,
+    "work_equivalent_modulus_MPa": 25.420027700196975,
+    "energy_equivalent_stiffness_N_per_mm": 1006.2048297773836,
+    "integrated_impulse_regression": {
+      "formula": "I(t)=k*integral(displacement dt)+m_eff*velocity+offset",
+      "time_fraction_interval": [
+        0.25,
+        0.95
+      ],
+      "stiffness_N_per_mm": 1006.2276570836477,
+      "effective_mass_Mg": 1.1055931173231755e-05,
+      "offset_Ns": -1.2709427733672324e-06,
+      "impulse_rmse_Ns": 2.721568776921139e-07,
+      "qualification": "Diagnostic spring/inertia approximation; not an independent static-stiffness validation"
+    },
+    "max_late_kinetic_internal_ratio": 3.8705260243408525e-05,
+    "final_internal_energy_Nmm": 0.05031,
+    "final_external_work_Nmm": 0.05031023,
+    "reconstructed_top_displacement_work_Nmm": 0.05031021020400313,
+    "max_late_top_bottom_force_difference_N": 0.05642500668857231,
+    "nodal_reaction_differentiation_qualified": true,
+    "analysis_script_sha256": "d93f686c6d33b37d8f113132fa16a9da47bae49bcb74c5f846fddb59bee8d5b1",
+    "generation_script_sha256": "d93f686c6d33b37d8f113132fa16a9da47bae49bcb74c5f846fddb59bee8d5b1",
+    "actual_history_samples": 400,
+    "quasi_static_validated": false,
+    "experimental_agreement": false,
+    "force_history": [
+      {
+        "time": 5.000695e-06,
+        "displacement_mm": 1.2314964999999927e-08,
+        "force_N": 0.0012021199993200945,
+        "bottom_force_N": 2.453747809059914e-10
+      },
+      {
+        "time": 1.5002084999999999e-05,
+        "displacement_mm": 3.694489499999978e-08,
+        "force_N": 0.0007311279390164764,
+        "bottom_force_N": 2.3514462272804074e-06
+      },
+      {
+        "time": 2.5003479999999997e-05,
+        "displacement_mm": 6.157482499999976e-08,
+        "force_N": 0.000501657281220626,
+        "bottom_force_N": 0.00012483864019633854
+      },
+      {
+        "time": 3.5004875e-05,
+        "displacement_mm": 8.624506499999999e-08,
+        "force_N": 0.0007785933708814503,
+        "bottom_force_N": 0.00022386900561787896
+      },
+      {
+        "time": 4.5006265e-05,
+        "displacement_mm": 1.8332286999999943e-07,
+        "force_N": 0.006741918447335816,
+        "bottom_force_N": -1.0206491529267555e-05
+      },
+      {
+        "time": 5.5007655e-05,
+        "displacement_mm": 3.527679499999988e-07,
+        "force_N": 0.004331098163355292,
+        "bottom_force_N": -0.00045144213949299
+      },
+      {
+        "time": 6.5009045e-05,
+        "displacement_mm": 5.222130500000004e-07,
+        "force_N": 0.003163841595018294,
+        "bottom_force_N": 0.0006177723529702363
+      },
+      {
+        "time": 7.501044e-05,
+        "displacement_mm": 6.918148999999999e-07,
+        "force_N": 0.0025440544383786147,
+        "bottom_force_N": 0.0018004403982802685
+      },
+      {
+        "time": 8.5011835e-05,
+        "displacement_mm": 1.0021960999999976e-06,
+        "force_N": 0.012358253400777314,
+        "bottom_force_N": 0.0003523264165467221
+      },
+      {
+        "time": 9.5013215e-05,
+        "displacement_mm": 1.4532004999999924e-06,
+        "force_N": 0.009077393377107352,
+        "bottom_force_N": -0.002351133135557228
+      },
+      {
+        "time": 0.00010500735,
+        "displacement_mm": 1.903877499999994e-06,
+        "force_N": 0.00793400524687338,
+        "bottom_force_N": 0.0007517641850055569
+      },
+      {
+        "time": 0.0001150015,
+        "displacement_mm": 2.3545990000000043e-06,
+        "force_N": 0.00462233639290497,
+        "bottom_force_N": 0.0049761169322630906
+      },
+      {
+        "time": 0.0001250029,
+        "displacement_mm": 3.0104794999999936e-06,
+        "force_N": 0.01929796094546763,
+        "bottom_force_N": 0.0023709668046993397
+      },
+      {
+        "time": 0.0001350043,
+        "displacement_mm": 3.871145999999987e-06,
+        "force_N": 0.015867002689623412,
+        "bottom_force_N": -0.0029764422679092887
+      },
+      {
+        "time": 0.0001450057,
+        "displacement_mm": 4.731812000000009e-06,
+        "force_N": 0.01659822641830145,
+        "bottom_force_N": 0.0012711286699302136
+      },
+      {
+        "time": 0.0001550071,
+        "displacement_mm": 5.592683499999991e-06,
+        "force_N": 0.010819756074149641,
+        "bottom_force_N": 0.007368436509063445
+      },
+      {
+        "time": 0.0001650085,
+        "displacement_mm": 6.718207e-06,
+        "force_N": 0.026065244165816775,
+        "bottom_force_N": 0.0053305558286012595
+      },
+      {
+        "time": 0.00017500985,
+        "displacement_mm": 8.108176500000041e-06,
+        "force_N": 0.023874941827562435,
+        "bottom_force_N": -0.0019798820469646263
+      },
+      {
+        "time": 0.0001850112,
+        "displacement_mm": 9.498145499999998e-06,
+        "force_N": 0.026915095716599717,
+        "bottom_force_N": 0.0038142707194580394
+      },
+      {
+        "time": 0.00019501259999999998,
+        "displacement_mm": 1.0888539999999982e-05,
+        "force_N": 0.02032021564980899,
+        "bottom_force_N": 0.011872452350553609
+      },
+      {
+        "time": 0.00020500675,
+        "displacement_mm": 1.2597794999999976e-05,
+        "force_N": 0.03605896476384057,
+        "bottom_force_N": 0.010341684307455044
+      },
+      {
+        "time": 0.0002150009,
+        "displacement_mm": 1.4626959999999991e-05,
+        "force_N": 0.03347946455496223,
+        "bottom_force_N": 0.001518701545213161
+      },
+      {
+        "time": 0.00022500230000000002,
+        "displacement_mm": 1.6657594999999987e-05,
+        "force_N": 0.038130455403243696,
+        "bottom_force_N": 0.00837471295748271
+      },
+      {
+        "time": 0.00023500369999999998,
+        "displacement_mm": 1.868838999999999e-05,
+        "force_N": 0.02938833588857589,
+        "bottom_force_N": 0.018717988796359608
+      },
+      {
+        "time": 0.0002450051,
+        "displacement_mm": 2.109115000000007e-05,
+        "force_N": 0.05139152080548689,
+        "bottom_force_N": 0.017344142035770584
+      },
+      {
+        "time": 0.00025500649999999996,
+        "displacement_mm": 2.3865705000000093e-05,
+        "force_N": 0.04694310089087528,
+        "bottom_force_N": 0.007696646922183279
+      },
+      {
+        "time": 0.00026500785,
+        "displacement_mm": 2.6640260000000068e-05,
+        "force_N": 0.05223696095837537,
+        "bottom_force_N": 0.01668408915773055
+      },
+      {
+        "time": 0.00027500919999999996,
+        "displacement_mm": 2.9415235000000036e-05,
+        "force_N": 0.04214902302857586,
+        "bottom_force_N": 0.03025865473284106
+      },
+      {
+        "time": 0.0002850106,
+        "displacement_mm": 3.2609840000000085e-05,
+        "force_N": 0.06590725474673502,
+        "bottom_force_N": 0.028811396638416573
+      },
+      {
+        "time": 0.000295012,
+        "displacement_mm": 3.622366000000007e-05,
+        "force_N": 0.06236850499780061,
+        "bottom_force_N": 0.01698459706735871
+      },
+      {
+        "time": 0.0003050134,
+        "displacement_mm": 3.98374799999999e-05,
+        "force_N": 0.06933975133281374,
+        "bottom_force_N": 0.027013434728945847
+      },
+      {
+        "time": 0.00031500755,
+        "displacement_mm": 4.344871999999975e-05,
+        "force_N": 0.05411037851585618,
+        "bottom_force_N": 0.04530365562879478
+      },
+      {
+        "time": 0.0003250017,
+        "displacement_mm": 4.7523390000000026e-05,
+        "force_N": 0.08497109478672976,
+        "bottom_force_N": 0.045523101635379946
+      },
+      {
+        "time": 0.0003350031,
+        "displacement_mm": 5.2064070000000217e-05,
+        "force_N": 0.08089242455056268,
+        "bottom_force_N": 0.031219897267748587
+      },
+      {
+        "time": 0.00034500445000000004,
+        "displacement_mm": 5.660474499999987e-05,
+        "force_N": 0.09115946507953877,
+        "bottom_force_N": 0.04149321490554643
+      },
+      {
+        "time": 0.0003550058,
+        "displacement_mm": 6.114574999999993e-05,
+        "force_N": 0.07341824013638144,
+        "bottom_force_N": 0.0637277470563861
+      },
+      {
+        "time": 0.0003650072,
+        "displacement_mm": 6.619020500000025e-05,
+        "force_N": 0.10256656328114076,
+        "bottom_force_N": 0.06615247392140712
+      },
+      {
+        "time": 0.0003750086,
+        "displacement_mm": 7.173777500000034e-05,
+        "force_N": 0.10023597417361547,
+        "bottom_force_N": 0.05113303552941438
+      },
+      {
+        "time": 0.00038501,
+        "displacement_mm": 7.728535000000045e-05,
+        "force_N": 0.11528033308336928,
+        "bottom_force_N": 0.06062335338641783
+      },
+      {
+        "time": 0.00039501140000000004,
+        "displacement_mm": 8.283358000000019e-05,
+        "force_N": 0.09759938798568067,
+        "bottom_force_N": 0.08574786608731609
+      },
+      {
+        "time": 0.0004050128,
+        "displacement_mm": 8.892157499999987e-05,
+        "force_N": 0.12521102455656338,
+        "bottom_force_N": 0.09065004085026317
+      },
+      {
+        "time": 0.00041500689999999997,
+        "displacement_mm": 9.554388500000007e-05,
+        "force_N": 0.12377767703368459,
+        "bottom_force_N": 0.07668816106918293
+      },
+      {
+        "time": 0.00042500100000000005,
+        "displacement_mm": 0.00010216622000000004,
+        "force_N": 0.14216893514907827,
+        "bottom_force_N": 0.0849786178529485
+      },
+      {
+        "time": 0.0004350024,
+        "displacement_mm": 0.00010879349999999995,
+        "force_N": 0.12225224648549324,
+        "bottom_force_N": 0.11148666116201787
+      },
+      {
+        "time": 0.00044500379999999997,
+        "displacement_mm": 0.00011599330000000053,
+        "force_N": 0.15650620163177276,
+        "bottom_force_N": 0.1182165048935047
+      },
+      {
+        "time": 0.00045500520000000004,
+        "displacement_mm": 0.00012376545000000017,
+        "force_N": 0.1516879724838492,
+        "bottom_force_N": 0.10604200234514495
+      },
+      {
+        "time": 0.0004650066,
+        "displacement_mm": 0.00013153754999999925,
+        "force_N": 0.1727973538704591,
+        "bottom_force_N": 0.1147492448475877
+      },
+      {
+        "time": 0.00047500799999999996,
+        "displacement_mm": 0.00013931019999999965,
+        "force_N": 0.15427895644609604,
+        "bottom_force_N": 0.14367990430692631
+      },
+      {
+        "time": 0.0004850094,
+        "displacement_mm": 0.00014768455000000057,
+        "force_N": 0.18914188083668457,
+        "bottom_force_N": 0.15036895784957482
+      },
+      {
+        "time": 0.00049501075,
+        "displacement_mm": 0.00015666009999999996,
+        "force_N": 0.185689796626438,
+        "bottom_force_N": 0.13869113396001073
+      },
+      {
+        "time": 0.0005050121,
+        "displacement_mm": 0.00016563569999999977,
+        "force_N": 0.2088357326974252,
+        "bottom_force_N": 0.14808095405033433
+      },
+      {
+        "time": 0.0005150135,
+        "displacement_mm": 0.00017461214999999966,
+        "force_N": 0.19112416601675247,
+        "bottom_force_N": 0.17972148226472254
+      },
+      {
+        "time": 0.0005250076500000001,
+        "displacement_mm": 0.00018420864999999995,
+        "force_N": 0.22547442629845124,
+        "bottom_force_N": 0.18730592571520754
+      },
+      {
+        "time": 0.0005350018000000001,
+        "displacement_mm": 0.00019443180000000115,
+        "force_N": 0.22523385696002998,
+        "bottom_force_N": 0.17631423813829974
+      },
+      {
+        "time": 0.00054500315,
+        "displacement_mm": 0.0002046623999999997,
+        "force_N": 0.25165835701358596,
+        "bottom_force_N": 0.18592095694595784
+      },
+      {
+        "time": 0.00055500455,
+        "displacement_mm": 0.00021489334999999873,
+        "force_N": 0.230238931260313,
+        "bottom_force_N": 0.2205226109895008
+      },
+      {
+        "time": 0.00056500595,
+        "displacement_mm": 0.0002257742500000003,
+        "force_N": 0.2703151425314703,
+        "bottom_force_N": 0.2294179033108816
+      },
+      {
+        "time": 0.0005750073,
+        "displacement_mm": 0.00023730480000000117,
+        "force_N": 0.26830059171715703,
+        "bottom_force_N": 0.21901950508786694
+      },
+      {
+        "time": 0.0005850087,
+        "displacement_mm": 0.0002488353500000012,
+        "force_N": 0.2989116683664294,
+        "bottom_force_N": 0.22793974171075954
+      },
+      {
+        "time": 0.0005950101,
+        "displacement_mm": 0.00026036660000000074,
+        "force_N": 0.2805223456716042,
+        "bottom_force_N": 0.2644759252542933
+      },
+      {
+        "time": 0.0006050115000000001,
+        "displacement_mm": 0.0002725670999999995,
+        "force_N": 0.3177645067690558,
+        "bottom_force_N": 0.27574690220026515
+      },
+      {
+        "time": 0.0006150128999999999,
+        "displacement_mm": 0.00028543604999999917,
+        "force_N": 0.3169632963385123,
+        "bottom_force_N": 0.267892455328982
+      },
+      {
+        "time": 0.000625007,
+        "displacement_mm": 0.00029829565000000056,
+        "force_N": 0.35098866173348264,
+        "bottom_force_N": 0.2766403141119986
+      },
+      {
+        "time": 0.0006350011000000001,
+        "displacement_mm": 0.000311155400000002,
+        "force_N": 0.3313552044713781,
+        "bottom_force_N": 0.3136623922933211
+      },
+      {
+        "time": 0.0006450024999999999,
+        "displacement_mm": 0.00032470975000000206,
+        "force_N": 0.37587920261163654,
+        "bottom_force_N": 0.3259760302881496
+      },
+      {
+        "time": 0.0006550039,
+        "displacement_mm": 0.00033894925000000156,
+        "force_N": 0.37065431569579893,
+        "bottom_force_N": 0.3215851897368943
+      },
+      {
+        "time": 0.0006650052500000001,
+        "displacement_mm": 0.0003531887999999999,
+        "force_N": 0.4065551463309771,
+        "bottom_force_N": 0.3312782725925725
+      },
+      {
+        "time": 0.0006750066,
+        "displacement_mm": 0.00036742884999999866,
+        "force_N": 0.39098473593696736,
+        "bottom_force_N": 0.3694377765489542
+      },
+      {
+        "time": 0.000685008,
+        "displacement_mm": 0.00038236715000000004,
+        "force_N": 0.43610727008219036,
+        "bottom_force_N": 0.38204180992136555
+      },
+      {
+        "time": 0.0006950094,
+        "displacement_mm": 0.00039800324999999983,
+        "force_N": 0.4318932201491821,
+        "bottom_force_N": 0.38012080700385514
+      },
+      {
+        "time": 0.0007050108,
+        "displacement_mm": 0.00041363934999999973,
+        "force_N": 0.4680919339292466,
+        "bottom_force_N": 0.391692246553325
+      },
+      {
+        "time": 0.00071501215,
+        "displacement_mm": 0.0004292763499999995,
+        "force_N": 0.4543640498735186,
+        "bottom_force_N": 0.4319321988989313
+      },
+      {
+        "time": 0.0007250135,
+        "displacement_mm": 0.00044562169999999806,
+        "force_N": 0.49961266882636385,
+        "bottom_force_N": 0.4442937274092055
+      },
+      {
+        "time": 0.00073500765,
+        "displacement_mm": 0.0004626620999999984,
+        "force_N": 0.49771049354654157,
+        "bottom_force_N": 0.4440895442700494
+      },
+      {
+        "time": 0.0007450018,
+        "displacement_mm": 0.0004797024499999988,
+        "force_N": 0.536326582878397,
+        "bottom_force_N": 0.45835736546894545
+      },
+      {
+        "time": 0.00075500315,
+        "displacement_mm": 0.0004967554500000005,
+        "force_N": 0.5187790260266141,
+        "bottom_force_N": 0.5008726094282705
+      },
+      {
+        "time": 0.0007650045000000001,
+        "displacement_mm": 0.0005145240000000012,
+        "force_N": 0.5718730123782824,
+        "bottom_force_N": 0.5140246092749676
+      },
+      {
+        "time": 0.0007750058999999999,
+        "displacement_mm": 0.000533007799999999,
+        "force_N": 0.5684130726698224,
+        "bottom_force_N": 0.5142631206768545
+      },
+      {
+        "time": 0.00078500725,
+        "displacement_mm": 0.0005514915999999968,
+        "force_N": 0.609703370461833,
+        "bottom_force_N": 0.5305002552211935
+      },
+      {
+        "time": 0.0007950086,
+        "displacement_mm": 0.0005699760499999957,
+        "force_N": 0.5936436179934893,
+        "bottom_force_N": 0.5745457726321559
+      },
+      {
+        "time": 0.00080501,
+        "displacement_mm": 0.0005891803499999994,
+        "force_N": 0.6447642833003409,
+        "bottom_force_N": 0.5898605777782937
+      },
+      {
+        "time": 0.0008150114,
+        "displacement_mm": 0.0006091038500000005,
+        "force_N": 0.6435900160977415,
+        "bottom_force_N": 0.5918331298010081
+      },
+      {
+        "time": 0.00082501275,
+        "displacement_mm": 0.0006290273499999964,
+        "force_N": 0.687522951216341,
+        "bottom_force_N": 0.6099396526250932
+      },
+      {
+        "time": 0.00083500685,
+        "displacement_mm": 0.0006489363999999981,
+        "force_N": 0.669818092901713,
+        "bottom_force_N": 0.655129404971607
+      },
+      {
+        "time": 0.0008450009499999999,
+        "displacement_mm": 0.000669566999999999,
+        "force_N": 0.7287311150550291,
+        "bottom_force_N": 0.6716459076119752
+      },
+      {
+        "time": 0.00085500235,
+        "displacement_mm": 0.000690933599999999,
+        "force_N": 0.7240031892216067,
+        "bottom_force_N": 0.6742805327395441
+      },
+      {
+        "time": 0.00086500375,
+        "displacement_mm": 0.0007123001999999995,
+        "force_N": 0.7695171060762155,
+        "bottom_force_N": 0.694895005202009
+      },
+      {
+        "time": 0.0008750050999999999,
+        "displacement_mm": 0.0007336672500000002,
+        "force_N": 0.7553377057212057,
+        "bottom_force_N": 0.7417596675028473
+      },
+      {
+        "time": 0.00088500645,
+        "displacement_mm": 0.0007557549000000017,
+        "force_N": 0.8145960052193174,
+        "bottom_force_N": 0.7591234725020801
+      },
+      {
+        "time": 0.0008950078,
+        "displacement_mm": 0.0007785626999999996,
+        "force_N": 0.8118591548183212,
+        "bottom_force_N": 0.7626218878311105
+      },
+      {
+        "time": 0.0009050092,
+        "displacement_mm": 0.0008013704500000018,
+        "force_N": 0.8584927828104197,
+        "bottom_force_N": 0.7857627490774168
+      },
+      {
+        "time": 0.0009150105999999999,
+        "displacement_mm": 0.0008241790500000039,
+        "force_N": 0.8452632187493804,
+        "bottom_force_N": 0.8350089332755678
+      },
+      {
+        "time": 0.00092501195,
+        "displacement_mm": 0.0008477048500000015,
+        "force_N": 0.9044035802345469,
+        "bottom_force_N": 0.8527113554501415
+      },
+      {
+        "time": 0.0009350133,
+        "displacement_mm": 0.0008719469499999988,
+        "force_N": 0.9056691988121678,
+        "bottom_force_N": 0.8557205907066568
+      },
+      {
+        "time": 0.0009450074,
+        "displacement_mm": 0.000896171450000001,
+        "force_N": 0.9544731361397278,
+        "bottom_force_N": 0.8805684592404813
+      },
+      {
+        "time": 0.0009550015,
+        "displacement_mm": 0.0009203960999999999,
+        "force_N": 0.9375430339752573,
+        "bottom_force_N": 0.9327126236436258
+      },
+      {
+        "time": 0.00096500285,
+        "displacement_mm": 0.0009453496499999956,
+        "force_N": 1.0043635801345476,
+        "bottom_force_N": 0.9527327806374406
+      },
+      {
+        "time": 0.0009750042,
+        "displacement_mm": 0.0009710142999999996,
+        "force_N": 1.0053244304797337,
+        "bottom_force_N": 0.9555023232425784
+      },
+      {
+        "time": 0.0009850056,
+        "displacement_mm": 0.0009966788000000026,
+        "force_N": 1.0573775459435897,
+        "bottom_force_N": 0.979961580786563
+      },
+      {
+        "time": 0.0009950071499999998,
+        "displacement_mm": 0.0010223440000000001,
+        "force_N": 1.0417264543027673,
+        "bottom_force_N": 1.0341538759913897
+      },
+      {
+        "time": 0.0010050085000000001,
+        "displacement_mm": 0.0010487124999999957,
+        "force_N": 1.1049802742725487,
+        "bottom_force_N": 1.057613339911324
+      },
+      {
+        "time": 0.0010150095,
+        "displacement_mm": 0.0010757829999999986,
+        "force_N": 1.1094778401159637,
+        "bottom_force_N": 1.0616306459005522
+      },
+      {
+        "time": 0.0010250110000000002,
+        "displacement_mm": 0.0011028535000000006,
+        "force_N": 1.1652404003199652,
+        "bottom_force_N": 1.085724616919774
+      },
+      {
+        "time": 0.0010350125,
+        "displacement_mm": 0.001129925000000002,
+        "force_N": 1.1539928300169953,
+        "bottom_force_N": 1.1404228661348768
+      },
+      {
+        "time": 0.0010450135,
+        "displacement_mm": 0.0011576890000000064,
+        "force_N": 1.2135059142085909,
+        "bottom_force_N": 1.166984678301974
+      },
+      {
+        "time": 0.0010550075,
+        "displacement_mm": 0.0011861245000000069,
+        "force_N": 1.2193947033143069,
+        "bottom_force_N": 1.1731672784444669
+      },
+      {
+        "time": 0.001065002,
+        "displacement_mm": 0.0012145595000000071,
+        "force_N": 1.277477287342524,
+        "bottom_force_N": 1.197097317287066
+      },
+      {
+        "time": 0.0010750035,
+        "displacement_mm": 0.0012430154999999998,
+        "force_N": 1.266283833816609,
+        "bottom_force_N": 1.2519418160424796
+      },
+      {
+        "time": 0.0010850045,
+        "displacement_mm": 0.0012721514999999932,
+        "force_N": 1.332607278172189,
+        "bottom_force_N": 1.2806174224255695
+      },
+      {
+        "time": 0.001095006,
+        "displacement_mm": 0.0013019669999999942,
+        "force_N": 1.3359797038592145,
+        "bottom_force_N": 1.2902079307973189
+      },
+      {
+        "time": 0.0011050075,
+        "displacement_mm": 0.001331782499999996,
+        "force_N": 1.3951086761324207,
+        "bottom_force_N": 1.315587734361216
+      },
+      {
+        "time": 0.0011150085,
+        "displacement_mm": 0.0013615985000000035,
+        "force_N": 1.3876967323267428,
+        "bottom_force_N": 1.3706827558147052
+      },
+      {
+        "time": 0.00112501,
+        "displacement_mm": 0.0013920800000000086,
+        "force_N": 1.4517122904419661,
+        "bottom_force_N": 1.3996549296815062
+      },
+      {
+        "time": 0.0011350115,
+        "displacement_mm": 0.0014232259999999997,
+        "force_N": 1.4584881859813978,
+        "bottom_force_N": 1.4121588633366104
+      },
+      {
+        "time": 0.0011450125000000001,
+        "displacement_mm": 0.0014543719999999902,
+        "force_N": 1.5179884801519394,
+        "bottom_force_N": 1.4382687508535834
+      },
+      {
+        "time": 0.0011550065,
+        "displacement_mm": 0.001485495499999996,
+        "force_N": 1.509000113747902,
+        "bottom_force_N": 1.4948822058327984
+      },
+      {
+        "time": 0.0011650010000000001,
+        "displacement_mm": 0.0015172675000000024,
+        "force_N": 1.5790645167966038,
+        "bottom_force_N": 1.5254304023824121
+      },
+      {
+        "time": 0.0011750025,
+        "displacement_mm": 0.0015497104999999973,
+        "force_N": 1.5854294569543201,
+        "bottom_force_N": 1.5409049404353508
+      },
+      {
+        "time": 0.0011850035,
+        "displacement_mm": 0.0015821534999999965,
+        "force_N": 1.6462497258274467,
+        "bottom_force_N": 1.5673653165657597
+      },
+      {
+        "time": 0.0011950049999999999,
+        "displacement_mm": 0.0016145969999999993,
+        "force_N": 1.6401195171265674,
+        "bottom_force_N": 1.6244717372713287
+      },
+      {
+        "time": 0.0012050065,
+        "displacement_mm": 0.001647670500000001,
+        "force_N": 1.7059881741325886,
+        "bottom_force_N": 1.6571562345341324
+      },
+      {
+        "time": 0.0012150074999999999,
+        "displacement_mm": 0.0016813735000000025,
+        "force_N": 1.715361620347935,
+        "bottom_force_N": 1.6752478553883074
+      },
+      {
+        "time": 0.001225009,
+        "displacement_mm": 0.0017150760000000072,
+        "force_N": 1.7778403508898455,
+        "bottom_force_N": 1.7019520140596065
+      },
+      {
+        "time": 0.0012350105,
+        "displacement_mm": 0.001748779500000009,
+        "force_N": 1.7770876954833794,
+        "bottom_force_N": 1.7598300849785493
+      },
+      {
+        "time": 0.0012450115,
+        "displacement_mm": 0.0017830930000000077,
+        "force_N": 1.8391480867284487,
+        "bottom_force_N": 1.793644643973691
+      },
+      {
+        "time": 0.0012550130000000001,
+        "displacement_mm": 0.0018180150000000049,
+        "force_N": 1.8498723069585312,
+        "bottom_force_N": 1.815523206505644
+      },
+      {
+        "time": 0.001265007,
+        "displacement_mm": 0.0018529114999999985,
+        "force_N": 1.9130221715852458,
+        "bottom_force_N": 1.8433957990885936
+      },
+      {
+        "time": 0.001275001,
+        "displacement_mm": 0.0018878079999999926,
+        "force_N": 1.9130897692911522,
+        "bottom_force_N": 1.9005640825355838
+      },
+      {
+        "time": 0.0012850025,
+        "displacement_mm": 0.0019233175000000007,
+        "force_N": 1.9806615167582609,
+        "bottom_force_N": 1.9340405883311271
+      },
+      {
+        "time": 0.0012950035,
+        "displacement_mm": 0.0019594145000000106,
+        "force_N": 1.990348405409548,
+        "bottom_force_N": 1.9599280518978959
+      },
+      {
+        "time": 0.0013050050000000001,
+        "displacement_mm": 0.0019955110000000045,
+        "force_N": 2.0522248769755222,
+        "bottom_force_N": 1.989463080851821
+      },
+      {
+        "time": 0.0013150065,
+        "displacement_mm": 0.0020316080000000016,
+        "force_N": 2.057190689560062,
+        "bottom_force_N": 2.0478302092410767
+      },
+      {
+        "time": 0.0013250075,
+        "displacement_mm": 0.0020682695,
+        "force_N": 2.123636819298139,
+        "bottom_force_N": 2.0794439823128266
+      },
+      {
+        "time": 0.0013350089999999998,
+        "displacement_mm": 0.0021054940000000007,
+        "force_N": 2.136695590611829,
+        "bottom_force_N": 2.1075134119675436
+      },
+      {
+        "time": 0.0013450105,
+        "displacement_mm": 0.002142718,
+        "force_N": 2.197425617312283,
+        "bottom_force_N": 2.1388337720928083
+      },
+      {
+        "time": 0.0013550114999999999,
+        "displacement_mm": 0.0021799429999999932,
+        "force_N": 2.2048498545905137,
+        "bottom_force_N": 2.1989233780821493
+      },
+      {
+        "time": 0.001365013,
+        "displacement_mm": 0.002217706499999991,
+        "force_N": 2.2691528740351865,
+        "bottom_force_N": 2.2298867291411613
+      },
+      {
+        "time": 0.001375007,
+        "displacement_mm": 0.0022559799999999942,
+        "force_N": 2.2886573904396124,
+        "bottom_force_N": 2.2599051334838847
+      },
+      {
+        "time": 0.0013850009999999999,
+        "displacement_mm": 0.002294253500000006,
+        "force_N": 2.348728170342942,
+        "bottom_force_N": 2.2913744716776554
+      },
+      {
+        "time": 0.0013950025,
+        "displacement_mm": 0.002332555000000009,
+        "force_N": 2.3558723988101353,
+        "bottom_force_N": 2.353431519810077
+      },
+      {
+        "time": 0.0014050034999999999,
+        "displacement_mm": 0.002371368500000009,
+        "force_N": 2.4230579008498814,
+        "bottom_force_N": 2.384938361961739
+      },
+      {
+        "time": 0.001415005,
+        "displacement_mm": 0.0024106935000000017,
+        "force_N": 2.4431779537893057,
+        "bottom_force_N": 2.415282466905714
+      },
+      {
+        "time": 0.0014250065,
+        "displacement_mm": 0.002450018499999997,
+        "force_N": 2.5049550761923474,
+        "bottom_force_N": 2.4472597399309963
+      },
+      {
+        "time": 0.0014350075,
+        "displacement_mm": 0.0024893440000000036,
+        "force_N": 2.5158878611138817,
+        "bottom_force_N": 2.510265530410858
+      },
+      {
+        "time": 0.0014450090000000001,
+        "displacement_mm": 0.0025291534999999955,
+        "force_N": 2.5785840694860718,
+        "bottom_force_N": 2.5430698445871127
+      },
+      {
+        "time": 0.0014550105,
+        "displacement_mm": 0.0025694459999999835,
+        "force_N": 2.602570085291535,
+        "bottom_force_N": 2.5760653393731294
+      },
+      {
+        "time": 0.0014650115,
+        "displacement_mm": 0.002609738500000002,
+        "force_N": 2.6646804424557473,
+        "bottom_force_N": 2.6081307363783277
+      },
+      {
+        "time": 0.0014750129999999998,
+        "displacement_mm": 0.0026500315000000186,
+        "force_N": 2.6794983228353817,
+        "bottom_force_N": 2.6705137906867966
+      },
+      {
+        "time": 0.001485007,
+        "displacement_mm": 0.002690749000000001,
+        "force_N": 2.74012305337475,
+        "bottom_force_N": 2.704181634319131
+      },
+      {
+        "time": 0.0014950010000000001,
+        "displacement_mm": 0.002731920999999986,
+        "force_N": 2.765189982503574,
+        "bottom_force_N": 2.7387778028354104
+      },
+      {
+        "time": 0.0015050025,
+        "displacement_mm": 0.002773122500000002,
+        "force_N": 2.8274846541344645,
+        "bottom_force_N": 2.7723517848514505
+      },
+      {
+        "time": 0.0015150035,
+        "displacement_mm": 0.0028143240000000173,
+        "force_N": 2.843322928507176,
+        "bottom_force_N": 2.8355757887331277
+      },
+      {
+        "time": 0.0015250049999999999,
+        "displacement_mm": 0.002855949999999997,
+        "force_N": 2.9074478778245005,
+        "bottom_force_N": 2.869070306943658
+      },
+      {
+        "time": 0.0015350065,
+        "displacement_mm": 0.002897999999999982,
+        "force_N": 2.9332327209278737,
+        "bottom_force_N": 2.9056959296987532
+      },
+      {
+        "time": 0.0015450074999999999,
+        "displacement_mm": 0.002940049499999997,
+        "force_N": 2.993873429157125,
+        "bottom_force_N": 2.9403624129820183
+      },
+      {
+        "time": 0.001555009,
+        "displacement_mm": 0.0029820995000000012,
+        "force_N": 3.011179449110057,
+        "bottom_force_N": 3.004043518879406
+      },
+      {
+        "time": 0.0015650105,
+        "displacement_mm": 0.003024542000000006,
+        "force_N": 3.073483445455542,
+        "bottom_force_N": 3.0391197749662697
+      },
+      {
+        "time": 0.0015750115,
+        "displacement_mm": 0.0030673764999999964,
+        "force_N": 3.1034723959603716,
+        "bottom_force_N": 3.0761760489600514
+      },
+      {
+        "time": 0.0015850125,
+        "displacement_mm": 0.003110211499999985,
+        "force_N": 3.1643656312368247,
+        "bottom_force_N": 3.111199227601331
+      },
+      {
+        "time": 0.0015950065000000001,
+        "displacement_mm": 0.0031530149999999956,
+        "force_N": 3.1809115346951904,
+        "bottom_force_N": 3.1765486575007356
+      },
+      {
+        "time": 0.001605001,
+        "displacement_mm": 0.003196178499999996,
+        "force_N": 3.243477261747722,
+        "bottom_force_N": 3.213463501524682
+      },
+      {
+        "time": 0.0016150025,
+        "displacement_mm": 0.0032397329999999903,
+        "force_N": 3.274631544445516,
+        "bottom_force_N": 3.2511473532935717
+      },
+      {
+        "time": 0.0016250035,
+        "displacement_mm": 0.0032832875000000025,
+        "force_N": 3.3363457163284105,
+        "bottom_force_N": 3.2854766238667015
+      },
+      {
+        "time": 0.0016350045,
+        "displacement_mm": 0.0033268420000000225,
+        "force_N": 3.35627819378057,
+        "bottom_force_N": 3.3510225211000297
+      },
+      {
+        "time": 0.001645006,
+        "displacement_mm": 0.0033707230000000143,
+        "force_N": 3.4135720808838093,
+        "bottom_force_N": 3.391012351272631
+      },
+      {
+        "time": 0.0016550075,
+        "displacement_mm": 0.0034149310000000004,
+        "force_N": 3.447105696430335,
+        "bottom_force_N": 3.4306857094421095
+      },
+      {
+        "time": 0.0016650085000000001,
+        "displacement_mm": 0.0034591385000000054,
+        "force_N": 3.5101991720827863,
+        "bottom_force_N": 3.4646008200949003
+      },
+      {
+        "time": 0.0016750095,
+        "displacement_mm": 0.00350334650000001,
+        "force_N": 3.5347016328367853,
+        "bottom_force_N": 3.52846051033793
+      },
+      {
+        "time": 0.0016850110000000001,
+        "displacement_mm": 0.0035478469999999946,
+        "force_N": 3.5878017206559125,
+        "bottom_force_N": 3.5699639106309937
+      },
+      {
+        "time": 0.0016950125,
+        "displacement_mm": 0.0035926389999999917,
+        "force_N": 3.6221677932205445,
+        "bottom_force_N": 3.612408110118975
+      },
+      {
+        "time": 0.0017050135,
+        "displacement_mm": 0.003637430999999995,
+        "force_N": 3.6845052704729766,
+        "bottom_force_N": 3.646640223347607
+      },
+      {
+        "time": 0.0017150075,
+        "displacement_mm": 0.0036821905000000025,
+        "force_N": 3.711839717632906,
+        "bottom_force_N": 3.7080172017122304
+      },
+      {
+        "time": 0.0017250015,
+        "displacement_mm": 0.0037272075000000016,
+        "force_N": 3.7672319068093514,
+        "bottom_force_N": 3.751517292650803
+      },
+      {
+        "time": 0.0017350030000000002,
+        "displacement_mm": 0.0037725144999999857,
+        "force_N": 3.8009065986800104,
+        "bottom_force_N": 3.7957398130572715
+      },
+      {
+        "time": 0.0017450045,
+        "displacement_mm": 0.0038178214999999936,
+        "force_N": 3.8618551134889083,
+        "bottom_force_N": 3.8308595406260477
+      },
+      {
+        "time": 0.0017550055,
+        "displacement_mm": 0.003863128500000001,
+        "force_N": 3.892746853314838,
+        "bottom_force_N": 3.890732957244322
+      },
+      {
+        "time": 0.0017650065000000001,
+        "displacement_mm": 0.003908656999999991,
+        "force_N": 3.9463710528946248,
+        "bottom_force_N": 3.934036414738412
+      },
+      {
+        "time": 0.001775008,
+        "displacement_mm": 0.003954406999999986,
+        "force_N": 3.982411224755044,
+        "bottom_force_N": 3.9796321103380676
+      },
+      {
+        "time": 0.0017850095,
+        "displacement_mm": 0.004000157499999985,
+        "force_N": 4.042408935106467,
+        "bottom_force_N": 4.015576045985183
+      },
+      {
+        "time": 0.0017950105,
+        "displacement_mm": 0.00404590799999998,
+        "force_N": 4.076394705529368,
+        "bottom_force_N": 4.074579299370184
+      },
+      {
+        "time": 0.001805012,
+        "displacement_mm": 0.004091843999999994,
+        "force_N": 4.1268441571686285,
+        "bottom_force_N": 4.1183796021495285
+      },
+      {
+        "time": 0.0018150135,
+        "displacement_mm": 0.004137965500000005,
+        "force_N": 4.16641069093074,
+        "bottom_force_N": 4.16604875682441
+      },
+      {
+        "time": 0.0018250075,
+        "displacement_mm": 0.00418405349999999,
+        "force_N": 4.224939263042072,
+        "bottom_force_N": 4.20134301990572
+      },
+      {
+        "time": 0.0018350015,
+        "displacement_mm": 0.004230141499999974,
+        "force_N": 4.261606932306589,
+        "bottom_force_N": 4.258418831356829
+      },
+      {
+        "time": 0.0018450025,
+        "displacement_mm": 0.00427641199999999,
+        "force_N": 4.311014484551774,
+        "bottom_force_N": 4.303246533166797
+      },
+      {
+        "time": 0.0018550035,
+        "displacement_mm": 0.00432283150000001,
+        "force_N": 4.351093171682717,
+        "bottom_force_N": 4.353140668113307
+      },
+      {
+        "time": 0.0018650049999999999,
+        "displacement_mm": 0.0043692509999999985,
+        "force_N": 4.408362683463353,
+        "bottom_force_N": 4.388693843831251
+      },
+      {
+        "time": 0.0018750065,
+        "displacement_mm": 0.0044156704999999815,
+        "force_N": 4.450514874512361,
+        "bottom_force_N": 4.443498802349702
+      },
+      {
+        "time": 0.0018850075,
+        "displacement_mm": 0.004462201999999981,
+        "force_N": 4.49678194480584,
+        "bottom_force_N": 4.488599283651458
+      },
+      {
+        "time": 0.0018950085,
+        "displacement_mm": 0.004508845999999973,
+        "force_N": 4.537480744925434,
+        "bottom_force_N": 4.540551429557362
+      },
+      {
+        "time": 0.00190501,
+        "displacement_mm": 0.004555489499999989,
+        "force_N": 4.591495400919922,
+        "bottom_force_N": 4.577732404688798
+      },
+      {
+        "time": 0.0019150115,
+        "displacement_mm": 0.004602133000000006,
+        "force_N": 4.6379231836815995,
+        "bottom_force_N": 4.630019371206161
+      },
+      {
+        "time": 0.0019250125,
+        "displacement_mm": 0.004648851500000014,
+        "force_N": 4.683731406859161,
+        "bottom_force_N": 4.673941892482436
+      },
+      {
+        "time": 0.0019350135,
+        "displacement_mm": 0.004695645000000019,
+        "force_N": 4.726265505449343,
+        "bottom_force_N": 4.728197041787657
+      },
+      {
+        "time": 0.0019450075,
+        "displacement_mm": 0.004742404500000015,
+        "force_N": 4.776490807049337,
+        "bottom_force_N": 4.767854862638814
+      },
+      {
+        "time": 0.0019550015000000002,
+        "displacement_mm": 0.004789164000000026,
+        "force_N": 4.824624512548376,
+        "bottom_force_N": 4.8185546178348835
+      },
+      {
+        "time": 0.001965003,
+        "displacement_mm": 0.004835995000000005,
+        "force_N": 4.8697132723457965,
+        "bottom_force_N": 4.860545692200784
+      },
+      {
+        "time": 0.0019750045,
+        "displacement_mm": 0.004882862999999991,
+        "force_N": 4.915750795020597,
+        "bottom_force_N": 4.91548369995974
+      },
+      {
+        "time": 0.0019850055,
+        "displacement_mm": 0.004929731499999986,
+        "force_N": 4.961933493750556,
+        "bottom_force_N": 4.957009314138711
+      },
+      {
+        "time": 0.0019950065,
+        "displacement_mm": 0.004976599999999998,
+        "force_N": 5.0110306117392085,
+        "bottom_force_N": 5.00817084220616
+      },
+      {
+        "time": 0.002005008,
+        "displacement_mm": 0.005023467999999999,
+        "force_N": 5.0543928611272415,
+        "bottom_force_N": 5.04991702891387
+      },
+      {
+        "time": 0.0020150095,
+        "displacement_mm": 0.0050703365,
+        "force_N": 5.1043940270975465,
+        "bottom_force_N": 5.104360343255835
+      },
+      {
+        "time": 0.0020250105,
+        "displacement_mm": 0.0051172049999999945,
+        "force_N": 5.148937886511221,
+        "bottom_force_N": 5.1464614468055405
+      },
+      {
+        "time": 0.0020350115,
+        "displacement_mm": 0.005164072999999993,
+        "force_N": 5.19873600309972,
+        "bottom_force_N": 5.197413532026561
+      },
+      {
+        "time": 0.0020450125,
+        "displacement_mm": 0.005210903499999999,
+        "force_N": 5.238432830116971,
+        "bottom_force_N": 5.240115921247981
+      },
+      {
+        "time": 0.0020550065,
+        "displacement_mm": 0.005257662999999996,
+        "force_N": 5.290467302593202,
+        "bottom_force_N": 5.293142445929404
+      },
+      {
+        "time": 0.0020650005,
+        "displacement_mm": 0.00530442249999999,
+        "force_N": 5.334374009899272,
+        "bottom_force_N": 5.336353054304547
+      },
+      {
+        "time": 0.0020750020000000003,
+        "displacement_mm": 0.005351215499999981,
+        "force_N": 5.386230822235565,
+        "bottom_force_N": 5.385563513217482
+      },
+      {
+        "time": 0.0020850035,
+        "displacement_mm": 0.005397933999999995,
+        "force_N": 5.422319168383051,
+        "bottom_force_N": 5.429897957734549
+      },
+      {
+        "time": 0.0020950045,
+        "displacement_mm": 0.005444577500000018,
+        "force_N": 5.476499181981914,
+        "bottom_force_N": 5.483743668773179
+      },
+      {
+        "time": 0.0021050055,
+        "displacement_mm": 0.005491221000000042,
+        "force_N": 5.518131471152845,
+        "bottom_force_N": 5.5263662041993555
+      },
+      {
+        "time": 0.0021150070000000003,
+        "displacement_mm": 0.005537864500000016,
+        "force_N": 5.5722094969006175,
+        "bottom_force_N": 5.5735970997499225
+      },
+      {
+        "time": 0.0021250085,
+        "displacement_mm": 0.005584395500000004,
+        "force_N": 5.606662835716324,
+        "bottom_force_N": 5.618317096350322
+      },
+      {
+        "time": 0.0021350095,
+        "displacement_mm": 0.0056308145000000176,
+        "force_N": 5.662074112988768,
+        "bottom_force_N": 5.6721908582042335
+      },
+      {
+        "time": 0.0021450105,
+        "displacement_mm": 0.005677233999999997,
+        "force_N": 5.701092942705848,
+        "bottom_force_N": 5.715664889851032
+      },
+      {
+        "time": 0.0021550115,
+        "displacement_mm": 0.005723653499999976,
+        "force_N": 5.757464444855309,
+        "bottom_force_N": 5.762570232236818
+      },
+      {
+        "time": 0.0021650125,
+        "displacement_mm": 0.00576992349999997,
+        "force_N": 5.790074636036486,
+        "bottom_force_N": 5.806741903719658
+      },
+      {
+        "time": 0.0021750065,
+        "displacement_mm": 0.005816010999999967,
+        "force_N": 5.84667602953827,
+        "bottom_force_N": 5.858924015940605
+      },
+      {
+        "time": 0.0021850005,
+        "displacement_mm": 0.005862099000000008,
+        "force_N": 5.884049067793505,
+        "bottom_force_N": 5.902742174002879
+      },
+      {
+        "time": 0.0021950019999999997,
+        "displacement_mm": 0.005908220500000032,
+        "force_N": 5.940201380123922,
+        "bottom_force_N": 5.947985399539958
+      },
+      {
+        "time": 0.0022050035,
+        "displacement_mm": 0.00595415600000002,
+        "force_N": 5.970571191680935,
+        "bottom_force_N": 5.993974451575232
+      },
+      {
+        "time": 0.0022150045,
+        "displacement_mm": 0.005999905999999999,
+        "force_N": 6.030867917707825,
+        "bottom_force_N": 6.045132245154837
+      },
+      {
+        "time": 0.0022250055,
+        "displacement_mm": 0.006045655500000004,
+        "force_N": 6.0677537412256966,
+        "bottom_force_N": 6.088213668453124
+      },
+      {
+        "time": 0.002235007,
+        "displacement_mm": 0.006091405000000025,
+        "force_N": 6.124157693361343,
+        "bottom_force_N": 6.131297384913129
+      },
+      {
+        "time": 0.0022450085,
+        "displacement_mm": 0.0061369334999999995,
+        "force_N": 6.150399720827992,
+        "bottom_force_N": 6.179591263513672
+      },
+      {
+        "time": 0.0022550095,
+        "displacement_mm": 0.006182240000000004,
+        "force_N": 6.211564316668852,
+        "bottom_force_N": 6.229688839705994
+      },
+      {
+        "time": 0.0022650105,
+        "displacement_mm": 0.006227546500000012,
+        "force_N": 6.248939016197594,
+        "bottom_force_N": 6.271471347294975
+      },
+      {
+        "time": 0.0022750115,
+        "displacement_mm": 0.006272852499999992,
+        "force_N": 6.307942495050865,
+        "bottom_force_N": 6.311893980972228
+      },
+      {
+        "time": 0.0022850125,
+        "displacement_mm": 0.006317900999999985,
+        "force_N": 6.3305159629041015,
+        "bottom_force_N": 6.3620372669533864
+      },
+      {
+        "time": 0.0022950065,
+        "displacement_mm": 0.006362660500000006,
+        "force_N": 6.39057115800511,
+        "bottom_force_N": 6.412227716681489
+      },
+      {
+        "time": 0.0023050005,
+        "displacement_mm": 0.00640742000000002,
+        "force_N": 6.42795137786263,
+        "bottom_force_N": 6.45404615499491
+      },
+      {
+        "time": 0.002315002,
+        "displacement_mm": 0.006452212000000002,
+        "force_N": 6.489894717356115,
+        "bottom_force_N": 6.488506564296863
+      },
+      {
+        "time": 0.0023250035,
+        "displacement_mm": 0.00649671149999999,
+        "force_N": 6.508930190381007,
+        "bottom_force_N": 6.540506629336636
+      },
+      {
+        "time": 0.0023350045,
+        "displacement_mm": 0.006540918499999972,
+        "force_N": 6.568537326967358,
+        "bottom_force_N": 6.591900691671381
+      },
+      {
+        "time": 0.0023450055,
+        "displacement_mm": 0.006585125500000006,
+        "force_N": 6.604030074792659,
+        "bottom_force_N": 6.634353036086374
+      },
+      {
+        "time": 0.0023550065,
+        "displacement_mm": 0.006629332500000029,
+        "force_N": 6.6680353636634475,
+        "bottom_force_N": 6.665484873782578
+      },
+      {
+        "time": 0.002365008,
+        "displacement_mm": 0.006673212999999999,
+        "force_N": 6.6865274060189455,
+        "bottom_force_N": 6.716591007858695
+      },
+      {
+        "time": 0.0023750095,
+        "displacement_mm": 0.00671676700000001,
+        "force_N": 6.745131737626014,
+        "bottom_force_N": 6.768499369862708
+      },
+      {
+        "time": 0.0023850105,
+        "displacement_mm": 0.006760321,
+        "force_N": 6.778320417358197,
+        "bottom_force_N": 6.811659379472076
+      },
+      {
+        "time": 0.0023950115,
+        "displacement_mm": 0.0068038744999999925,
+        "force_N": 6.842419795420679,
+        "bottom_force_N": 6.839552721967865
+      },
+      {
+        "time": 0.0024050125,
+        "displacement_mm": 0.006847068000000019,
+        "force_N": 6.860893393260145,
+        "bottom_force_N": 6.891709062643833
+      },
+      {
+        "time": 0.0024150135,
+        "displacement_mm": 0.00688990200000002,
+        "force_N": 6.918433436357368,
+        "bottom_force_N": 6.9419378037292665
+      },
+      {
+        "time": 0.0024250075,
+        "displacement_mm": 0.0069327050000000225,
+        "force_N": 6.950145283817992,
+        "bottom_force_N": 6.986222034174883
+      },
+      {
+        "time": 0.0024350015,
+        "displacement_mm": 0.006975508000000014,
+        "force_N": 7.015735666963645,
+        "bottom_force_N": 7.011628881251847
+      },
+      {
+        "time": 0.0024450025,
+        "displacement_mm": 0.007017949500000004,
+        "force_N": 7.029301786001728,
+        "bottom_force_N": 7.064516079521925
+      },
+      {
+        "time": 0.002455004,
+        "displacement_mm": 0.007059998500000014,
+        "force_N": 7.086503399369751,
+        "bottom_force_N": 7.1132141195161935
+      },
+      {
+        "time": 0.0024650055,
+        "displacement_mm": 0.007102048000000005,
+        "force_N": 7.118081979262158,
+        "bottom_force_N": 7.158936124867725
+      },
+      {
+        "time": 0.0024750065,
+        "displacement_mm": 0.007144097000000009,
+        "force_N": 7.1844827947106475,
+        "bottom_force_N": 7.179493833556348
+      },
+      {
+        "time": 0.0024850074999999998,
+        "displacement_mm": 0.007185721500000028,
+        "force_N": 7.196246855614591,
+        "bottom_force_N": 7.233883609718833
+      },
+      {
+        "time": 0.0024950085,
+        "displacement_mm": 0.007226922500000024,
+        "force_N": 7.25203735331013,
+        "bottom_force_N": 7.283837001929685
+      },
+      {
+        "time": 0.0025050095,
+        "displacement_mm": 0.007268123499999987,
+        "force_N": 7.281577437140837,
+        "bottom_force_N": 7.329540721527536
+      },
+      {
+        "time": 0.002515011,
+        "displacement_mm": 0.007309323999999973,
+        "force_N": 7.348320518135906,
+        "bottom_force_N": 7.344884804759839
+      },
+      {
+        "time": 0.0025250125,
+        "displacement_mm": 0.007350069999999988,
+        "force_N": 7.360520899310552,
+        "bottom_force_N": 7.399612567622841
+      },
+      {
+        "time": 0.0025350134999999998,
+        "displacement_mm": 0.007390361999999986,
+        "force_N": 7.413614739115576,
+        "bottom_force_N": 7.449445946715617
+      },
+      {
+        "time": 0.002545007,
+        "displacement_mm": 0.007430624499999985,
+        "force_N": 7.439632036577338,
+        "bottom_force_N": 7.4972380875720495
+      },
+      {
+        "time": 0.0025550010000000003,
+        "displacement_mm": 0.007470886999999984,
+        "force_N": 7.509520770749047,
+        "bottom_force_N": 7.508511998630616
+      },
+      {
+        "time": 0.0025650025,
+        "displacement_mm": 0.007510695499999965,
+        "force_N": 7.519120092557975,
+        "bottom_force_N": 7.561472342565985
+      },
+      {
+        "time": 0.0025750035,
+        "displacement_mm": 0.007550019999999984,
+        "force_N": 7.573435847339027,
+        "bottom_force_N": 7.610549139296272
+      },
+      {
+        "time": 0.0025850045,
+        "displacement_mm": 0.0075893440000000196,
+        "force_N": 7.595067733756829,
+        "bottom_force_N": 7.660002895261358
+      },
+      {
+        "time": 0.0025950055,
+        "displacement_mm": 0.007628668000000012,
+        "force_N": 7.6646004300455255,
+        "bottom_force_N": 7.66976627484133
+      },
+      {
+        "time": 0.0026050065,
+        "displacement_mm": 0.007667480500000013,
+        "force_N": 7.675160089672196,
+        "bottom_force_N": 7.7196861320965
+      },
+      {
+        "time": 0.0026150080000000003,
+        "displacement_mm": 0.0077057810000000036,
+        "force_N": 7.728400237432987,
+        "bottom_force_N": 7.765817669986111
+      },
+      {
+        "time": 0.0026250095,
+        "displacement_mm": 0.007744081499999985,
+        "force_N": 7.749007382832106,
+        "bottom_force_N": 7.817019811789051
+      },
+      {
+        "time": 0.0026350105,
+        "displacement_mm": 0.007782382000000016,
+        "force_N": 7.815876324946907,
+        "bottom_force_N": 7.826080948474873
+      },
+      {
+        "time": 0.0026450115,
+        "displacement_mm": 0.007820144000000003,
+        "force_N": 7.826471034545911,
+        "bottom_force_N": 7.874772737316131
+      },
+      {
+        "time": 0.0026550125,
+        "displacement_mm": 0.00785736749999999,
+        "force_N": 7.881367795110886,
+        "bottom_force_N": 7.918300416858744
+      },
+      {
+        "time": 0.0026650135,
+        "displacement_mm": 0.00789459100000003,
+        "force_N": 7.899712374653001,
+        "bottom_force_N": 7.968615463503445
+      },
+      {
+        "time": 0.0026750075,
+        "displacement_mm": 0.007931787500000006,
+        "force_N": 7.967311427555499,
+        "bottom_force_N": 7.975016223510934
+      },
+      {
+        "time": 0.0026850015,
+        "displacement_mm": 0.007968419999999966,
+        "force_N": 7.971935941306294,
+        "bottom_force_N": 8.024285675082227
+      },
+      {
+        "time": 0.0026950025,
+        "displacement_mm": 0.00800451599999998,
+        "force_N": 8.028547812918436,
+        "bottom_force_N": 8.06598637754222
+      },
+      {
+        "time": 0.0027050035,
+        "displacement_mm": 0.00804061250000002,
+        "force_N": 8.045843300469903,
+        "bottom_force_N": 8.115640014349399
+      },
+      {
+        "time": 0.0027150044999999998,
+        "displacement_mm": 0.008076709000000003,
+        "force_N": 8.113306367563128,
+        "bottom_force_N": 8.120210844894284
+      },
+      {
+        "time": 0.0027250060000000003,
+        "displacement_mm": 0.008112217499999977,
+        "force_N": 8.116329256248463,
+        "bottom_force_N": 8.168051126805445
+      },
+      {
+        "time": 0.0027350075,
+        "displacement_mm": 0.00814713850000002,
+        "force_N": 8.171737357864808,
+        "bottom_force_N": 8.208521764223114
+      },
+      {
+        "time": 0.0027450085,
+        "displacement_mm": 0.008182059500000009,
+        "force_N": 8.186837566442856,
+        "bottom_force_N": 8.257438853714987
+      },
+      {
+        "time": 0.0027550095,
+        "displacement_mm": 0.008216979999999964,
+        "force_N": 8.253712737926763,
+        "bottom_force_N": 8.259467980001832
+      },
+      {
+        "time": 0.0027650104999999998,
+        "displacement_mm": 0.008251290999999966,
+        "force_N": 8.258303255173805,
+        "bottom_force_N": 8.307714393560214
+      },
+      {
+        "time": 0.0027750115,
+        "displacement_mm": 0.0082849935,
+        "force_N": 8.311326716329209,
+        "bottom_force_N": 8.34627708759137
+      },
+      {
+        "time": 0.0027850125,
+        "displacement_mm": 0.008318696000000042,
+        "force_N": 8.323839165282594,
+        "bottom_force_N": 8.394673933606636
+      },
+      {
+        "time": 0.0027950065,
+        "displacement_mm": 0.008352373500000034,
+        "force_N": 8.3905627088219,
+        "bottom_force_N": 8.394640368278571
+      },
+      {
+        "time": 0.0028050005,
+        "displacement_mm": 0.008385421500000025,
+        "force_N": 8.391046621138411,
+        "bottom_force_N": 8.443123535546755
+      },
+      {
+        "time": 0.0028150015,
+        "displacement_mm": 0.008417863500000004,
+        "force_N": 8.44530137256294,
+        "bottom_force_N": 8.478471395661039
+      },
+      {
+        "time": 0.0028250025,
+        "displacement_mm": 0.008450305499999977,
+        "force_N": 8.456156047593758,
+        "bottom_force_N": 8.52644491250867
+      },
+      {
+        "time": 0.0028350040000000003,
+        "displacement_mm": 0.008482747999999984,
+        "force_N": 8.519739552090206,
+        "bottom_force_N": 8.524651562387621
+      },
+      {
+        "time": 0.0028450055,
+        "displacement_mm": 0.008514541500000018,
+        "force_N": 8.519020232277432,
+        "bottom_force_N": 8.573814965602233
+      },
+      {
+        "time": 0.0028550065,
+        "displacement_mm": 0.008545686499999993,
+        "force_N": 8.57368326137369,
+        "bottom_force_N": 8.608461817018554
+      },
+      {
+        "time": 0.0028650075,
+        "displacement_mm": 0.008576831499999972,
+        "force_N": 8.584119625636689,
+        "bottom_force_N": 8.653789548145076
+      },
+      {
+        "time": 0.0028750085,
+        "displacement_mm": 0.008607976500000003,
+        "force_N": 8.645518747125148,
+        "bottom_force_N": 8.649735929107264
+      },
+      {
+        "time": 0.0028850095,
+        "displacement_mm": 0.008638456000000037,
+        "force_N": 8.641683520448078,
+        "bottom_force_N": 8.700164578741827
+      },
+      {
+        "time": 0.0028950105,
+        "displacement_mm": 0.008668271000000036,
+        "force_N": 8.693503497751003,
+        "bottom_force_N": 8.733304364664411
+      },
+      {
+        "time": 0.0029050115,
+        "displacement_mm": 0.008698086000000028,
+        "force_N": 8.704399312168663,
+        "bottom_force_N": 8.777084849714644
+      },
+      {
+        "time": 0.0029150125,
+        "displacement_mm": 0.0087279,
+        "force_N": 8.765719399459408,
+        "bottom_force_N": 8.769730638236183
+      },
+      {
+        "time": 0.0029250064999999997,
+        "displacement_mm": 0.008757013499999976,
+        "force_N": 8.760371929308915,
+        "bottom_force_N": 8.819691030239857
+      },
+      {
+        "time": 0.0029350005,
+        "displacement_mm": 0.008785447499999991,
+        "force_N": 8.808363006698206,
+        "bottom_force_N": 8.853503781421596
+      },
+      {
+        "time": 0.0029450014999999998,
+        "displacement_mm": 0.008813903000000008,
+        "force_N": 8.818103358264908,
+        "bottom_force_N": 8.896342024697498
+      },
+      {
+        "time": 0.0029550025,
+        "displacement_mm": 0.00884235800000003,
+        "force_N": 8.881114072092918,
+        "bottom_force_N": 8.884737353964537
+      },
+      {
+        "time": 0.0029650035,
+        "displacement_mm": 0.00887012000000002,
+        "force_N": 8.872060998560004,
+        "bottom_force_N": 8.933486843915665
+      },
+      {
+        "time": 0.002975005,
+        "displacement_mm": 0.008897189999999965,
+        "force_N": 8.917638909018576,
+        "bottom_force_N": 8.966129231154804
+      },
+      {
+        "time": 0.0029850065,
+        "displacement_mm": 0.008924259999999979,
+        "force_N": 8.926244760563005,
+        "bottom_force_N": 9.00983890250858
+      },
+      {
+        "time": 0.0029950075,
+        "displacement_mm": 0.008951329500000032,
+        "force_N": 8.9881082901504,
+        "bottom_force_N": 8.996409288281004
+      },
+      {
+        "time": 0.0030050085,
+        "displacement_mm": 0.008977696000000021,
+        "force_N": 8.980883195107312,
+        "bottom_force_N": 9.042566129086538
+      },
+      {
+        "time": 0.0030150095,
+        "displacement_mm": 0.009003359999999976,
+        "force_N": 9.024948697231347,
+        "bottom_force_N": 9.074024512089414
+      },
+      {
+        "time": 0.0030250105,
+        "displacement_mm": 0.009029023999999997,
+        "force_N": 9.029998744689134,
+        "bottom_force_N": 9.11648688700589
+      },
+      {
+        "time": 0.0030350115,
+        "displacement_mm": 0.009054687000000042,
+        "force_N": 9.089195480910874,
+        "bottom_force_N": 9.100782906484952
+      },
+      {
+        "time": 0.0030450125,
+        "displacement_mm": 0.009079639000000023,
+        "force_N": 9.082978444832442,
+        "bottom_force_N": 9.145314459733905
+      },
+      {
+        "time": 0.0030550064999999996,
+        "displacement_mm": 0.00910386299999999,
+        "force_N": 9.125130344938942,
+        "bottom_force_N": 9.174583423209757
+      },
+      {
+        "time": 0.0030650004999999998,
+        "displacement_mm": 0.009128086500000009,
+        "force_N": 9.130685323302792,
+        "bottom_force_N": 9.217084063733592
+      },
+      {
+        "time": 0.0030750015,
+        "displacement_mm": 0.009152328000000027,
+        "force_N": 9.188941467723476,
+        "bottom_force_N": 9.198577829817772
+      },
+      {
+        "time": 0.0030850025,
+        "displacement_mm": 0.009175852500000022,
+        "force_N": 9.177701254843672,
+        "bottom_force_N": 9.24217388980126
+      },
+      {
+        "time": 0.003095004,
+        "displacement_mm": 0.009198659499999994,
+        "force_N": 9.218745911365929,
+        "bottom_force_N": 9.269759875224867
+      },
+      {
+        "time": 0.0031050055,
+        "displacement_mm": 0.00922146649999996,
+        "force_N": 9.224803881949883,
+        "bottom_force_N": 9.310125617648062
+      },
+      {
+        "time": 0.0031150064999999998,
+        "displacement_mm": 0.0092442735,
+        "force_N": 9.282363210571644,
+        "bottom_force_N": 9.289669524017748
+      },
+      {
+        "time": 0.0031250075,
+        "displacement_mm": 0.009266359499999991,
+        "force_N": 9.270584735395891,
+        "bottom_force_N": 9.331869351293951
+      },
+      {
+        "time": 0.0031350085,
+        "displacement_mm": 0.009287724999999945,
+        "force_N": 9.310098824857157,
+        "bottom_force_N": 9.359960041395333
+      },
+      {
+        "time": 0.0031450095,
+        "displacement_mm": 0.009309091499999948,
+        "force_N": 9.312781566883517,
+        "bottom_force_N": 9.398263707289612
+      },
+      {
+        "time": 0.0031550105,
+        "displacement_mm": 0.009330456999999973,
+        "force_N": 9.368894425657459,
+        "bottom_force_N": 9.375627987512063
+      },
+      {
+        "time": 0.0031650115,
+        "displacement_mm": 0.00935110049999999,
+        "force_N": 9.359191098190491,
+        "bottom_force_N": 9.414518159654104
+      },
+      {
+        "time": 0.0031750125000000002,
+        "displacement_mm": 0.009371023499999971,
+        "force_N": 9.394321643335491,
+        "bottom_force_N": 9.44226438790623
+      },
+      {
+        "time": 0.0031850135,
+        "displacement_mm": 0.009390946499999959,
+        "force_N": 9.395323042696134,
+        "bottom_force_N": 9.480844090565135
+      },
+      {
+        "time": 0.0031950075000000003,
+        "displacement_mm": 0.009410854999999997,
+        "force_N": 9.450766795233903,
+        "bottom_force_N": 9.45611093207145
+      },
+      {
+        "time": 0.0032050015,
+        "displacement_mm": 0.009430043500000027,
+        "force_N": 9.439706497950054,
+        "bottom_force_N": 9.492016820987988
+      },
+      {
+        "time": 0.0032150025,
+        "displacement_mm": 0.009448526499999995,
+        "force_N": 9.474554463854005,
+        "bottom_force_N": 9.518281213788953
+      },
+      {
+        "time": 0.0032250035,
+        "displacement_mm": 0.009467009999999956,
+        "force_N": 9.47299809369041,
+        "bottom_force_N": 9.556748536947016
+      },
+      {
+        "time": 0.0032350045,
+        "displacement_mm": 0.00948549299999997,
+        "force_N": 9.523825230077746,
+        "bottom_force_N": 9.532534426156692
+      },
+      {
+        "time": 0.0032450055,
+        "displacement_mm": 0.009503260500000037,
+        "force_N": 9.514639165081848,
+        "bottom_force_N": 9.56514737287277
+      },
+      {
+        "time": 0.003255007,
+        "displacement_mm": 0.009520313000000044,
+        "force_N": 9.546873674365514,
+        "bottom_force_N": 9.58788905902774
+      },
+      {
+        "time": 0.0032650085,
+        "displacement_mm": 0.009537365000000023,
+        "force_N": 9.545313570743787,
+        "bottom_force_N": 9.62596501059959
+      },
+      {
+        "time": 0.0032750095,
+        "displacement_mm": 0.00955441650000004,
+        "force_N": 9.592526603539355,
+        "bottom_force_N": 9.603035384131854
+      },
+      {
+        "time": 0.0032850105,
+        "displacement_mm": 0.00957075950000005,
+        "force_N": 9.582639178681742,
+        "bottom_force_N": 9.63364574974452
+      },
+      {
+        "time": 0.0032950115,
+        "displacement_mm": 0.009586395000000053,
+        "force_N": 9.61398283981585,
+        "bottom_force_N": 9.65634372478792
+      },
+      {
+        "time": 0.0033050125,
+        "displacement_mm": 0.009602030500000056,
+        "force_N": 9.611569579742326,
+        "bottom_force_N": 9.689482525646783
+      },
+      {
+        "time": 0.0033150135,
+        "displacement_mm": 0.009617665000000043,
+        "force_N": 9.65574892840688,
+        "bottom_force_N": 9.666669584942397
+      },
+      {
+        "time": 0.0033250075000000002,
+        "displacement_mm": 0.009632591500000053,
+        "force_N": 9.644721632521925,
+        "bottom_force_N": 9.696158966456109
+      },
+      {
+        "time": 0.0033350015,
+        "displacement_mm": 0.00964682050000007,
+        "force_N": 9.673892260673666,
+        "bottom_force_N": 9.717685539736753
+      },
+      {
+        "time": 0.0033450025,
+        "displacement_mm": 0.009661059500000055,
+        "force_N": 9.670667439357246,
+        "bottom_force_N": 9.748931531823494
+      },
+      {
+        "time": 0.0033550035000000002,
+        "displacement_mm": 0.009675298500000042,
+        "force_N": 9.715040115787524,
+        "bottom_force_N": 9.726852505402064
+      },
+      {
+        "time": 0.0033650045,
+        "displacement_mm": 0.009688851999999989,
+        "force_N": 9.701689195581153,
+        "bottom_force_N": 9.753351403579654
+      },
+      {
+        "time": 0.0033750055,
+        "displacement_mm": 0.009701720500000014,
+        "force_N": 9.728390991600142,
+        "bottom_force_N": 9.7737198925712
+      },
+      {
+        "time": 0.0033850065,
+        "displacement_mm": 0.009714589000000037,
+        "force_N": 9.724017030597002,
+        "bottom_force_N": 9.802666653024698
+      },
+      {
+        "time": 0.0033950075,
+        "displacement_mm": 0.009727457000000038,
+        "force_N": 9.764796742426354,
+        "bottom_force_N": 9.78078380626841
+      },
+      {
+        "time": 0.0034050085,
+        "displacement_mm": 0.009739656000000025,
+        "force_N": 9.755039559454362,
+        "bottom_force_N": 9.804998598800722
+      },
+      {
+        "time": 0.0034150095,
+        "displacement_mm": 0.009751186500000002,
+        "force_N": 9.779195047184613,
+        "bottom_force_N": 9.823349800220234
+      },
+      {
+        "time": 0.0034250104999999998,
+        "displacement_mm": 0.009762716500000037,
+        "force_N": 9.773240754114871,
+        "bottom_force_N": 9.851101722497907
+      },
+      {
+        "time": 0.0034350120000000003,
+        "displacement_mm": 0.009774245500000039,
+        "force_N": 9.808838919785945,
+        "bottom_force_N": 9.82831443847097
+      },
+      {
+        "time": 0.0034450135,
+        "displacement_mm": 0.009785125000000033,
+        "force_N": 9.801882386241587,
+        "bottom_force_N": 9.851795754551128
+      },
+      {
+        "time": 0.003455007,
+        "displacement_mm": 0.009795347999999982,
+        "force_N": 9.823948109893,
+        "bottom_force_N": 9.86848084283492
+      },
+      {
+        "time": 0.0034650005,
+        "displacement_mm": 0.009805570999999926,
+        "force_N": 9.818878898812665,
+        "bottom_force_N": 9.891808158174108
+      },
+      {
+        "time": 0.003475002,
+        "displacement_mm": 0.009815800999999926,
+        "force_N": 9.85262761110136,
+        "bottom_force_N": 9.871455513996773
+      },
+      {
+        "time": 0.0034850035,
+        "displacement_mm": 0.009825403499999951,
+        "force_N": 9.84119533702432,
+        "bottom_force_N": 9.892250415658026
+      },
+      {
+        "time": 0.0034950045,
+        "displacement_mm": 0.009834378499999965,
+        "force_N": 9.863512502482672,
+        "bottom_force_N": 9.908433361564068
+      },
+      {
+        "time": 0.0035050055,
+        "displacement_mm": 0.009843354000000014,
+        "force_N": 9.859937532193266,
+        "bottom_force_N": 9.92767775492463
+      },
+      {
+        "time": 0.0035150065,
+        "displacement_mm": 0.009852329000000071,
+        "force_N": 9.891143462599642,
+        "bottom_force_N": 9.90795200039922
+      },
+      {
+        "time": 0.0035250075,
+        "displacement_mm": 0.009860702000000042,
+        "force_N": 9.879032566493574,
+        "bottom_force_N": 9.927411123088365
+      },
+      {
+        "time": 0.0035350085,
+        "displacement_mm": 0.009868474000000023,
+        "force_N": 9.897865861791502,
+        "bottom_force_N": 9.942681016896975
+      },
+      {
+        "time": 0.0035450095,
+        "displacement_mm": 0.009876246000000036,
+        "force_N": 9.895609612005353,
+        "bottom_force_N": 9.959520552945003
+      },
+      {
+        "time": 0.0035550105,
+        "displacement_mm": 0.009884017500000047,
+        "force_N": 9.924961303532092,
+        "bottom_force_N": 9.938773783442352
+      },
+      {
+        "time": 0.0035650115,
+        "displacement_mm": 0.009891216000000015,
+        "force_N": 9.915144362426801,
+        "bottom_force_N": 9.955733625616682
+      },
+      {
+        "time": 0.0035750125,
+        "displacement_mm": 0.009897842999999965,
+        "force_N": 9.92822009745139,
+        "bottom_force_N": 9.972650995932407
+      },
+      {
+        "time": 0.0035850135,
+        "displacement_mm": 0.009904469999999993,
+        "force_N": 9.925296308759233,
+        "bottom_force_N": 9.986125798168116
+      },
+      {
+        "time": 0.0035950074999999996,
+        "displacement_mm": 0.009911091500000012,
+        "force_N": 9.954024806668546,
+        "bottom_force_N": 9.964185571494202
+      },
+      {
+        "time": 0.0036050014999999998,
+        "displacement_mm": 0.009917173999999973,
+        "force_N": 9.945205189190856,
+        "bottom_force_N": 9.979397364973687
+      },
+      {
+        "time": 0.0036150025,
+        "displacement_mm": 0.009922721499999995,
+        "force_N": 9.9563588707336,
+        "bottom_force_N": 9.996093191920615
+      },
+      {
+        "time": 0.0036250035,
+        "displacement_mm": 0.009928268999999993,
+        "force_N": 9.952321625026705,
+        "bottom_force_N": 10.008746631715278
+      },
+      {
+        "time": 0.0036350045,
+        "displacement_mm": 0.009933816499999991,
+        "force_N": 9.976829152784598,
+        "bottom_force_N": 9.988644594781517
+      },
+      {
+        "time": 0.0036450055,
+        "displacement_mm": 0.009938860000000039,
+        "force_N": 9.97177053624573,
+        "bottom_force_N": 9.998492797720344
+      },
+      {
+        "time": 0.0036550065,
+        "displacement_mm": 0.009943400500000057,
+        "force_N": 9.980448858915173,
+        "bottom_force_N": 10.015065735727301
+      },
+      {
+        "time": 0.0036650075000000002,
+        "displacement_mm": 0.00994794100000005,
+        "force_N": 9.975724664633239,
+        "bottom_force_N": 10.026025290071306
+      },
+      {
+        "time": 0.003675009,
+        "displacement_mm": 0.00995248100000001,
+        "force_N": 9.994257474705377,
+        "bottom_force_N": 10.007307547789713
+      },
+      {
+        "time": 0.0036850105,
+        "displacement_mm": 0.00995655800000001,
+        "force_N": 9.993833672734647,
+        "bottom_force_N": 10.015309258274709
+      },
+      {
+        "time": 0.0036950115,
+        "displacement_mm": 0.009960171999999993,
+        "force_N": 9.999400299268727,
+        "bottom_force_N": 10.03059154553454
+      },
+      {
+        "time": 0.0037050125,
+        "displacement_mm": 0.009963785499999949,
+        "force_N": 9.995906370361922,
+        "bottom_force_N": 10.040414798539693
+      },
+      {
+        "time": 0.0037150135,
+        "displacement_mm": 0.009967398499999964,
+        "force_N": 10.010324924907238,
+        "bottom_force_N": 10.023800887451449
+      },
+      {
+        "time": 0.003725007,
+        "displacement_mm": 0.009970590000000001,
+        "force_N": 10.012344635689997,
+        "bottom_force_N": 10.028445862496431
+      },
+      {
+        "time": 0.0037350005,
+        "displacement_mm": 0.009973362500000022,
+        "force_N": 10.01281916548411,
+        "bottom_force_N": 10.043340045666744
+      },
+      {
+        "time": 0.003745002,
+        "displacement_mm": 0.009976136999999996,
+        "force_N": 10.010675645869888,
+        "bottom_force_N": 10.050938359467343
+      },
+      {
+        "time": 0.0037550035,
+        "displacement_mm": 0.009978910999999977,
+        "force_N": 10.02392184241732,
+        "bottom_force_N": 10.036798823338446
+      },
+      {
+        "time": 0.0037650045,
+        "displacement_mm": 0.009981313500000016,
+        "force_N": 10.025613632535629,
+        "bottom_force_N": 10.03885521799807
+      },
+      {
+        "time": 0.0037750055,
+        "displacement_mm": 0.009983344000000048,
+        "force_N": 10.024824861914121,
+        "bottom_force_N": 10.052453057614718
+      },
+      {
+        "time": 0.0037850065000000002,
+        "displacement_mm": 0.009985374000000002,
+        "force_N": 10.022612552544224,
+        "bottom_force_N": 10.06071753784596
+      },
+      {
+        "time": 0.0037950075,
+        "displacement_mm": 0.009987404499999974,
+        "force_N": 10.030996334866947,
+        "bottom_force_N": 10.047895113176535
+      },
+      {
+        "time": 0.0038050085,
+        "displacement_mm": 0.009989114999999995,
+        "force_N": 10.03766415778398,
+        "bottom_force_N": 10.046126619970996
+      },
+      {
+        "time": 0.0038150095,
+        "displacement_mm": 0.009990504999999986,
+        "force_N": 10.033645074292252,
+        "bottom_force_N": 10.058072492067305
+      },
+      {
+        "time": 0.0038250105,
+        "displacement_mm": 0.009991894499999984,
+        "force_N": 10.032685281472533,
+        "bottom_force_N": 10.066407642868588
+      },
+      {
+        "time": 0.0038350115,
+        "displacement_mm": 0.00999328399999998,
+        "force_N": 10.03466973602666,
+        "bottom_force_N": 10.057235761653226
+      },
+      {
+        "time": 0.0038450125,
+        "displacement_mm": 0.009994408999999978,
+        "force_N": 10.047540905108285,
+        "bottom_force_N": 10.052624544606074
+      },
+      {
+        "time": 0.0038550134999999998,
+        "displacement_mm": 0.009995269500000018,
+        "force_N": 10.04112326637402,
+        "bottom_force_N": 10.061286088352105
+      },
+      {
+        "time": 0.0038650075,
+        "displacement_mm": 0.009996129500000055,
+        "force_N": 10.040748892661648,
+        "bottom_force_N": 10.067415651156372
+      },
+      {
+        "time": 0.0038750015,
+        "displacement_mm": 0.009996989500000003,
+        "force_N": 10.037969186680705,
+        "bottom_force_N": 10.063449049654917
+      },
+      {
+        "time": 0.0038850025,
+        "displacement_mm": 0.009997645499999958,
+        "force_N": 10.051873899510243,
+        "bottom_force_N": 10.056524595150382
+      },
+      {
+        "time": 0.0038950035,
+        "displacement_mm": 0.00999809649999996,
+        "force_N": 10.046391396160672,
+        "bottom_force_N": 10.062807355491746
+      },
+      {
+        "time": 0.0039050049999999996,
+        "displacement_mm": 0.009998547499999962,
+        "force_N": 10.048863211358244,
+        "bottom_force_N": 10.06637784067512
+      },
+      {
+        "time": 0.0039150065,
+        "displacement_mm": 0.009998998499999972,
+        "force_N": 10.041688216478244,
+        "bottom_force_N": 10.066187854253418
+      },
+      {
+        "time": 0.003925007499999999,
+        "displacement_mm": 0.009999308500000019,
+        "force_N": 10.057160998800347,
+        "bottom_force_N": 10.058907008379974
+      },
+      {
+        "time": 0.0039350085,
+        "displacement_mm": 0.009999478000000048,
+        "force_N": 10.049387677129252,
+        "bottom_force_N": 10.063437697729078
+      },
+      {
+        "time": 0.003945009500000001,
+        "displacement_mm": 0.00999964749999999,
+        "force_N": 10.057180496151396,
+        "bottom_force_N": 10.064393017467792
+      },
+      {
+        "time": 0.0039550105,
+        "displacement_mm": 0.009999816499999986,
+        "force_N": 10.044738552045931,
+        "bottom_force_N": 10.066714333657464
+      },
+      {
+        "time": 0.003965011500000001,
+        "displacement_mm": 0.009999913500000004,
+        "force_N": 10.064231015397672,
+        "bottom_force_N": 10.058267423348452
+      },
+      {
+        "time": 0.0039750125,
+        "displacement_mm": 0.00999993800000002,
+        "force_N": 10.052870449255083,
+        "bottom_force_N": 10.062747792838245
+      },
+      {
+        "time": 0.0039850135000000005,
+        "displacement_mm": 0.009999963000000039,
+        "force_N": 10.062540994900598,
+        "bottom_force_N": 10.061795159823332
+      }
+    ],
+    "qualification": "Raw nodal differentiation fails its balance check when flagged false. Work and integrated-impulse values remain diagnostics pending duration/AMS refinement; elastic diagnostics cannot qualify plastic collapse."
+  },
+  "static_reference": {
+    "element_type": "C3D8I",
+    "exit_code": 0,
+    "elapsed_wall_seconds": 1.221160001005046,
+    "input_sha256": "3a45a674f1877835f04c90b4bd8e63bfb3cb81563f84fbd9b0aad4e84edd1693",
+    "solver_reported_version": "2.20",
+    "solver_warning_count": 0,
+    "usable": true,
+    "top_total_reaction_N": [
+      3.407585e-11,
+      -5.840973,
+      4.464422e-12
+    ],
+    "bottom_total_reaction_N": [
+      -1.237648e-10,
+      5.840973,
+      1.758866e-12
+    ],
+    "y_force_balance_N": 0.0,
+    "stiffness_N_per_mm": 584.0973,
+    "nominal_effective_modulus_MPa": 14.756142315789475,
+    "reaction_work_Nmm": 0.029204865,
+    "solver_internal_energy_Nmm": 0.02920487,
+    "relative_reported_energy_minus_work": 1.7120435245421158e-07,
+    "solver_total_volume_mm3": 10191.14,
+    "output_sha256": {
+      "c3d8i.dat": "7acdf7ca6a2dfeb76ef4b51534ed28f911f27330ea11e4115e681ef594def152",
+      "c3d8i.log": "5c42bbd2c8508936261e296489b7d9524d70fd0acb2d67ca28da8fc5c90b2a62",
+      "c3d8i.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+      "c3d8i.frd": "a4ca9264dadf1af78067c4f379ee48cca7610d95bd1fec767f98d24876baec20"
+    }
+  },
+  "archived_AMS_reference": {
+    "source": "/workspace/reentrant-auxetic-opensource-fea/validation/matched_elastic_native_audit.json",
+    "stiffness_N_per_mm": 1006.2032297697035,
+    "scope": "archived component diagnostic; not rerun by this report"
+  },
+  "relative_native_noams_minus_static": 0.7226743383327805,
+  "relative_native_noams_minus_archived_ams": 6.161806657578595e-06,
+  "relative_final_internal_minus_external_work": -4.5716348344715385e-06,
+  "conclusion": "Removing AMS does not resolve elastic stiffness excess on this retained mesh. Investigate native formulation/discretization before fracture-locus fitting. No full-collapse or paper agreement qualification follows."
+}
