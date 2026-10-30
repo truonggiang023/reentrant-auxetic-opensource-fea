@@ -1,5 +1,5 @@
 {
-  "status": "Completed RP and numerical controls; physical-rate sensitivity and material calibration pending",
+  "status": "Completed RP, mesh and loading-duration controls; physical-rate and nonlinear calibration remain incomplete",
   "calibrated": false,
   "paper_loading_conditions": {
     "source": "User-provided full Section4 paragraph, Dong et al. Materials & Design182(2019)108036",
@@ -239,14 +239,6 @@
       }
     }
   ],
-  "pending_rate_control": {
-    "fast_duration_s": 0.01,
-    "slow_duration_s": 0.04,
-    "material_rate_law": "one hardening curve, rate independent",
-    "status_path": "results/calibration_completion/rate_comparison.status.json",
-    "result_path": "results/calibration_completion/rate_comparison.json",
-    "meaning": "Matched smoothstep duration sensitivity. Neither duration is the physical2mm/min condition."
-  },
   "source_sha256": {
     "results/calibration_completion/rp_coreams_complete.radioss.json": "f58add66f6450da9d826cb019ef081287083952ca4755715645361dd692e7c90",
     "results/calibration_completion/rp_coreams_complete.run.json": "3437495e99b756ad3d7b0d154d0ee9c93d8a09bb0f0cf11e0b88d6bedb1e762e",
@@ -255,6 +247,27 @@
     "results/calibration_completion/structured/native_slow_ams/elastic.radioss.json": "5b7659bd4db5b4e5cd129b27eb837a5202772f2ba4885adc105ad0f034f064de",
     "results/calibration_completion/structured/native_slow_ams/elastic.run.json": "e7176b01c0dc2b8e0018d65d05a045b9a3c911f2d95b4f3b94ab9c5031be6578",
     "results/calibration_completion/structured/static_fixed/ccx_report.json": "8ccf9420307ecc3d22081082278d00cb7eca5e787ad316c07e252bd2c353461f",
-    "results/calibration_completion/icpre1_slow/diagnostic.json": "e1373584453b29c10c5fc72956bb3746eb6bc092dccb0fe76a79e8cb4b840e6f"
+    "results/calibration_completion/icpre1_slow/diagnostic.json": "e1373584453b29c10c5fc72956bb3746eb6bc092dccb0fe76a79e8cb4b840e6f",
+    "results/calibration_completion/rate_comparison.json": "c1629e14d007c21d7ab041bc3c6ce661aee6b0d7c577c409d3d51b9340210b88",
+    "results/calibration_completion/rp_rate_slow.radioss.json": "ff3688d84ab9111e9f9954a3fe97ff9cf123999823eb9f56f035a1063076a71c",
+    "results/calibration_completion/rp_rate_slow.run.json": "2a10a4d48c4effa95869822e35985b90938ccc8e61e3930eb6df3ebabc2432bc",
+    "results/calibration_completion/rp_rate_slow.assessment.json": "38d9068bdc8693aaedf31daac6ef96817387192d3c1d190b9fe4ec884b634b41"
+  },
+  "completed_rate_control": {
+    "fast_duration_s": 0.01,
+    "slow_duration_s": 0.04,
+    "material_rate_law": "one hardening curve, rate independent",
+    "status_path": "results/calibration_completion/rate_comparison.status.json",
+    "result_path": "validation/loading_rate012.json",
+    "meaning": "Matched smoothstep duration sensitivity. Neither duration is the physical2mm/min condition.",
+    "status": "completed",
+    "plot_path": "validation/loading_rate012.png",
+    "relative_curve_L2": 0.04687295850522202,
+    "last_stress_MPa": {
+      "0.01": 1.185052631578889,
+      "0.04": 1.2814736842105687
+    },
+    "quasi_static_validated": false,
+    "calibrated": false
   }
 }

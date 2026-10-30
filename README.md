@@ -279,6 +279,12 @@ constant 2 mm/min, linear displacement, self-contact, core U3 and platen frictio
 The optional wall-aligned mesh reduces the measured **elastic component**
 work-stiffness discrepancy to 0.86%; full collapse calibration is still separate.
 Generate a physical-speed input with `run_radioss.py --physical-speed-mm-min 2`;
-this is distinct from an accelerated explicit duration. The Abaqus physical-speed
+this is distinct from an accelerated explicit duration. The completed
+[0.01s/0.04s RP duration comparison](validation/loading_rate012.json) differs
+by 4.69% over the shared strain interval. Slowing reduces kinetic effects but
+does not remove the excess stress; the slow global energy screen still fails.
+See the [curves](validation/loading_rate012.png) and
+[observed stress/strain CSV](validation/loading_rate012_curves.csv).
+The Abaqus physical-speed
 variant and its execution limitations are described in
 [the Abaqus instructions](abaqus/README_PAPER_VELOCITY.md).

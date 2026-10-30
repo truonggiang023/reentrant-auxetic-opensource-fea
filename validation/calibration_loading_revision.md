@@ -50,12 +50,36 @@ Explicit analysis can be exceptionally costly; generation is not validation.
 
 The old long no-AMS accelerated control was stopped with partial evidence
 preserved. A matched original-mesh/RP/J2/core-AMS rate pair now compares 0.01s
-and 0.04s, changing only duration and output/checkpoint settings. Its slow run
-is active. `compare_loading_rates.py` automatically assesses the bound result
-and writes the report/plot only after actual completion. Live state:
-`results/calibration_completion/rate_comparison.status.json`.
+and 0.04s, changing only duration and output/checkpoint settings. Both runs
+completed with bound input/output receipts and observed strain 0.119999708.
+The slow engine terminated normally after 40001 cycles. The completed
+[report](loading_rate012.json), [plot](loading_rate012.png),
+[raw signed stress/strain CSV](loading_rate012_curves.csv) and
+[raw evidence archive](loading_rate012_inputs.tar.gz) retain the results.
+
+| Quantity | Fast, 0.01s | Slow, 0.04s |
+| --- | ---: | ---: |
+| Last interval stress near strain 0.12, MPa | 1.18505 | 1.28147 |
+| Early slope, strain 0.005–0.02, MPa | 25.6942 | 26.1924 |
+| Maximum core KE/IE | 35.22% | 2.00% |
+| Maximum global KE/IE | 222.27% | 18.30% |
+| Paper RMSE, strain 0.03–0.119, MPa | 0.83121 | 0.86198 |
+
+The shared-interval curve L2 difference is 4.6873%. Slowing reduces kinetic
+effects but increases the last stress by 8.1364% and does not remove the paper
+discrepancy. The slow core energy screen passes; its global screen still fails.
+Neither case is qualified as quasi-static, and neither uses the paper's physical
+constant velocity. These tests do not support attributing the full excess
+stiffness to a higher imposed rate. The mesh/formulation discrepancy remains
+material: the separate structured elastic control reduced it from 72.27% to 0.86%,
+while nonlinear structured-mesh validation remains outstanding.
 The current material law is rate independent; this experiment measures dynamic
 loading sensitivity, not a fitted constitutive strain-rate law.
+
+The raw archive includes both decks, metadata, execution receipts, T01/CSV,
+solver outputs, assessments, reference provenance and a SHA256 manifest.
+Receipt output hashes were checked before archiving and every archived file
+was checked against its manifest. Original metadata/source paths are retained.
 
 ## Abaqus variant
 
