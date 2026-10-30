@@ -4,6 +4,8 @@ Straight member interiors are mapped rectangles. Junctions retain the exact
 union polygon and use unstructured recombination. One conforming refinement
 makes both regions all-quad. This is a discretization choice, not a material
 or geometry fit. Elastic qualification is separate for each specimen/mesh.
+config['structured_refinement_levels'] (default 1) adds uniform refinements;
+mapped straight walls have 2**levels elements across their thickness.
 """
 import math
 from collections import Counter
@@ -42,6 +44,10 @@ def mesh_structured_walls(poly, depth, mesh_size, layers, config):
     if (not np.isfinite([depth,mesh_size]).all() or min(depth,mesh_size)<=0
             or isinstance(layers,bool) or not isinstance(layers,int) or layers<1):
         raise ValueError('Positive depth/mesh size and integer depth layers required')
+    refinement_levels = config.get('structured_refinement_levels', 1)
+    if (isinstance(refinement_levels, bool) or not isinstance(refinement_levels, int)
+            or refinement_levels < 1):
+        raise ValueError('structured_refinement_levels must be a positive integer')
     expected = core_polygon(config)
     if poly.symmetric_difference(expected).area > 1e-8*expected.area:
         raise ValueError('structured_walls polygon does not match its geometry config')
@@ -111,7 +117,11 @@ def mesh_structured_walls(poly, depth, mesh_size, layers, config):
             gmsh.option.setNumber(name,value)
         gmsh.model.mesh.generate(2)
         gmsh.option.setNumber('Mesh.SubdivisionAlgorithm',1)
-        gmsh.model.mesh.refine()
+        # The first subdivision makes the junctions all-quad. Additional
+        # uniform subdivisions refine both along and across every wall while
+        # retaining the same conforming interfaces and exact polygon.
+        for _ in range(refinement_levels):
+            gmsh.model.mesh.refine()
         tags,xyz,_ = gmsh.model.mesh.getNodes()
         coordinates = {int(tag):np.asarray(xyz[3*i:3*i+2]) for i,tag in enumerate(tags)}
         types,_,groups = gmsh.model.mesh.getElements(2)

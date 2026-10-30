@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 
 from reentrant_fea.calibration import fracture_candidate, score_assessment, select_candidate
+from reentrant_fea.geometry import core_polygon
 from reentrant_fea.plastic import load_plastic, validate_material, validate_plastic_table
 
 
@@ -75,23 +76,75 @@ def reference_curves(path):
 
 
 def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, plastic=None,
-            holdout_end_strain=.65):
+            holdout_end_strain=.65, speed_mm_min=None, acceleration_factor=1.):
     """Write configurations and exact follow-up commands without launching solves."""
     if not np.isfinite(holdout_end_strain) or not .65 <= holdout_end_strain < 1:
         raise ValueError('Holdout end strain must lie in [.65, 1)')
     if backend not in ('ccx', 'opencourant'):
         raise ValueError('Select ccx or opencourant backend')
+    if not np.isfinite(acceleration_factor) or acceleration_factor <= 0:
+        raise ValueError('Acceleration factor must be finite and positive')
+    if duration is not None and speed_mm_min is not None:
+        raise ValueError('Choose either duration or speed_mm_min, not both')
+    if speed_mm_min is None and acceleration_factor != 1:
+        raise ValueError('Acceleration factor requires speed_mm_min')
+    if speed_mm_min is not None and (backend != 'opencourant'
+            or not np.isfinite(speed_mm_min) or speed_mm_min <= 0):
+        raise ValueError('Speed mode requires OpenCourant and a finite positive speed_mm_min')
     if backend == 'ccx' and duration is not None:
         raise ValueError('Physical loading duration applies to the OpenCourant backend only')
-    if backend == 'opencourant' and (duration is None or not np.isfinite(duration) or duration <= 0):
-        raise ValueError('OpenCourant requires an explicit finite positive duration in seconds')
+    if backend == 'opencourant' and speed_mm_min is None and (
+            duration is None or not np.isfinite(duration) or duration <= 0):
+        raise ValueError('OpenCourant requires an explicit finite positive duration in seconds or speed_mm_min')
     if ams_time_step is not None and (backend != 'opencourant'
-            or not np.isfinite(ams_time_step) or not 0 < ams_time_step <= duration/100):
-        raise ValueError('AMS requires OpenCourant and a positive step at most duration/100')
+            or not np.isfinite(ams_time_step) or ams_time_step <= 0):
+        raise ValueError('AMS requires OpenCourant and a finite positive step')
     output = output.resolve()
     if output.exists() and any(output.iterdir()):
         raise ValueError('Use an empty study output directory to preserve existing simulations')
     source = json.loads(base.read_text())
+    role_targets = {'training': .5, 'holdout': float(holdout_end_strain)}
+    role_durations = {role: duration for role in role_targets}
+    loading_protocol = None
+    if speed_mm_min is not None:
+        profile = source.get('loading_profile', 'linear' if acceleration_factor == 1 else 'smoothstep')
+        if profile not in ('linear', 'smoothstep'):
+            raise ValueError('Speed mode requires loading_profile=linear or smoothstep')
+        if acceleration_factor == 1 and profile != 'linear':
+            raise ValueError('Physical speed mode requires loading_profile=linear; smoothstep is not constant velocity')
+        source['loading_profile'] = profile
+        reference_speed = speed_mm_min/60.
+        mean_speed = reference_speed*acceleration_factor
+        peak_speed = mean_speed*(1. if profile == 'linear' else 1.875)
+        if not np.isfinite([reference_speed, mean_speed, peak_speed]).all() or min(reference_speed, mean_speed) <= 0:
+            raise ValueError('Derived mean crosshead speed must be finite and positive')
+        loading_protocol = dict(
+            mode='common_mean_crosshead_speed',
+            physical_reference_speed_mm_min=float(speed_mm_min),
+            acceleration_factor=float(acceleration_factor),
+            base_mean_crosshead_speed_mm_per_s=float(mean_speed),
+            loading_profile=profile,
+            profile_assumption=('Constant velocity from linear displacement' if profile == 'linear'
+                                else 'Declared speed is the mean crosshead speed; smoothstep peak is 1.875 times the mean'),
+            height_basis='Actual core_polygon(config) Y envelope for each wall thickness',
+            roles={})
+        for wall, role in ((1., 'training'), (.3, 'holdout')):
+            specimen = dict(source, wall=wall)
+            _, bottom, _, top = core_polygon(specimen).bounds
+            height = float(top-bottom)
+            derived_duration = height*role_targets[role]/mean_speed
+            physical_duration = height*role_targets[role]/reference_speed
+            if (not np.isfinite([height, derived_duration, physical_duration, 2*derived_duration]).all()
+                    or min(height, derived_duration) <= 0):
+                raise ValueError('Derived loading duration and specimen height must be finite and positive')
+            role_durations[role] = derived_duration
+            loading_protocol['roles'][role] = dict(
+                actual_envelope_height_mm=height,
+                target_nominal_strain=role_targets[role],
+                base_duration_seconds=derived_duration,
+                physical_reference_duration_seconds=physical_duration)
+    if ams_time_step is not None and ams_time_step > min(role_durations.values())/100:
+        raise ValueError('AMS step must be at most duration/100 for every derived specimen duration')
     plastic_source = Path(plastic).resolve() if plastic is not None else ROOT/'reference_setup_numeric_source.py'
     # Validate both supported input formats before creating any study files.
     validate_material(source, load_plastic(plastic_source))
@@ -105,14 +158,16 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
                      ('viscosity_half', 0., 1., {'viscosity_time': .0025}),
                      ('residual_tenth', 0., 1., {'residual_stiffness': 1e-5})]
     else:
-        variants += [('duration_double', 0., 1., {'duration_seconds': 2*duration})]
+        duration_control = ({'duration_multiplier': 2.} if speed_mm_min is not None
+                            else {'duration_seconds': 2*duration})
+        variants += [('duration_double', 0., 1., duration_control)]
         if ams_time_step is not None:
             variants += [('ams_half', 0., 1., {'ams_time_step': ams_time_step/2})]
     for candidate, low, high, nuisance in variants:
         for wall, role in ((1., 'training'), (.3, 'holdout')):
             config = fracture_candidate(source, low, high)
             config['wall'] = wall
-            config['compression_strain'] = .5 if role == 'training' else float(holdout_end_strain)
+            config['compression_strain'] = role_targets[role]
             if backend == 'ccx':
                 config['ductile_damage'].update(nuisance)
             name = f'{candidate}_{role}'
@@ -143,13 +198,24 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
                 prefix = output/'runs'/name.replace('.', 'p')
                 metadata = prefix.with_name(prefix.name+'.radioss.json')
                 history = prefix.with_name(prefix.name+'T01.csv')
-                actual_duration = nuisance.get('duration_seconds', duration)
+                actual_duration = (nuisance.get('duration_seconds', role_durations[role])
+                                   * nuisance.get('duration_multiplier', 1.))
                 actual_ams = nuisance.get('ams_time_step', ams_time_step)
                 record.update(deck=str(prefix.with_name(prefix.name+'_0000.rad')),
                               metadata=str(metadata), history=str(history),
                               assessment=str(prefix.with_name(prefix.name+'.assessment.json')),
                               duration_seconds=actual_duration, ams_time_step=actual_ams,
                               force_mapping=native_force_mapping(reference_points=bool(config.get('platen_reference_points',False))))
+                if loading_protocol is not None:
+                    protocol = {key: value for key, value in loading_protocol.items() if key != 'roles'}
+                    protocol.update(loading_protocol['roles'][role])
+                    multiplier = actual_duration/role_durations[role]
+                    actual_mean = protocol['base_mean_crosshead_speed_mm_per_s']/multiplier
+                    protocol.update(duration_multiplier=float(multiplier),
+                                    actual_mean_crosshead_speed_mm_per_s=float(actual_mean),
+                                    actual_peak_crosshead_speed_mm_per_s=float(actual_mean*(1. if protocol['loading_profile'] == 'linear' else 1.875)),
+                                    constant_physical_reference_speed_applied=bool(acceleration_factor == 1 and multiplier == 1))
+                    record['loading_protocol'] = protocol
                 record['solve_argv'] = ['python', 'run_radioss.py', '--config', str(config_path),
                                        '--plastic', record['hardening_source'], '--output', str(prefix),
                                        '--duration-seconds', str(actual_duration), '--drop-ccx-viscosity', '--run']
@@ -190,6 +256,8 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
         ], 'runs': records,
     }
     if backend == 'opencourant':
+        if loading_protocol is not None:
+            manifest['loading_protocol'] = loading_protocol
         manifest['runtime_setup'] = 'source /workspace/opencourant/env.sh before running solve_argv'
         manifest['fit_intervals'] = {role: values.copy() for role, values in NATIVE_ROLE_INTERVALS.items()}
         manifest['backend_differences'] = [
@@ -416,8 +484,13 @@ def main():
     generate.add_argument('--plastic', type=Path, default=ROOT/'reference_setup_numeric_source.py',
                           help='True stress/plastic strain: Abaqus *Plastic block or literal PLASTIC_DATA Python source; neither is executed')
     generate.add_argument('--backend', choices=('ccx', 'opencourant'), default='ccx')
-    generate.add_argument('--duration', '--duration-seconds', dest='duration', type=float,
-                          help='Explicit loading duration in seconds for native OpenCourant studies')
+    loading = generate.add_mutually_exclusive_group()
+    loading.add_argument('--duration', '--duration-seconds', dest='duration', type=float,
+                         help='Explicit loading duration in seconds for native OpenCourant studies')
+    loading.add_argument('--speed-mm-min', '--physical-speed-mm-min', dest='speed_mm_min', type=float,
+                         help='Reference crosshead speed in mm/min; derive each specimen duration from its actual envelope and target strain')
+    generate.add_argument('--acceleration-factor', type=float, default=1.,
+                          help='Multiply the reference mean speed in speed mode (default 1, physical constant speed requiring linear loading)')
     generate.add_argument('--ams-time-step', type=float,
                           help='Native AMS step; changes inertial response and requires sensitivity checks')
     generate.add_argument('--holdout-end-strain', type=float, default=.65,
@@ -430,7 +503,8 @@ def main():
     if args.command == 'prepare':
         result = prepare(args.config, args.output, backend=args.backend,
                          duration=args.duration, ams_time_step=args.ams_time_step, plastic=args.plastic,
-                         holdout_end_strain=args.holdout_end_strain)
+                         holdout_end_strain=args.holdout_end_strain, speed_mm_min=args.speed_mm_min,
+                         acceleration_factor=args.acceleration_factor)
         print(f"Prepared {len(result['runs'])} configurations; simulations have not run.")
     else:
         result = score(json.loads(args.manifest.read_text()), args.reference_dir)

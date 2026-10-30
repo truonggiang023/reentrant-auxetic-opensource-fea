@@ -285,6 +285,11 @@ by 4.69% over the shared strain interval. Slowing reduces kinetic effects but
 does not remove the excess stress; the slow global energy screen still fails.
 See the [curves](validation/loading_rate012.png) and
 [observed stress/strain CSV](validation/loading_rate012_curves.csv).
+The [completion protocol](validation/calibration_completion_protocol.md) defines
+the next controlled structured-mesh J2 study, numerical qualification, thick-wall
+fitting and independent 0.3 mm validation. Its prepared decks passed the starter;
+their engines have not run. `structured_refinement_levels` now refines both
+along and across walls, with geometry/conformity checks.
 The Abaqus physical-speed
 variant and its execution limitations are described in
 [the Abaqus instructions](abaqus/README_PAPER_VELOCITY.md).

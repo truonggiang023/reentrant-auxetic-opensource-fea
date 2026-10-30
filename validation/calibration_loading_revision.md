@@ -44,7 +44,7 @@ its peak velocity is 1.875 times its average.
 
 `run_radioss.py --physical-speed-mm-min 2` now derives time from actual mesh
 height and uses linear displacement. The physical deck at
-`results/paper_conditions/velocity 012` was generated and checked, not executed.
+`results/paper_conditions/velocity012` was generated and checked, not executed.
 No mass scaling is requested in that generation. A literal physical-time
 Explicit analysis can be exceptionally costly; generation is not validation.
 
