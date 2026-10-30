@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
-      OPENCOURANT_INSTALL_ROOT: ${{ runner.temp }}/opencourant
       OMP_NUM_THREADS: '2'
       MPLBACKEND: Agg
       PYTHONPATH: .:src
@@ -31,6 +30,7 @@ jobs:
           cache-dependency-path: pyproject.toml
       - name: Install dependencies
         run: |
+          echo "OPENCOURANT_INSTALL_ROOT=$RUNNER_TEMP/opencourant" >> "$GITHUB_ENV"
           sudo apt-get update
           sudo apt-get install -y libglu1-mesa liblapack3 gcc
           python -m pip install -e '.[dev,post]'
