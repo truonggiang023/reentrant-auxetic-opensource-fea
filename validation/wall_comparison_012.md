@@ -96,6 +96,12 @@ quasi-static qualification và chưa loại trừ lỗi gap/edge/new-face contac
 toàn honeycomb. Trial timestep mặc định thất bại được giữ riêng; các cặp
 được báo cáo dùng cùng global timestep scale0,3, không AMS.
 
+[Audit contact gap từ đúng binary commit](wall_contact_gap_audit.json) loại
+trừ cơ chế gap bị phóng đại theo chiều sâu25 mm trong initialization đã rà:
+mesh cap dùng cạnh nhỏ nhất khác0, còn nodal gap của pure solid và edge gap
+khởi tạo bằng0. Tham số mesh0,4 không phải một physical gap bằng0,4×25 mm.
+Audit này chưa kiểm chứng penalty, runtime edge search hay contact sau erosion.
+
 [Audit hình học](wall_geometry_equivalence.json) xác nhận core Python bằng
 core từ thuật toán offset/ring/ligament trong file Abaqus gốc ở cả hai wall:
 symmetric-difference area bằng 0. Cả hai dùng actual height để tính stroke

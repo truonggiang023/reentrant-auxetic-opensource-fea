@@ -1,0 +1,110 @@
+{
+  "status": "Read-only TYPE25 reader/starter/source audit; no solver changes or new solves",
+  "binary_source_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "models_audited": [
+    "results/thick_common_cause/thick_original012_0000.rad",
+    "results/thick_common_cause/thick_original012_0000.out",
+    "results/calibration_completion/rp_rate_slow_0000.out"
+  ],
+  "parsed_settings": {
+    "Istf": 5,
+    "Stfac": 1.0,
+    "Igap": 3,
+    "gap_scale": 1.0,
+    "mesh_size_fraction": 0.4,
+    "maximum_secondary_gap": 1e+30,
+    "maximum_main_gap": 1e+30,
+    "Igap0": 1,
+    "Ishape": 2,
+    "Irem_i2": 3,
+    "Inacti": 5,
+    "critical_damping_factor": 0.05,
+    "quadratic_damping_flag": 1,
+    "FLAGREMNODE": 1,
+    "Idel": 1,
+    "self_Iedge": 22,
+    "platen_Iedge": 1000,
+    "friction": 0.35
+  },
+  "element_inventory_thick": {
+    "solids": 6820,
+    "shell4": 0,
+    "shell3": 0,
+    "truss": 0,
+    "beam": 0,
+    "spring": 0,
+    "RBE2_constraints": 2
+  },
+  "source_findings": [
+    {
+      "file": "starter/source/interfaces/inter3d1/i25sti3.F",
+      "lines": [
+        174,
+        199
+      ],
+      "finding": "Igap3 mesh-limited upper bound uses 0.4 times MINIMUM nonzero edge length of each surface quadrilateral; it does not use maximum edge or depth25 as a fixed contact thickness."
+    },
+    {
+      "file": "starter/source/interfaces/inter3d1/i25sti3.F",
+      "lines": [
+        205,
+        315
+      ],
+      "finding": "Secondary nodal gap accumulator WA starts zero and receives shell/beam/truss/spring thickness contributions, no brick thickness contribution. Thus these pure-brick surfaces have GAP_S=0."
+    },
+    {
+      "file": "starter/source/interfaces/inter3d1/i25sti3.F",
+      "lines": [
+        454,
+        468
+      ],
+      "finding": "If no shell thickness exists (NDX=0) and no prescribed minimum gap, GAPMIN=0."
+    },
+    {
+      "file": "starter/source/interfaces/inter3d1/i25neigh.F",
+      "lines": [
+        1427,
+        1450
+      ],
+      "finding": "I25INI_GAP_N explicitly sets WA=0 for MSEGTYP=0 solid segments, then rebuilds all main nodal/segment gaps. Thus pure-brick main nodal gaps are zero."
+    },
+    {
+      "file": "starter/source/interfaces/inter3d1/i25sti_edg.F",
+      "lines": [
+        124,
+        154
+      ],
+      "finding": "Solid-surface edge physical gaps GAPE are max of adjacent GAP_M (zero here); GAP_E_L is an upper limit derived from minimum adjacent nodal mesh size."
+    },
+    {
+      "file": "starter/source/interfaces/inter3d1/i25sti3.F",
+      "lines": [
+        936,
+        970
+      ],
+      "finding": "Internal solid facets receive negative stiffness tag; V/AREA stored during stiffness processing is not evidence of a physical25mm contact gap. Main gap arrays are rebuilt later by I25INI_GAP_N."
+    }
+  ],
+  "conclusions": [
+    "The hypothesized fixed or automatic physical gap of0.4*25=10mm is not supported; source derives zero physical thickness gap for the all-brick models and a separate mesh-based upper cap.",
+    "The1e30 printed values are maximum caps, not the physical contact gap.",
+    "This audit does not qualify contact penalty, initial-overlap treatment, runtime edge/margin search, post-erosion contact or large-deformation penetration. It only rules out the proposed bulkZdepth contact-thickness mechanism in the inspected initialization branches."
+  ],
+  "source_files_sha256": {
+    "i25remlin.F": "17f8c931b627df5d4b7a43542ba37f0a73a20a163a53aeac3e78664054cc8af0",
+    "hm_read_inter_type25.F": "5f1ee020932c80e5a4cad79841311645c9ed8f53564fab0bd1227a0ef4a7a658",
+    "i25sti_edg.F": "27b256e971f751495e1d66fa3ae2c7574192ef372b89fc2fa430827e8928b935",
+    "i25pen3.F": "31398bf7de2eeb3137df2974b8f0a0f60cd3d8272002fa7c23e2e2f598246f9e",
+    "inint3.F": "54a7e7da4f924e2b6edbf964b153a46b38a46a97c62897846f4401aa03819672",
+    "i25sti3.F": "a51111d3c5b2f1b9fc648dd5423bab5f6093f98fbbc089e349d0004edaf5257f",
+    "i25stslav.F": "2d98407ba5a63acc7a409dd2abedf8fa8e2828fd7ff378835905a6abb81de85a",
+    "i25surfi.F": "2f0c2cf536c237f3888bcf89303fc1860234a3cd0136bbb890331338a1e44425",
+    "i25pen3_edg.F": "5b82786ccb4622431f070cc4571d3c5c33d30001f2b41b1010b6e4787d1bf812",
+    "i25neigh.F": "10753ce662a2a398398c0b99b0053ca2274461582f7fb51e0e8dad796da16924",
+    "io_type24.F": "53bf82faa2dabcfa85a3a055e6315d0c897ff7f3b8a07fb77f05b3b63377e496",
+    "insol3.F": "41a00fafde78048952c11cdc17903c3eb677e0498960603fbf76ea8d75be36df",
+    "i11sol.F": "624c11ebe7f9f67fe89667b1afc89813dd991805be81ceefb27187d249dd6dbd"
+  },
+  "source_base_url": "https://github.com/OpenCourant/OpenCourant/blob/cb760c206e346eff12161a2268b134ef9d48a4ef/",
+  "calibrated": false
+}
