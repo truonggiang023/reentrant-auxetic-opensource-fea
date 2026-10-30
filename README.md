@@ -5,6 +5,16 @@ Research implementation for the Dong et al. (2019) compression problem.
 established.** CalculiX and OpenCourant perform the FEM solves; Python handles geometry, meshing,
 automation, tests and postprocessing.
 
+GitHub Actions runs [OpenCourant native checks](.github/workflows/opencourant-smoke.yml)
+on pushes to `main` and `feature/opencourant-erosion-calibration`, on pull requests,
+and through `workflow_dispatch`. It verifies the pinned official runtime, runs
+Python/native component regressions, and compares direct-face and surface-to-RP
+coupon reactions through strain 0.12 (relative force RMS tolerance 0.1%). Download
+the run artifact for solver logs, input/output hashes, CSV curves, the comparison
+plot and JUnit results. The fast coupon does not qualify quasi-static behavior or
+complete the paper calibration. CalculiX integrations skip without their binaries;
+Abaqus scripts receive contract checks, with licensed execution still required.
+
 The primary workflow now includes a compiled finite-strain J2 ductile-softening
 material for CalculiX 2.20, separate steel platens with sliding contact, and
 optional disjoint wall-contact patches. See [model and evidence](DONG2019_CALCULIX.md)

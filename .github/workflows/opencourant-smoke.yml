@@ -1,0 +1,74 @@
+name: OpenCourant native checks
+
+on:
+  push:
+    branches: [main, feature/opencourant-erosion-calibration]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: opencourant-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENCOURANT_INSTALL_ROOT: ${{ runner.temp }}/opencourant
+      OMP_NUM_THREADS: '2'
+      MPLBACKEND: Agg
+      PYTHONPATH: .:src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglu1-mesa liblapack3 gcc
+          python -m pip install -e '.[dev,post]'
+      - name: Verify official OpenCourant runtime and smoke reference
+        run: bash scripts/setup_opencourant.sh
+      - name: Run Python and native component regressions
+        run: |
+          source "$OPENCOURANT_INSTALL_ROOT/env.sh"
+          python -m pytest -q -ra --junitxml=results/ci-pytest.xml --basetemp=results/ci-pytest
+      - name: Compare direct-face and surface-to-RP reactions at strain 0.12
+        run: |
+          source "$OPENCOURANT_INSTALL_ROOT/env.sh"
+          python scripts/probe_rp_coupling.py --output-dir results/ci-native-rp
+      - name: Record scope and coupon outcome
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('OpenCourant component tests and direct-face/RBE2 coupon check.\n\n')
+              report = Path('results/ci-native-rp/comparison.json')
+              if report.exists():
+                  data = json.loads(report.read_text())
+                  out.write(f"Coupon passed: {data['passed']}; relative force RMS difference: {100*data['relative_force_rms']:.6f}%.\n\n")
+              out.write('Experimental calibration remains incomplete. The fast coupon is not a quasi-static qualification. Abaqus is not installed/licensed on this runner; its scripts receive contract tests only. CalculiX integrations skip when their executables are unavailable.\n')
+          PY
+      - name: Upload solver evidence and reaction curves
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencourant-native-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            results/ci-pytest.xml
+            results/ci-pytest/
+            results/ci-native-rp/
+            ${{ runner.temp }}/opencourant/runtime-validation.json
+            ${{ runner.temp }}/opencourant/smoke.*/
