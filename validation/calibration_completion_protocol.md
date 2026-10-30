@@ -134,8 +134,11 @@ nào được kích hoạt. Không dùng damage để sửa sai initial stiffnes
 
 ## 5. Fit thick, khóa tham số, validate thin 0,3 mm
 
-Fit trên hai experimental curves của mẫu thick đến ít nhất strain 0,5.
-Chỉ tối ưu phần locus còn thiếu; bắt đầu ít tham số, sau đó dùng completed
+Chạy mô phỏng mẫu thick đến strain 0,5; fit trên hai experimental curves
+trong khoảng chung thực sự quan sát được, ví dụ 0,04–0,45. Curve thick
+experiment 1 hiện chỉ phủ đến 0,48516 và experiment 2 đến 0,49742; không
+extrapolate cả hai đến 0,5. Chỉ tối ưu phần locus còn thiếu; bắt đầu ít
+tham số, sau đó dùng completed
 perturbation runs và sensitivity/SVD để xem chúng có nhận dạng được không.
 Nếu nhiều bộ cùng phù hợp, báo miền tham số/bất định thay vì một nghiệm duy
 nhất. Giữ friction core/platen và vật liệu nền theo dữ liệu đã biết.
