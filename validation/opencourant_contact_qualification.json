@@ -1,0 +1,195 @@
+{
+  "status": "native erosion and TYPE25 all-face self-contact benchmark executed; lattice validation remains outstanding",
+  "backend": "OpenCourant latest-20261011 Linux64 GNU double precision",
+  "runtime_source_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "benchmark": "qa-tests/miniqa/INTERF/INT_25/hexa8",
+  "input_license": "CC BY-NC 4.0; copyrighted Siemens 2026; original inputs retained outside checkout",
+  "source_files": [
+    {
+      "name": "model_00_0000.rad",
+      "url": "https://raw.githubusercontent.com/OpenCourant/OpenCourant/cb760c206e346eff12161a2268b134ef9d48a4ef/qa-tests/miniqa/INTERF/INT_25/hexa8/data/model_00_0000.rad",
+      "sha256": "6acdc0be3b1c0f033952b6d29b47102ad43a617bf86b6f420b2387ca3a158335"
+    },
+    {
+      "name": "model_00_0001.rad",
+      "url": "https://raw.githubusercontent.com/OpenCourant/OpenCourant/cb760c206e346eff12161a2268b134ef9d48a4ef/qa-tests/miniqa/INTERF/INT_25/hexa8/data/model_00_0001.rad",
+      "sha256": "9611033b0902b8bbc678a2ee21c119681260d2c2aa57a72fd274de807edc99b2"
+    },
+    {
+      "name": "ref.extract",
+      "url": "https://raw.githubusercontent.com/OpenCourant/OpenCourant/cb760c206e346eff12161a2268b134ef9d48a4ef/qa-tests/miniqa/INTERF/INT_25/hexa8/data/ref.extract",
+      "sha256": "4501930e31f700ea81b1712b272677fab01f7ae0d9dd29f3e8b49f36ca57124b"
+    }
+  ],
+  "working_directory": "/workspace/opencourant/contact_type25",
+  "commands": [
+    "source /workspace/opencourant/env.sh",
+    "starter_linux64_gf -i model_00_0000.rad -np 1",
+    "engine_linux64_gf -i model_00_0001.rad"
+  ],
+  "process_layout": {
+    "spmd_ranks": 1,
+    "omp_threads": 2,
+    "reference_layout": "archived reference output lists four SPMD processes"
+  },
+  "input_features": {
+    "solid_failure": "/FAIL/JOHNSON/1",
+    "contact": "/INTER/TYPE25/1",
+    "secondary_surface": 1,
+    "main_surface": 0,
+    "Idel": 1,
+    "Iedge": 1000,
+    "surface": "/SURF/PART/ALL/1",
+    "surface_parts": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "units": [
+      "kg",
+      "mm",
+      "ms"
+    ]
+  },
+  "observed": {
+    "starter_normal_termination": true,
+    "engine_normal_termination": true,
+    "total_cycles": 8429,
+    "elapsed_seconds": 4.54,
+    "deleted_solid_count": 24,
+    "deleted_solid_ids": [
+      51,
+      53,
+      57,
+      61,
+      73,
+      81,
+      109,
+      115,
+      130,
+      132,
+      136,
+      140,
+      152,
+      160,
+      188,
+      194,
+      209,
+      211,
+      215,
+      219,
+      231,
+      239,
+      267,
+      273
+    ],
+    "last_printed_time_model_units": 4.753,
+    "cycle_8000": {
+      "cycle": 8000,
+      "time": 4.753,
+      "time_step": 0.0005759,
+      "energy_error_percent": -25.5,
+      "internal_energy": 291.3,
+      "kinetic_energy_translation": 5.996,
+      "kinetic_energy_rotation": 0.0,
+      "external_work": 399.1,
+      "mass_error": 0.0,
+      "total_mass": 0.1004,
+      "added_mass": 0.0
+    }
+  },
+  "reference_comparison": {
+    "time": {
+      "reference": 4.753,
+      "observed": 4.753,
+      "relative_difference": 0.0,
+      "absolute_difference": 0.0
+    },
+    "time_step": {
+      "reference": 0.0005758,
+      "observed": 0.0005759,
+      "relative_difference": 0.00017367141368521748,
+      "absolute_difference": 9.999999999994822e-08
+    },
+    "internal_energy": {
+      "reference": 290.3,
+      "observed": 291.3,
+      "relative_difference": 0.003444712366517396,
+      "absolute_difference": 1.0
+    },
+    "kinetic_energy_translation": {
+      "reference": 6.055,
+      "observed": 5.996,
+      "relative_difference": -0.009744013212221186,
+      "absolute_difference": -0.058999999999999275
+    },
+    "kinetic_energy_rotation": {
+      "reference": 0.0,
+      "observed": 0.0,
+      "relative_difference": null,
+      "absolute_difference": 0.0
+    },
+    "external_work": {
+      "reference": 397.3,
+      "observed": 399.1,
+      "relative_difference": 0.004530581424616187,
+      "absolute_difference": 1.8000000000000114
+    },
+    "energy_error_percent": {
+      "reference": -25.4,
+      "observed": -25.5,
+      "relative_difference": -0.003937007874015804,
+      "absolute_difference": -0.10000000000000142
+    },
+    "mass_error": {
+      "reference": 0.0,
+      "observed": 0.0,
+      "relative_difference": null,
+      "absolute_difference": 0.0
+    }
+  },
+  "exact_reference_regression_passed": false,
+  "reference_comparison_note": "Observed energies differ by up to about 0.98% from published reference at cycle8000; exact agreement is not claimed. Different SPMD/SMP reduction order can affect this nonlinear erosion benchmark; this was not isolated as the sole cause.",
+  "sampled_energy_screen": {
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "sampled global energy error exceeds limit"
+    ],
+    "sample_count_after_startup": 8,
+    "max_kinetic_internal_ratio": 0.020799724233023092,
+    "max_abs_energy_error_percent": 25.5,
+    "max_added_original_mass_ratio": 0.0,
+    "thresholds": {
+      "kinetic_internal_ratio": 0.05,
+      "abs_energy_error_percent": 5.0,
+      "added_original_mass_ratio": 0.01,
+      "ignored_startup_fraction": 0.05
+    },
+    "quasi_static_validated": false,
+    "qualification": "sampled screen only; core energies, hourglass/contact work and speed sensitivity still required"
+  },
+  "proves": [
+    "The installed official OpenCourant runtime executes a native solid-erosion benchmark to normal termination.",
+    "24 solid elements are deleted while TYPE25 self-contact with all internal/exterior part faces and Idel=1 is configured."
+  ],
+  "does_not_prove": [
+    "No separately instrumented check confirms traction transfer onto a newly exposed fracture face.",
+    "No separately instrumented initially non-facing/large-rotation contact benchmark has run.",
+    "No proof that contact adjacency exclusions, friction history or energy accounting are sufficient for the honeycomb lattice.",
+    "This Johnson-failure benchmark does not qualify the proposed INIEVO displacement-softening material.",
+    "The global energy error around -25.5% precludes interpreting this benchmark as quasi-static validation.",
+    "No full thin-wall lattice run, calibration, or experimental agreement follows from this benchmark."
+  ],
+  "output_hashes": {
+    "starter.log": "dcc28a2b84c17427bf5a132abe07e28febae4adfa419ae2d79408b16be75f605",
+    "engine.log": "63831dac329e755a17a38a54a5551b757c838e2ca599a41b3b4814389c1935ba",
+    "model_00_0000.out": "0c595cdc44cbb2fce42b6d5f62162dac14616ffbdf5427d143a5a5b60fd184ca",
+    "model_00_0001.out": "efc446c90beecf014dba629b56f32a46dea976e0a114b7ff9ed422a6153f6fef"
+  },
+  "complete_general_self_contact_validated": false,
+  "element_deletion_demonstrated_in_benchmark": true,
+  "new_fracture_contact_surface_validated": false,
+  "lattice_calibrated": false,
+  "experimental_agreement": false
+}

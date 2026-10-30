@@ -1,0 +1,18 @@
+{
+  "source_commit": "d9b0030c560efc526193aece07c4248feb4fb374",
+  "calibrated": false,
+  "solver_prefix": "thick_damage_full",
+  "qualification": "Completed diagnostic only; review energy, speed, AMS and mesh controls.",
+  "files": {
+    "thick_damage_full_0000.rad": "fd307d1cef7340096403c89af8f0db07d1486d364ba7e896ba125406d34f097b",
+    "thick_damage_full_0001.rad": "b093afb1980d1c29a0429da2826f46dc2bf7874e02fe9c3aa4aa99b1bbf94283",
+    "thick_damage_full_0000.out": "96afa27ab596da32bb2243995886a54073e868582126dc57dd253ade04869b67",
+    "thick_damage_full_0001.out": "342d7fdad889d89413a32d7f95fd70b9c62358790d67d5d36a3464f8c25dd40d",
+    "thick_damage_full.radioss.json": "205a48372537a11334f9e7a395d38d158f45b76e15e90fe036af8be7d3dd1ef9",
+    "thick_damage_full.run.json": "5db552ea2a9e7c00ac2095859c689109e953d953242e732548d9438c5b4b56fb",
+    "thick_damage_fullT01": "7d19f4cbd103b8cd60a4daeece44572865c96339ee468e27ed0f7ec4a244d7a1",
+    "thick_damage_fullT01.csv": "aa68b236c87df38e462516c4e4d019ac659e32ccc0f84c7825b57f26be8caf9a",
+    "thick_damage_full.assessment.json": "a3248d1f1a537f7abf034428010eb5f1afdbc2709ceb6d4be3fe4b1f7642019e",
+    "source_config.json": "1126408aabdefbd8433a682d5ac8778330ca63a003f940341e6b8646132fa976"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "status": "User-confirmed material inputs; fixed for the current replication task",
+  "confirmation_date": "2026-10-27",
+  "confirmation_source": "Explicit user clarification in this task, relayed by the primary agent: Density 2.67e-9; Elastic 69000., 0.3; supplied Plastic data is already true stress / plastic strain.",
+  "units": {
+    "mass": "Mg (tonne)",
+    "length": "mm",
+    "time": "s",
+    "stress": "MPa",
+    "strain": "dimensionless"
+  },
+  "fixed_inputs": {
+    "density_Mg_per_mm3": 2.67e-09,
+    "young_MPa": 69000.0,
+    "poisson": 0.3
+  },
+  "equivalent_density_kg_per_m3": 2670.0,
+  "plastic_table": {
+    "interpretation": "true stress (MPa), equivalent true plastic strain (dimensionless)",
+    "already_converted": true,
+    "perform_engineering_to_true_conversion": false,
+    "supplied_file": "validation/materials/user_plastic_table_2026-10-26.inp",
+    "supplied_file_sha256": "0792d55e7277cf07642106cb87d57c79bca9fa33a39700cca9b576a86db4ec18",
+    "existing_default_source": "reference_setup_numeric_source.py",
+    "existing_default_source_sha256": "d8786cd6b608ed115c4539577b423ef6bee059cb3f1be358291d51c81fc6955e",
+    "precision_comparison_audit": "validation/materials/user_plastic_table_audit.json",
+    "precision_comparison_audit_sha256": "3856c1e23cd76b85679c573cdcee7c5f6e5ee6efec90c60bfaaf9d9cc31f7977",
+    "precision_note": "The supplied 178-point rounded block and existing higher-precision default are not exactly numerically identical; all supplied values match the existing binary64 values formatted to six significant digits. Existing run inputs remain unchanged."
+  },
+  "configuration_check": {
+    "file": "configs/dong2019_brick_damage.json",
+    "sha256": "b1917d12f2685f983101761b1e0cdc90e90cd5ddb73044e7bd035330be12be9d",
+    "confirmed_constants_match": true
+  },
+  "handling": [
+    "Keep E=69000 MPa, nu=0.3 and density=2.67e-9 Mg/mm3 fixed unless the user supplies a new material instruction.",
+    "Do not re-convert the supplied true-stress/plastic-strain table or tune its interpretation to the thin-wall comparison.",
+    "Initial slopes read from the printed coupon raster are exploratory plot diagnostics, not proof that the confirmed material inputs are wrong and not authority to replace them.",
+    "This confirmation does not locate the missing fracture-locus coordinates or establish calibration, quasi-static response or experimental agreement."
+  ]
+}

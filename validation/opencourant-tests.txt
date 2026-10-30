@@ -1,0 +1,8 @@
+........................xxx............................................. [ 62%]
+...........................................                              [100%]
+=========================== short test summary info ============================
+XFAIL tests/test_ccx_integration.py::test_contact_compression_solver[MORTAR-0.12] - CCX 2.20 mortar contact loses convergence on this coarse slab; penalty regression passes
+XFAIL tests/test_ccx_integration.py::test_contact_compression_solver[MORTAR-0.35] - CCX 2.20 mortar contact loses convergence on this coarse slab; penalty regression passes
+XFAIL tests/test_ccx_integration.py::test_contact_compression_solver[MORTAR-0.65] - CCX 2.20 mortar contact loses convergence on this coarse slab; penalty regression passes
+112 passed, 3 xfailed in 58.05s
+REENTRANT_MATERIAL_ABI=3; multiplicative Hencky J2; residual elements

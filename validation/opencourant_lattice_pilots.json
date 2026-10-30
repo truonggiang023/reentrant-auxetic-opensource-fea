@@ -1,0 +1,88 @@
+{
+  "status": "incomplete numerical pilots; quasi-static calibration rejected",
+  "backend": "OpenCourant latest-20261011",
+  "config": "configs/dong2019_brick_damage.json",
+  "wall_mm": 0.3,
+  "slow_pilot": {
+    "prefix": "results/opencourant/thin_duration_001_face",
+    "duration_seconds": 0.01,
+    "threads": 4,
+    "status": "deliberately stopped after measuring runtime cost",
+    "observed_seconds_per_1000_cycles": 30,
+    "initial_step_seconds": 1.4515e-08,
+    "estimated_total_wall_seconds": 21000,
+    "starter_errors": 0,
+    "starter_warnings": 0,
+    "completed": false,
+    "material_comparison_usable": false,
+    "exclusion": "Predates constant hardening and fracture-locus endpoint encoding"
+  },
+  "dynamic_smoke": {
+    "prefix": "results/opencourant/thin_dynamic_smoke",
+    "duration_seconds": 0.0001,
+    "timeout_wall_seconds": 360,
+    "completed": false,
+    "stop_reason": "runner timeout; subsequent ERROR TERMINATION is not diagnosed as a constitutive solver defect",
+    "last_observed_time_seconds": 4.375822e-05,
+    "last_observed_nominal_strain": 0.24972621673407974,
+    "last_recorded_eroded_core_elements": 1175.0,
+    "distinct_printed_rupture_ids": 1185,
+    "core_energy_screen": {
+      "part_id": 1,
+      "sampled_energy_screen_passed": false,
+      "reasons": [
+        "part history does not cover the end of loading",
+        "core kinetic/internal energy ratio exceeds limit"
+      ],
+      "max_kinetic_internal_ratio": 6.924961047537482,
+      "max_hourglass_internal_ratio": 0.0,
+      "last_recorded_eroded_elements": 1175.0,
+      "quasi_static_validated": false,
+      "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+    },
+    "global_energy_screen": {
+      "sampled_energy_screen_passed": false,
+      "reasons": [
+        "time history does not cover the end of loading",
+        "global kinetic/internal energy ratio exceeds limit"
+      ],
+      "samples_after_startup": 156,
+      "last_observed_time": 4.375822e-05,
+      "max_kinetic_internal_ratio": 189.99602379408978,
+      "max_hourglass_internal_ratio": 0.0,
+      "max_added_original_mass_ratio": 2.0613032773102465e-13,
+      "thresholds": {
+        "kinetic_internal": 0.05,
+        "hourglass_internal": 0.05,
+        "added_original_mass": 0.01,
+        "ignored_startup_fraction": 0.05
+      },
+      "quasi_static_validated": false,
+      "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+    },
+    "input_sha256": {
+      "thin_dynamic_smoke_0000.rad": "3f2310171bae0ea4a9d3ab60846ad4491fa1f5996e5420bcb33af46264aa9c8e",
+      "thin_dynamic_smoke_0001.rad": "7e2bb574cbde8ff6bc7f8f8dd8aac45e5612020f27ff7987b979779f0a702c7f"
+    },
+    "history_csv_sha256": "9f5aa154418cb03c770e0e20ce969f439719378b16b8bf9fba413788c7b51e77",
+    "engine_out_sha256": "ffd4e19a11f2584e41b187c2b5d5070eb9372ff9aba10f56823e38e730007765",
+    "quasi_static_usable": false,
+    "calibration_usable": false,
+    "experimental_agreement": false,
+    "material_comparison_usable": false,
+    "exclusion": "Predates constant hardening and fracture-locus endpoint encoding; also strongly dynamic and incomplete"
+  },
+  "limitations": [
+    "Incomplete explicit pilot is not proof of complete general self-contact",
+    "Published fracture-locus endpoint coordinates remain assumptions",
+    "Historical input metadata numerical_damping=false was inaccurate: native bulk/hourglass/contact damping defaults are active; current exporter records this explicitly",
+    "Full lattice fit and independent thin-wall validation remain outstanding"
+  ],
+  "hardening_only_ams_pilot": {
+    "prefix": "results/opencourant/thin_clamped_ams1e6",
+    "completed": false,
+    "status": "deliberately stopped after discovering fracture TABLE endpoint extrapolation",
+    "material_comparison_usable": false,
+    "exclusion": "Hardening fixed, but fracture locus endpoint convention was not yet encoded"
+  }
+}

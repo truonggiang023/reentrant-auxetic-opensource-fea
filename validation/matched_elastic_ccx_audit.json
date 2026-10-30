@@ -1,0 +1,131 @@
+{
+  "status": "matched linear-elastic component diagnostic; no fracture calibration claim",
+  "script": "scripts/probe_matched_elastic_lattice.py",
+  "script_sha256": "2852035a6fe5f8cd5f53865282a67f21fe3d820a7a6461a2829c38c092fd93cf",
+  "shared_mesh": "/workspace/fea-research/matched-elastic-lattice-final/mesh_and_bcs.json",
+  "shared_mesh_sha256": "f95ea4c46a45721905c8a9244daed2b930ebe09dac17503b069ab2708307bfbe",
+  "source_starter": "/workspace/reentrant-auxetic-opensource-fea/results/opencourant/thin_free_x_ams1e6_0000.rad",
+  "source_starter_sha256": "3e2d6fc4d7ac3909046db1d597cf5e26b8d0217723a7956afc8775ab7c1a82e9",
+  "node_count": 21870,
+  "element_count": 7392,
+  "material": {
+    "young_MPa": 69000.0,
+    "poisson": 0.3
+  },
+  "dimensions_mm": {
+    "width": 76.497146699265,
+    "height": 48.0,
+    "depth": 25.0
+  },
+  "boundary": {
+    "all_z_fixed": 21870,
+    "bottom_y_fixed": 330,
+    "top_y_displaced": 330,
+    "one_bottom_x_pin": 1293,
+    "prescribed_top_y_mm": -0.01
+  },
+  "protocol": "Exact original core IDs/coordinates/connectivity; all Z fixed, bottom Y fixed, top Y=-.01mm; one bottom center-X pin; all remaining X/Y free. Linear elasticity, no NLGEOM/contact/plastic/damage/platens.",
+  "geometric_nonlinearity": false,
+  "ccx_executable": "/workspace/bin/ccx",
+  "ccx_wrapper_sha256": "37324711d2700cdb3c2e9a9ae8c00ac90e99b6d6133d50bc96d04d6cb7581b79",
+  "threads": 2,
+  "cases": [
+    {
+      "element_type": "C3D8R",
+      "exit_code": 0,
+      "elapsed_wall_seconds": 0.9737062929998501,
+      "input_sha256": "fab85fa7053083c4a6b5f14c80380ac5bbdcfc25394d4cf568b72c35ff644ea1",
+      "solver_reported_version": "2.20",
+      "solver_warning_count": 0,
+      "usable": true,
+      "top_total_reaction_N": [
+        2.627926e-11,
+        -4.484803,
+        2.027718e-11
+      ],
+      "bottom_total_reaction_N": [
+        2.758716e-11,
+        4.484803,
+        5.229452e-12
+      ],
+      "y_force_balance_N": 0.0,
+      "stiffness_N_per_mm": 448.4803,
+      "nominal_effective_modulus_MPa": 11.330028631578948,
+      "reaction_work_Nmm": 0.022424015000000002,
+      "solver_internal_energy_Nmm": 0.02011514,
+      "relative_reported_energy_minus_work": -0.10296438884829509,
+      "solver_total_volume_mm3": 10191.14,
+      "output_sha256": {
+        "c3d8r.dat": "273c0283fc557a0df74ecba8e70c196843f9bca67993260b97ec413603fb7414",
+        "c3d8r.log": "b3241242b95eae0c5a6891cb634caaf6185f5183a4cad317c529df4d63b86af7",
+        "c3d8r.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+        "c3d8r.frd": "f0929420395c8ff64ff74787dc755d7a29fbf89079b58a7c52c813b7cfc67e51"
+      }
+    },
+    {
+      "element_type": "C3D8",
+      "exit_code": 0,
+      "elapsed_wall_seconds": 1.0225747160002356,
+      "input_sha256": "522d03781c14928ba973b6bf15822f6cc61154cc708846308a937a8b5fc2e57d",
+      "solver_reported_version": "2.20",
+      "solver_warning_count": 0,
+      "usable": true,
+      "top_total_reaction_N": [
+        3.865234e-11,
+        -20.67693,
+        1.335221e-12
+      ],
+      "bottom_total_reaction_N": [
+        -9.541792e-11,
+        20.67693,
+        8.163567e-12
+      ],
+      "y_force_balance_N": 0.0,
+      "stiffness_N_per_mm": 2067.6929999999998,
+      "nominal_effective_modulus_MPa": 52.236454736842106,
+      "reaction_work_Nmm": 0.10338465,
+      "solver_internal_energy_Nmm": 0.1033847,
+      "relative_reported_energy_minus_work": 4.836307904649074e-07,
+      "solver_total_volume_mm3": 10191.14,
+      "output_sha256": {
+        "c3d8.dat": "2be7e539910c597773840dc7f62d4b1a9d84f6f41840b76948d3379d8007e3a4",
+        "c3d8.log": "f73f1840307759303ad71ea325c3958babbbf9fad818a0a53dd4cca9b81eb74e",
+        "c3d8.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+        "c3d8.frd": "602fd8fc01e0ddb2114538bc5a3a1396de01d670a449c27d9d50aa4fe5691174"
+      }
+    },
+    {
+      "element_type": "C3D8I",
+      "exit_code": 0,
+      "elapsed_wall_seconds": 1.876422305998858,
+      "input_sha256": "3a45a674f1877835f04c90b4bd8e63bfb3cb81563f84fbd9b0aad4e84edd1693",
+      "solver_reported_version": "2.20",
+      "solver_warning_count": 0,
+      "usable": true,
+      "top_total_reaction_N": [
+        4.019965e-11,
+        -5.840973,
+        3.865665e-12
+      ],
+      "bottom_total_reaction_N": [
+        -1.124124e-10,
+        5.840973,
+        1.75507e-12
+      ],
+      "y_force_balance_N": 0.0,
+      "stiffness_N_per_mm": 584.0973,
+      "nominal_effective_modulus_MPa": 14.756142315789475,
+      "reaction_work_Nmm": 0.029204865,
+      "solver_internal_energy_Nmm": 0.02920487,
+      "relative_reported_energy_minus_work": 1.7120435245421158e-07,
+      "solver_total_volume_mm3": 10191.14,
+      "output_sha256": {
+        "c3d8i.dat": "7ae0202be37ce1299d5703bcaf976a010624aa2b030cfe01e5df0fcbabd6bb1f",
+        "c3d8i.log": "b0d60a520b8d6bc751ca7ca62e9e642fde88825bd2be233e78973c1eb8eeabea",
+        "c3d8i.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+        "c3d8i.frd": "221d66f11257063b96f8e9b3606697efb859ee539aaa3678cd8b2e0e31ea94c0"
+      }
+    }
+  ],
+  "energy_note": "Reaction work is F*delta/2 for this linear load. Compare reported ELSE separately; do not assume reduced-integration stabilization energy is included."
+}

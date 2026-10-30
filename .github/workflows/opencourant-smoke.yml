@@ -1,0 +1,93 @@
+name: OpenCourant native checks
+
+on:
+  push:
+    branches: [main, feature/opencourant-erosion-calibration]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: opencourant-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '2'
+      MPLBACKEND: Agg
+      PYTHONPATH: .:src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install dependencies
+        run: |
+          echo "OPENCOURANT_INSTALL_ROOT=$RUNNER_TEMP/opencourant" >> "$GITHUB_ENV"
+          sudo apt-get update
+          sudo apt-get install -y libglu1-mesa liblapack3 gcc
+          python -m pip install -e '.[dev,post]'
+      - name: Verify official OpenCourant runtime and smoke reference
+        id: runtime
+        run: bash scripts/setup_opencourant.sh
+      - name: Run Python and native component regressions
+        run: |
+          source "$OPENCOURANT_INSTALL_ROOT/env.sh"
+          mkdir -p results
+          python -m pytest -q -ra --junitxml=results/ci-pytest.xml --basetemp=results/ci-pytest | tee results/ci-pytest.log
+      - name: Compare direct-face and surface-to-RP reactions at strain 0.12
+        if: ${{ !cancelled() && steps.runtime.outcome == 'success' }}
+        run: |
+          source "$OPENCOURANT_INSTALL_ROOT/env.sh"
+          python scripts/probe_rp_coupling.py --output-dir results/ci-native-rp
+      - name: Record scope and coupon outcome
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('OpenCourant component tests and direct-face/RBE2 coupon check.\n\n')
+              junit = Path('results/ci-pytest.xml')
+              if junit.exists():
+                  root = ET.parse(junit).getroot()
+                  for suite in root.iter('testsuite'):
+                      counts = json.dumps({k: suite.get(k) for k in ('tests', 'failures', 'errors', 'skipped')})
+                      out.write('Pytest counts: ' + counts + '\n\n')
+                      print('::notice title=Pytest results::' + counts)
+                  for case in list(root.iter('testcase')):
+                      for error in case.findall('error') + case.findall('failure'):
+                          message = (error.text or error.get('message', 'Unknown test failure'))[:6000]
+                          out.write(f"Failure in {case.get('classname')}.{case.get('name')}:\n\n```text\n{message}\n```\n\n")
+                          escaped = message.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+                          print('::error title=Pytest failure::' + escaped)
+              report = Path('results/ci-native-rp/comparison.json')
+              if report.exists():
+                  data = json.loads(report.read_text())
+                  out.write(f"Coupon passed: {data['passed']}; relative force RMS difference: {100*data['relative_force_rms']:.6f}%.\n\n")
+                  print(f"::notice title=RP coupling coupon::Passed: {data['passed']}; relative force RMS: {100*data['relative_force_rms']:.6f}%; calibrated: False")
+              out.write('Experimental calibration remains incomplete. The fast coupon is not a quasi-static qualification. Abaqus is not installed/licensed on this runner; its scripts receive contract tests only. CalculiX integrations skip when their executables are unavailable.\n')
+          PY
+      - name: Upload solver evidence and reaction curves
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencourant-native-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            results/ci-pytest.xml
+            results/ci-pytest.log
+            results/ci-pytest/
+            results/ci-native-rp/
+            ${{ runner.temp }}/opencourant/runtime-validation.json
+            ${{ runner.temp }}/opencourant/smoke.*/

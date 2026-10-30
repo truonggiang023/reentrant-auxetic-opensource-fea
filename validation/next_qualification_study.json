@@ -1,0 +1,204 @@
+{
+  "status": "All four decks prepared and native starter-checked; engines not executed",
+  "calibrated": false,
+  "scope": "J2-only thin geometry, full surface contact and RP; numerical qualification before fracture fitting",
+  "execution_note": "run_argv generates equivalent decks at fresh execution prefixes; it does not reuse starter-check outputs as completed solver evidence",
+  "comparisons": [
+    {
+      "pair": [
+        "qA_T004",
+        "qB_T008"
+      ],
+      "varied": "duration only"
+    },
+    {
+      "pair": [
+        "qB_T008",
+        "qC_AMShalf"
+      ],
+      "varied": "AMS target only"
+    },
+    {
+      "pair": [
+        "qC_AMShalf",
+        "qD_meshrefined"
+      ],
+      "varied": "uniform in-plane mesh refinement only"
+    }
+  ],
+  "criteria_status": "Investigator-proposed, not values reported by paper; see calibration_completion_protocol.md",
+  "cases": [
+    {
+      "name": "qA_T004",
+      "config": "configs/dong2019_structured_j2_qualification012.json",
+      "config_sha256": "b64234fd4a06a8f8245ba97257d2c9e9970b5e60b389c51f063800d229300417",
+      "duration_seconds": 0.04,
+      "ams_time_step_seconds": 1e-06,
+      "height_mm": 48.0,
+      "core_elements": 10544,
+      "structured_refinement_levels": 1,
+      "mapped_wall_elements": 2,
+      "mean_speed_mm_min": 8640.0,
+      "physical_reference_speed_mm_min": 2,
+      "mean_speed_acceleration_factor": 4320.0,
+      "loading_profile": "smoothstep",
+      "starter_checked_metadata": "results/next_qualification/qA_T004.radioss.json",
+      "starter_checked_metadata_sha256": "e098d2c77301d66d9afb7fadef77b578a4408a1f744768d72b134783dfe3504b",
+      "starter_output_sha256": "724eca050ae7691b3e6eac0c38d463ebbc9317c67c4b3094277eafb21e42d765",
+      "input_sha256": {
+        "qA_T004_0000.rad": "961d3d91fa0ed7dfd39417fdd85745546e98eeb366ba9c9cf0b300ad283af073",
+        "qA_T004_0001.rad": "0a613b075eaaa547c9162cb1b492bb8799d6dd48869c7cae0967e8cdcdca2570"
+      },
+      "starter_input_check_passed": true,
+      "engine_executed": false,
+      "calibrated": false,
+      "fresh_execution_output": "results/next_qualification/execution/qA_T004",
+      "run_argv": [
+        "python",
+        "run_radioss.py",
+        "--config",
+        "configs/dong2019_structured_j2_qualification012.json",
+        "--duration-seconds",
+        "0.04",
+        "--ams-time-step",
+        "1e-06",
+        "--output",
+        "results/next_qualification/execution/qA_T004",
+        "--plastic",
+        "reference_setup_numeric_source.py",
+        "--run",
+        "--timeout-seconds",
+        "21600"
+      ]
+    },
+    {
+      "name": "qB_T008",
+      "config": "configs/dong2019_structured_j2_qualification012.json",
+      "config_sha256": "b64234fd4a06a8f8245ba97257d2c9e9970b5e60b389c51f063800d229300417",
+      "duration_seconds": 0.08,
+      "ams_time_step_seconds": 1e-06,
+      "height_mm": 48.0,
+      "core_elements": 10544,
+      "structured_refinement_levels": 1,
+      "mapped_wall_elements": 2,
+      "mean_speed_mm_min": 4320.0,
+      "physical_reference_speed_mm_min": 2,
+      "mean_speed_acceleration_factor": 2160.0,
+      "loading_profile": "smoothstep",
+      "starter_checked_metadata": "results/next_qualification/qB_T008.radioss.json",
+      "starter_checked_metadata_sha256": "7d746bf59ea1fba3db2c14ac13c60a2c791aca7d820af182a18cb923c43f85fd",
+      "starter_output_sha256": "ee1dab1d90751fff012ee98bb71e2e8593d851d211f428f3c637980ae92f3bff",
+      "input_sha256": {
+        "qB_T008_0000.rad": "5b4f7290137ee9d606decf9077f9aa78fca2769825e2f1275f4b056890e3fb12",
+        "qB_T008_0001.rad": "3f57dd6273a8cec32a1bed6d42f45e8d313ecd2066e62431c00d53d9adcf8363"
+      },
+      "starter_input_check_passed": true,
+      "engine_executed": false,
+      "calibrated": false,
+      "fresh_execution_output": "results/next_qualification/execution/qB_T008",
+      "run_argv": [
+        "python",
+        "run_radioss.py",
+        "--config",
+        "configs/dong2019_structured_j2_qualification012.json",
+        "--duration-seconds",
+        "0.08",
+        "--ams-time-step",
+        "1e-06",
+        "--output",
+        "results/next_qualification/execution/qB_T008",
+        "--plastic",
+        "reference_setup_numeric_source.py",
+        "--run",
+        "--timeout-seconds",
+        "21600"
+      ]
+    },
+    {
+      "name": "qC_AMShalf",
+      "config": "configs/dong2019_structured_j2_qualification012.json",
+      "config_sha256": "b64234fd4a06a8f8245ba97257d2c9e9970b5e60b389c51f063800d229300417",
+      "duration_seconds": 0.08,
+      "ams_time_step_seconds": 5e-07,
+      "height_mm": 48.0,
+      "core_elements": 10544,
+      "structured_refinement_levels": 1,
+      "mapped_wall_elements": 2,
+      "mean_speed_mm_min": 4320.0,
+      "physical_reference_speed_mm_min": 2,
+      "mean_speed_acceleration_factor": 2160.0,
+      "loading_profile": "smoothstep",
+      "starter_checked_metadata": "results/next_qualification/qC_AMShalf.radioss.json",
+      "starter_checked_metadata_sha256": "3e8de852c3ce21437033db659de99ac798fe77d22110c3dd8cd34ea14f33b5aa",
+      "starter_output_sha256": "ea89347e184b5bf8229abdd4d4d0fc0c44a337b041a339725358090d9dbad94e",
+      "input_sha256": {
+        "qC_AMShalf_0000.rad": "206bc07d0d2ba1ab5b4903ad975f3ec69dbfb7ad864e1f9c33519d6e7b034037",
+        "qC_AMShalf_0001.rad": "5887b5ec511924b191ea5673ab21a36b6b9355e3c46e3b3852b342a2da8a7eaf"
+      },
+      "starter_input_check_passed": true,
+      "engine_executed": false,
+      "calibrated": false,
+      "fresh_execution_output": "results/next_qualification/execution/qC_AMShalf",
+      "run_argv": [
+        "python",
+        "run_radioss.py",
+        "--config",
+        "configs/dong2019_structured_j2_qualification012.json",
+        "--duration-seconds",
+        "0.08",
+        "--ams-time-step",
+        "5e-07",
+        "--output",
+        "results/next_qualification/execution/qC_AMShalf",
+        "--plastic",
+        "reference_setup_numeric_source.py",
+        "--run",
+        "--timeout-seconds",
+        "21600"
+      ]
+    },
+    {
+      "name": "qD_meshrefined",
+      "config": "configs/dong2019_structured_j2_qualification012_refined.json",
+      "config_sha256": "d534087c3ecb13dc51e4f926a572165c4d3b46b49cc638f016918dbcc2cd683a",
+      "duration_seconds": 0.08,
+      "ams_time_step_seconds": 5e-07,
+      "height_mm": 48.0,
+      "core_elements": 42176,
+      "structured_refinement_levels": 2,
+      "mapped_wall_elements": 4,
+      "mean_speed_mm_min": 4320.0,
+      "physical_reference_speed_mm_min": 2,
+      "mean_speed_acceleration_factor": 2160.0,
+      "loading_profile": "smoothstep",
+      "starter_checked_metadata": "results/next_qualification/qD_meshrefined.radioss.json",
+      "starter_checked_metadata_sha256": "b9bd413a543e9ad571ad119dc8ba37025d5ab3bc6a2871edc4f247c4235d0401",
+      "starter_output_sha256": "34e5b747b8466b84e556f98a8ead446b03ce22bb8d39255d143aaf24be2b128b",
+      "input_sha256": {
+        "qD_meshrefined_0000.rad": "0efd920e493669b303c546f2308e72c50605e8d0b98807aa4ac21230499be539",
+        "qD_meshrefined_0001.rad": "2436b38e79dc9477207a8e9abfeaba19b6490c414a5f03d99de7895e97b00298"
+      },
+      "starter_input_check_passed": true,
+      "engine_executed": false,
+      "calibrated": false,
+      "fresh_execution_output": "results/next_qualification/execution/qD_meshrefined",
+      "run_argv": [
+        "python",
+        "run_radioss.py",
+        "--config",
+        "configs/dong2019_structured_j2_qualification012_refined.json",
+        "--duration-seconds",
+        "0.08",
+        "--ams-time-step",
+        "5e-07",
+        "--output",
+        "results/next_qualification/execution/qD_meshrefined",
+        "--plastic",
+        "reference_setup_numeric_source.py",
+        "--run",
+        "--timeout-seconds",
+        "21600"
+      ]
+    }
+  ]
+}

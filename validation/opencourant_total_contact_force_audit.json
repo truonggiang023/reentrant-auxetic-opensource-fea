@@ -1,0 +1,215 @@
+{
+  "status": "TYPE25 native DEF impulse convention verified for the current writer/runtime; not a calibration",
+  "definition": "Contact impulse on SECONDARY = (FNX,FNY,FNZ) - (FTX,FTY,FTZ). Opposite resultant acts on MAIN.",
+  "independent_balance": "C_secondary = mass*velocity - sum(prescribed-mover REAC impulses) = sum(fixed-target REAC impulses)",
+  "runtime_scope": "Current TYPE25 writer settings, face contact Iedge=1000, official OpenCourant latest-20261011; no universal sign assertion for other interface algorithms",
+  "analysis_script_sha256": "3d2348132a49f099ae1ecb6b3c5333fe1fc1f98002352630473dcae7f23b395c",
+  "cases": [
+    {
+      "theta_deg": 30.0,
+      "face_only": true,
+      "friction": 0.35,
+      "tangent_displacement_mm": 0.2,
+      "sample_count": 500,
+      "native_stages_normal": true,
+      "starter_warnings": 0,
+      "candidate_relative_RMS_to_secondary_contact_impulse": {
+        "1*(FN+1FT)": 0.86006555528397,
+        "1*(FN-1FT)": 1.930579282665557e-07,
+        "-1*(FN+1FT)": 1.7424476811901721,
+        "-1*(FN-1FT)": 2.0000000002254974
+      },
+      "target_vs_secondary_contact_relative_RMS": 1.8482321719519526e-07,
+      "final_normal_impulse_Ns": [
+        -0.06404037,
+        0.1109212,
+        4.982092e-19
+      ],
+      "final_tangential_channel_impulse_Ns": [
+        0.05696105,
+        0.02742678,
+        2.588906e-18
+      ],
+      "final_target_reaction_impulse_Ns": [
+        -0.12100142,
+        0.0834944,
+        0.0
+      ],
+      "final_secondary_contact_impulse_Ns": [
+        -0.12100143997397232,
+        0.08349440000752092,
+        6.491598382979053e-18
+      ],
+      "max_sampled_global_energy_error_percent": 99.9,
+      "generation_hash_recorded": false,
+      "analysis_script_sha256": "3d2348132a49f099ae1ecb6b3c5333fe1fc1f98002352630473dcae7f23b395c",
+      "retained_input_output_sha256": {
+        "probe_0000.rad": "18f290c3edfd6a4564c97afa0e78ccb445cfcf1930815d04dadd2496d95634c1",
+        "probe_0001.rad": "efd22186af9f1d58c742595c145f83e634c22fdfbcc3c6facdbe4277e110eb85",
+        "probe_0000.out": "0020b20e585f273fe86355dad88bc5d5cd20024fb45bfd4a2fdf708414366c2f",
+        "probe_0001.out": "ee6df52e67c94c48093e539ab5f38b9b7e958d52e04d7b10c5174b7c17601b62",
+        "probeT01": "fa3fa1afa46417a9e9c35d160c90f9f8b139d134431a74bb27a2952eee2ca37b",
+        "probeT01.csv": "a301705c9c0c1598a2432646b83919823f914dd70be789a21a962c9a4a36f90f"
+      },
+      "calibrated": false,
+      "quasi_static_validated": false,
+      "qualification": "Force bookkeeping only on prescribed penetrating solids; large global energy error excludes mechanical and experimental validation."
+    },
+    {
+      "theta_deg": -30.0,
+      "face_only": true,
+      "friction": 0.35,
+      "tangent_displacement_mm": 0.2,
+      "sample_count": 500,
+      "native_stages_normal": true,
+      "starter_warnings": 0,
+      "candidate_relative_RMS_to_secondary_contact_impulse": {
+        "1*(FN+1FT)": 0.860065562082464,
+        "1*(FN-1FT)": 1.5868112138446045e-07,
+        "-1*(FN+1FT)": 1.742447692968752,
+        "-1*(FN-1FT)": 2.00000000538732
+      },
+      "target_vs_secondary_contact_relative_RMS": 1.4199499367265737e-07,
+      "final_normal_impulse_Ns": [
+        0.06404037,
+        0.1109212,
+        -8.100882e-18
+      ],
+      "final_tangential_channel_impulse_Ns": [
+        0.05223282,
+        -0.03561632,
+        -7.979216e-18
+      ],
+      "final_target_reaction_impulse_Ns": [
+        0.011807556,
+        0.1465375,
+        0.0
+      ],
+      "final_secondary_contact_impulse_Ns": [
+        0.011807556020553186,
+        0.14653747998299696,
+        -6.86502992174121e-18
+      ],
+      "max_sampled_global_energy_error_percent": 99.9,
+      "generation_hash_recorded": false,
+      "analysis_script_sha256": "3d2348132a49f099ae1ecb6b3c5333fe1fc1f98002352630473dcae7f23b395c",
+      "retained_input_output_sha256": {
+        "probe_0000.rad": "a3698f23bcd53c3afa5414cb5ea2e3c7b64ca72cf0be21075e9d66d4c88609b2",
+        "probe_0001.rad": "efd22186af9f1d58c742595c145f83e634c22fdfbcc3c6facdbe4277e110eb85",
+        "probe_0000.out": "dc8888967ee696ca5391835e4102118641aeb73adb3772f0694ca3a1463a8a7d",
+        "probe_0001.out": "82ec3a23f65996775009c803ccca37cabeb781b520c9cb6cb02937e9e3130966",
+        "probeT01": "0721693517d5868b860a7fbd97f799272e2e1b06e8f1c2163055d6e54da27e59",
+        "probeT01.csv": "e268ebea0c3b315611061984026e91ce8107ee8b4617adf59c2ec90a7640162f"
+      },
+      "calibrated": false,
+      "quasi_static_validated": false,
+      "qualification": "Force bookkeeping only on prescribed penetrating solids; large global energy error excludes mechanical and experimental validation."
+    },
+    {
+      "theta_deg": 30.0,
+      "face_only": false,
+      "friction": 0.35,
+      "tangent_displacement_mm": 0.2,
+      "sample_count": 500,
+      "native_stages_normal": true,
+      "starter_warnings": 0,
+      "candidate_relative_RMS_to_secondary_contact_impulse": {
+        "1*(FN+1FT)": 0.8600655412889191,
+        "1*(FN-1FT)": 1.9740058120354493e-07,
+        "-1*(FN+1FT)": 1.7424476652930934,
+        "-1*(FN-1FT)": 1.9999999845911458
+      },
+      "target_vs_secondary_contact_relative_RMS": 1.7454206221188634e-07,
+      "final_normal_impulse_Ns": [
+        -0.06404039,
+        0.1109212,
+        -9.558657e-18
+      ],
+      "final_tangential_channel_impulse_Ns": [
+        0.05696106,
+        0.02742679,
+        -2.628467e-18
+      ],
+      "final_target_reaction_impulse_Ns": [
+        -0.12100143999999999,
+        0.0834944,
+        0.0
+      ],
+      "final_secondary_contact_impulse_Ns": [
+        -0.1210014399761811,
+        0.08349440001134664,
+        2.4086016834435974e-18
+      ],
+      "max_sampled_global_energy_error_percent": 99.9,
+      "generation_hash_recorded": false,
+      "analysis_script_sha256": "3d2348132a49f099ae1ecb6b3c5333fe1fc1f98002352630473dcae7f23b395c",
+      "retained_input_output_sha256": {
+        "probe_0000.rad": "e8d7587e7e2d9fd684ca23c48bbd8d8bdfd82df978fd1bd7a1790cb934721af3",
+        "probe_0001.rad": "efd22186af9f1d58c742595c145f83e634c22fdfbcc3c6facdbe4277e110eb85",
+        "probe_0000.out": "e212b0e06581ca222f4889392c1f7efb5ee54f11456b1e27470a7d60a7ec2152",
+        "probe_0001.out": "5dd3a2c50f4975120916d345dcc97035473ec2fffe16a76b1a4aaf6d9604def8",
+        "probeT01": "b7f20d78b61e9f90fb502e9e7c5594d8bfcb86853aaa45a0c5dac771bcc04a37",
+        "probeT01.csv": "b428546748eed3d37ecb541414ea9fbf4bcd8d654bc4c3474ff18e4bc1958665"
+      },
+      "calibrated": false,
+      "quasi_static_validated": false,
+      "qualification": "Force bookkeeping only on prescribed penetrating solids; large global energy error excludes mechanical and experimental validation."
+    },
+    {
+      "theta_deg": 30.0,
+      "face_only": true,
+      "friction": 0.0,
+      "tangent_displacement_mm": 0.2,
+      "sample_count": 500,
+      "native_stages_normal": true,
+      "starter_warnings": 0,
+      "candidate_relative_RMS_to_secondary_contact_impulse": {
+        "1*(FN+1FT)": 1.9743099693063497e-07,
+        "1*(FN-1FT)": 1.9743099693063497e-07,
+        "-1*(FN+1FT)": 1.9999999818750382,
+        "-1*(FN-1FT)": 1.9999999818750382
+      },
+      "target_vs_secondary_contact_relative_RMS": 2.030544990960746e-07,
+      "final_normal_impulse_Ns": [
+        -0.06404037,
+        0.1109212,
+        4.982092e-19
+      ],
+      "final_tangential_channel_impulse_Ns": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "final_target_reaction_impulse_Ns": [
+        -0.06404038000000001,
+        0.11092118000000001,
+        0.0
+      ],
+      "final_secondary_contact_impulse_Ns": [
+        -0.06404035997397232,
+        0.11092120000752093,
+        -7.386189424835404e-18
+      ],
+      "max_sampled_global_energy_error_percent": 99.9,
+      "generation_hash_recorded": false,
+      "analysis_script_sha256": "3d2348132a49f099ae1ecb6b3c5333fe1fc1f98002352630473dcae7f23b395c",
+      "retained_input_output_sha256": {
+        "probe_0000.rad": "3009e377951452c89f8e7ae8d284dd1861d4863ff1634fc9880355c237d28b91",
+        "probe_0001.rad": "efd22186af9f1d58c742595c145f83e634c22fdfbcc3c6facdbe4277e110eb85",
+        "probe_0000.out": "bd689a05e5e154c47147dcb5026eca27d1945b1d43035a216929f4ca378670d8",
+        "probe_0001.out": "deacd292f05265c186692d87b529c25468d54246860b4aec12f7f7a014462f33",
+        "probeT01": "ff51168a57687902e4c75a1657528443354eee6f60103099d393bffada30f47f",
+        "probeT01.csv": "6e5819ca133ba14569507a94b9091f774a99831a5291398b322e56d24e297356"
+      },
+      "calibrated": false,
+      "quasi_static_validated": false,
+      "qualification": "Force bookkeeping only on prescribed penetrating solids; large global energy error excludes mechanical and experimental validation."
+    }
+  ],
+  "execution_of_new_cases": false,
+  "limitations": [
+    "All solid translations are prescribed and solids penetrate; these are bookkeeping controls, not valid compression specimens.",
+    "Large global energy errors are retained; no mechanical, energy, quasi-static or experimental qualification follows.",
+    "A generation hash is not an execution-time metadata binding; retained historical cases without generation.json are explicitly marked."
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "metadata": "results/opencourant/thin_free_x_ams1e6.radioss.json",
+  "metadata_sha256": "92db404b91ac71d52211cb11f782235d5e693a43eff86f52df942863b849f30e",
+  "case_label": "Free-X baseline; uncalibrated; AMS and quasi-static unqualified",
+  "calibrated": false,
+  "ams": {
+    "enabled": true,
+    "requested_time_step_seconds": 1e-06,
+    "time_step_scale_factor": 0.67,
+    "pcg_relative_tolerance": 0.0001,
+    "pcg_maximum_iterations": 1000,
+    "timestep_sensitivity_required": true,
+    "modifies_inertial_operator": true
+  },
+  "quasi_static_validated_by_this_plot": false,
+  "converter": "/workspace/opencourant/runtime/OpenCourant/exec/anim_to_vtk_linux64_gf",
+  "converter_sha256": "9c97eee2991f6949d16477831cc684165f53b790f498cbef51b8e8fd67bf28ae",
+  "method": "Official ASCII VTK conversion; deformed POINTS rendered directly; EROSION_STATUS==1 required; front face selected from initial POINTS-Displacement Z.",
+  "strain_source": "Piecewise-linear interpolation of exact imposed displacement_fraction_samples at actual VTK TIME, multiplied by target_nominal_strain; no mesh interpolation.",
+  "frames": [
+    {
+      "target_strain": 0.12,
+      "available": true,
+      "animation": "results/opencourant/thin_free_x_ams1e6A033",
+      "animation_sha256": "2eb0c8a21249147a0f8252ff777b4bbaf88c46ef8cf73717937060d0c1b03253",
+      "actual_strain": 0.12384206848000001,
+      "actual_time_seconds": 0.0032,
+      "strain_error": 0.003842068480000016,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 2,
+      "active_core_front_faces": 7390,
+      "active_max_element_damage": 0.2699,
+      "projected_geometry": {
+        "active_front_faces": 7390,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 0,
+        "max_overlap_mm2": 0.0,
+        "sum_pair_overlap_mm2": 0.0,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    },
+    {
+      "target_strain": 0.35,
+      "available": true,
+      "animation": "results/opencourant/thin_free_x_ams1e6A053",
+      "animation_sha256": "a65802da8469149a00445045b49566783f1e5c64ff1de759ee4bc2e3e8c383d4",
+      "actual_strain": 0.34934901247999994,
+      "actual_time_seconds": 0.0052,
+      "strain_error": -0.0006509875200000348,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 116,
+      "active_core_front_faces": 7276,
+      "active_max_element_damage": 0.323201,
+      "projected_geometry": {
+        "active_front_faces": 7276,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 139,
+        "max_overlap_mm2": 0.0011942558765377055,
+        "sum_pair_overlap_mm2": 0.021180273601730013,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    },
+    {
+      "target_strain": 0.65,
+      "available": true,
+      "animation": "results/opencourant/thin_free_x_ams1e6A100",
+      "animation_sha256": "5bd91d60e18663de054e8414f71ccc055bdf77877f2af7134ae28828e2a993b0",
+      "actual_strain": 0.6499936611388999,
+      "actual_time_seconds": 0.009901,
+      "strain_error": -6.338861100130266e-06,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 254,
+      "active_core_front_faces": 7138,
+      "active_max_element_damage": 0.270322,
+      "projected_geometry": {
+        "active_front_faces": 7138,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 555,
+        "max_overlap_mm2": 0.001974729942934592,
+        "sum_pair_overlap_mm2": 0.13035740858098932,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    }
+  ],
+  "conversion_failures": [
+    "Frame timestamp falls outside imposed loading history"
+  ],
+  "experimental_mode_agreement": "not established",
+  "deformation_amplification": 1,
+  "eroded_elements_rendered": false,
+  "mesh_interpolation": false
+}

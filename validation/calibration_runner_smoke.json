@@ -1,0 +1,123 @@
+{
+  "status": "Actual end-to-end CLI smoke on a deliberately reduced one-cell geometry; not a paper reproduction or fit",
+  "source_config": {
+    "l1": 12,
+    "l2": 12,
+    "bevel": 5.66,
+    "wall": 0.3,
+    "rows": 1,
+    "cols": 1,
+    "height": 7.7,
+    "depth": 0.3,
+    "lambda_m": 1,
+    "mesh_size": 1.2,
+    "depth_layers": 1,
+    "young": 69000,
+    "poisson": 0.3,
+    "density": 2.67e-09,
+    "compression_strain": 0.65,
+    "friction": 0.35,
+    "steel_young": 210000,
+    "steel_poisson": 0.3,
+    "platen_margin": 1,
+    "platen_gap": 0,
+    "platen_thickness": 10,
+    "normal_penalty": 10000,
+    "initial_increment": 0.001,
+    "minimum_increment": 1e-06,
+    "maximum_increment": 0.005,
+    "reference_area": 1900,
+    "contact_type": "SURFACE TO SURFACE",
+    "stick_slope": 1000,
+    "target_output_only": true,
+    "ductile_damage": {
+      "fracture_locus": [
+        [
+          0,
+          0.08
+        ],
+        [
+          0.333,
+          0.047
+        ],
+        [
+          1,
+          0.018
+        ]
+      ],
+      "failure_displacement": 0.001,
+      "residual_stiffness": 0.0001,
+      "compression_cutoff": -0.3333333333333333,
+      "calibrated": false,
+      "provenance": "Dong 2019 Section 4, p8: .047 at eta=.333 and uf=.001; other strains span .08-.018 without triaxiality coordinates. eta=0 and 1 endpoints, clamping and compression cutoff are explicit demonstration assumptions, not paper data.",
+      "viscosity_time": 0.005
+    },
+    "element_type": "C3D8R",
+    "brick_mesh": "recombine",
+    "output_interval": 0.005
+  },
+  "user_flow_file": "validation/materials/user_plastic_table_2026-10-26.inp",
+  "user_flow_sha256": "0792d55e7277cf07642106cb87d57c79bca9fa33a39700cca9b576a86db4ec18",
+  "executed_commands": [
+    "calibration_study.py prepare --backend opencourant --duration .002 --ams-time-step 1e-6 --plastic USER_FLOW --config REDUCED_CONFIG --output FRESH_STUDY",
+    "run_calibration.py MANIFEST --candidate locus_0_1 --role training --threads 2 --timeout-seconds 120",
+    "run_calibration.py MANIFEST --candidate locus_0_1 --role training --threads 2 --timeout-seconds 120 --resume",
+    "run_calibration.py MANIFEST --candidate locus_0_1 --role holdout --threads 2 --timeout-seconds 120",
+    "calibration_study.py score MANIFEST --output SCORES",
+    "plot_paper_comparison.py --assessment HOLDOUT_ASSESSMENT --output PLOT --case-label REDUCED_GEOMETRY_LABEL",
+    "plot_courant_frames.py HOLDOUT_METADATA --output FRAMES --case-label REDUCED_GEOMETRY_LABEL"
+  ],
+  "journal_statuses": [
+    "completed_verified",
+    "skipped_verified_completed",
+    "completed_verified"
+  ],
+  "runs": [
+    {
+      "completed": true,
+      "run_binding_verified": true,
+      "metadata_binding_verified": true,
+      "config_wall_mm": 1.0,
+      "target_nominal_strain": 0.5,
+      "history_samples": 400,
+      "input_sha256": {
+        "locus_0_1_training_0000.rad": "f2eee937f9c5471f8963a1302f789e25ff9908355f7bbef63a43b0c0ecb09307",
+        "locus_0_1_training_0001.rad": "8935108240441b97a8aec62cd9befeff61b3252183c40b8f461f46bff6b4dee2"
+      },
+      "history_sha256": "b917830e90005b5d763fbafcf0b859c0e6d545bcae05599d618a561d850c1756"
+    },
+    {
+      "completed": true,
+      "run_binding_verified": true,
+      "metadata_binding_verified": true,
+      "config_wall_mm": 0.3,
+      "target_nominal_strain": 0.65,
+      "history_samples": 400,
+      "input_sha256": {
+        "locus_0_1_holdout_0000.rad": "c22a0f4698fe10ca3c909f90da6223f7ceaa0951065af0154acc4b3a9489c6c1",
+        "locus_0_1_holdout_0001.rad": "244e52a0bb313b19e0d9a03286ae16c9af21f17b1714600a2555b37ddb317281"
+      },
+      "history_sha256": "b3e219b3a809ed81492d055fcc8fcec251cbf9b9cff5d9ada1d6dd0c4360036c"
+    }
+  ],
+  "scores_evaluated_count": 2,
+  "scores_unrun_count": 20,
+  "selection": {
+    "selected_candidate": null,
+    "calibrated": false,
+    "status": "blocked: specimen geometry has not been qualified against paper"
+  },
+  "calibrated": false,
+  "experimental_agreement": false,
+  "plot_outputs": {
+    "plots/frames.json": "d3c457b0a926fcf7188db9249b083ca1499020e166820a76be897608128828cc",
+    "plots/frames.pdf": "d8369553303f38dc866a93717f12e7aab946925d44c29646553aaeaf32709058",
+    "plots/frames.png": "d753938b621b4f0335cc2c8fdee3bc808d2917b50c9fd9ad2010df7fb663b966",
+    "plots/thin.json": "1fb87737539b284c17aa80216674b5bd1e3b6e4b44af1853d1fdaa7b3500ad7d",
+    "plots/thin.pdf": "977e6d69b00c249166d368a2dcc3ab10d90a411fa955401d5dba4b59cf37084f",
+    "plots/thin.png": "9fe3528ad93ca76d9b917c26f6fe889d1b8b54d1b3cc9afb486f97bc52f6c504"
+  },
+  "input_and_history_archive": "calibration_runner_smoke_inputs.tar.gz",
+  "archive_sha256": "ad6d178e139a5ed72d5d415c6af0ba91eb556544c2a0967a8b2fe473d85cc747",
+  "qualification": "Tests CLI execution, bound assessment, true-material table flow, verified resume, scoring gates and plot creation. It does not validate the six-by-five lattice or the paper agreement."
+}

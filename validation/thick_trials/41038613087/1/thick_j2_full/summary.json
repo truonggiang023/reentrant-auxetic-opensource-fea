@@ -1,0 +1,10 @@
+{
+  "case": "thick_j2_full",
+  "completed": true,
+  "calibrated": false,
+  "observed_end_strain": 0.49999876796714576,
+  "last_stress_MPa": 53.03872889771971,
+  "core_energy_screen_passed": true,
+  "global_energy_screen_passed": true,
+  "archive_sha256": "41131f1a77bbe47b630b946d0a74fd4e579eefb2d08756b741abd83a405fc9e0"
+}

@@ -1,0 +1,201 @@
+"""Generate an experimental OpenCourant native erosion/contact model.
+
+The .rad format retains its Radioss name after the OpenCourant migration.
+Duration must be explicit; accelerated explicit dynamics requires an energy
+audit and duration sensitivity before any quasi-static comparison.
+"""
+import argparse
+import hashlib
+import json
+import os
+import signal
+import shutil
+import subprocess
+from pathlib import Path
+
+from reentrant_fea.geometry import core_polygon
+from reentrant_fea.mesh import mesh_bricks
+from reentrant_fea.plastic import load_plastic
+from reentrant_fea.radioss import write_radioss_deck
+from reentrant_fea.radioss_results import normal_termination, solver_errors
+
+
+def terminate_process_group(process):
+    """Stop a detached solver group when its controlling CLI is interrupted."""
+    for requested_signal, grace in ((signal.SIGTERM, 3), (signal.SIGKILL, 3)):
+        try:
+            os.killpg(process.pid, requested_signal)
+        except ProcessLookupError:
+            pass
+        try:
+            process.wait(timeout=grace)
+        except (subprocess.TimeoutExpired, KeyboardInterrupt):
+            continue
+        # Kill any surviving same-group descendants after the leader exits.
+        if requested_signal == signal.SIGKILL:
+            break
+
+
+def run_logged(command, directory, log, timeout):
+    """Bound a solver process and its children; retain the underlying failure."""
+    with Path(log).open('w') as stream:
+        process = subprocess.Popen(command, cwd=directory, stdout=stream,
+                                   stderr=subprocess.STDOUT, start_new_session=True)
+        try:
+            code = process.wait(timeout=timeout)
+        except KeyboardInterrupt:
+            terminate_process_group(process)
+            raise
+        except subprocess.TimeoutExpired:
+            os.killpg(process.pid, signal.SIGTERM)
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
+            raise RuntimeError(f'Solver timeout after {timeout:g}s; partial output retained at {log}')
+    if code:
+        raise subprocess.CalledProcessError(code, command)
+
+
+def run_generated(metadata, *, timeout, starter='starter_linux64_gf',
+                  engine='engine_linux64_gf', converter='th_to_csv_linux64_gf'):
+    """Run the sourced official runtime; process success is not qualification."""
+    if not 0 < timeout < float('inf'):
+        raise ValueError('Require a finite positive timeout')
+    executables = []
+    for name in (starter, engine, converter):
+        path = shutil.which(name)
+        if path is None:
+            raise FileNotFoundError(f'{name} missing; source /workspace/opencourant/env.sh first')
+        executables.append(path)
+    directory = Path(metadata['starter']).parent
+    prefix = metadata['prefix']
+    metadata_file = directory/(prefix+'.radioss.json')
+    if json.loads(metadata_file.read_text()) != metadata:
+        raise ValueError('Saved metadata does not match the requested model')
+    metadata_digest = hashlib.sha256(metadata_file.read_bytes()).hexdigest()
+    for name, expected in metadata['sha256'].items():
+        if hashlib.sha256((directory/name).read_bytes()).hexdigest() != expected:
+            raise ValueError('Generated deck changed before execution: '+name)
+    for name in (prefix+'_0000.out', prefix+'_0001.out', prefix+'T01', prefix+'T01.csv', prefix+'.run.json'):
+        if (directory/name).exists():
+            raise FileExistsError('Use a fresh output prefix; prior solver evidence exists: '+name)
+    run_logged([executables[0], '-i', Path(metadata['starter']).name, '-np', '1'],
+               directory, directory/(prefix+'-starter.log'), timeout)
+    starter_out = directory/(prefix+'_0000.out')
+    if not starter_out.is_file() or not normal_termination(starter_out.read_text(errors='replace')):
+        raise RuntimeError('Starter did not terminate normally; inspect '+str(starter_out))
+    if solver_errors(starter_out.read_text(errors='replace')):
+        raise RuntimeError('Starter reports input errors; inspect '+str(starter_out))
+    run_logged([executables[1], '-i', Path(metadata['engine']).name],
+               directory, directory/(prefix+'-engine.log'), timeout)
+    engine_out = directory/(prefix+'_0001.out')
+    if not engine_out.is_file() or not normal_termination(engine_out.read_text(errors='replace')):
+        raise RuntimeError('Engine did not terminate normally; inspect '+str(engine_out))
+    if solver_errors(engine_out.read_text(errors='replace')):
+        raise RuntimeError('Engine reports errors despite termination; inspect '+str(engine_out))
+    history = directory/(prefix+'T01')
+    if not history.is_file():
+        raise RuntimeError('Missing actual T01 history')
+    run_logged([executables[2], history.name], directory,
+               directory/(prefix+'-convert.log'), min(timeout, 60))
+    csv = history.with_name(history.name+'.csv')
+    if not csv.is_file() or not csv.stat().st_size:
+        raise RuntimeError('Converter did not produce a history CSV')
+    if hashlib.sha256(metadata_file.read_bytes()).hexdigest() != metadata_digest:
+        raise ValueError('Model metadata changed during solver execution')
+    record = {'input_sha256': metadata['sha256'],
+              'metadata_sha256': metadata_digest,
+              'executables_sha256': {str(path): hashlib.sha256(Path(path).read_bytes()).hexdigest()
+                                     for path in executables},
+              'output_sha256': {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+                                for path in (starter_out, engine_out, history, csv)},
+              'stages': ['starter -np 1', 'engine', 'th_to_csv'],
+              'solver_stages_terminated_normally': True}
+    (directory/(prefix+'.run.json')).write_text(json.dumps(record, indent=2)+'\n')
+    return csv
+
+
+def physical_loading_duration(nodes, strain, speed_mm_min):
+    """Seconds for a constant crosshead speed using the actual core envelope."""
+    import numpy as np
+    xyz=np.asarray(nodes,float)
+    if (xyz.ndim!=2 or xyz.shape[1]!=3 or not np.isfinite(xyz).all()
+            or not np.isfinite([strain,speed_mm_min]).all() or not 0<strain<1
+            or speed_mm_min<=0 or np.ptp(xyz[:,1])<=0):
+        raise ValueError('Require finite mesh, positive height/speed and strain in (0,1)')
+    return float(np.ptp(xyz[:,1])*strain/speed_mm_min*60.)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--config', default='configs/dong2019_brick_damage.json')
+    parser.add_argument('--plastic', default='reference_setup_numeric_source.py',
+                        help='True stress/plastic strain: one Abaqus *Plastic block or literal PLASTIC_DATA Python source; neither is executed')
+    parser.add_argument('--output', default='results/opencourant/thin')
+    loading = parser.add_mutually_exclusive_group(required=True)
+    loading.add_argument('--duration-seconds', type=float,
+                         help='Explicit duration; not assumed equivalent to 2 mm/min')
+    loading.add_argument('--physical-speed-mm-min', type=float,
+                         help='Constant compressive speed; derives duration from actual mesh height and selects linear displacement')
+    parser.add_argument('--drop-ccx-viscosity', action='store_true',
+                        help='Record intentional omission of CCX pseudo-time viscosity')
+    parser.add_argument('--run', action='store_true')
+    parser.add_argument('--ams-time-step', type=float,
+                        help='Optional native AMS target step; requires its own response sensitivity checks')
+    parser.add_argument('--timeout-seconds', type=float, default=600,
+                        help='Maximum runtime of each solver stage; partial outputs are retained')
+    args = parser.parse_args()
+    config = json.loads(Path(args.config).read_text())
+    if config.get('element_type') not in ('C3D8', 'C3D8R'):
+        parser.error('Select a brick configuration; wedge conversion is not qualified')
+    nodes, elements, _, _ = mesh_bricks(core_polygon(config), config['depth'],
+                                       config['mesh_size'], config['depth_layers'],
+                                       strategy=config.get('brick_mesh', 'recombine'),config=config)
+    duration = args.duration_seconds
+    if args.physical_speed_mm_min is not None:
+        duration = physical_loading_duration(nodes, config['compression_strain'], args.physical_speed_mm_min)
+        if config.get('loading_profile','linear') != 'linear':
+            parser.error('Physical constant speed requires loading_profile=linear')
+        config['loading_profile']='linear'
+    metadata = write_radioss_deck(args.output, nodes, elements, config,
+                                 load_plastic(args.plastic), duration=duration,
+                                 drop_ccx_viscosity=args.drop_ccx_viscosity,
+                                 ams_time_step=args.ams_time_step)
+    if args.physical_speed_mm_min is not None:
+        metadata['paper_reference_speed_mm_per_min']=metadata['physical_speed_mm_per_min']
+        metadata['paper_reference_duration_seconds']=metadata['physical_duration_seconds']
+        metadata['physical_speed_mm_per_min']=args.physical_speed_mm_min
+        metadata['physical_duration_seconds']=duration
+    metadata['loading_request'] = dict(physical_speed_mm_min=args.physical_speed_mm_min,
+                                       explicit_duration_seconds=args.duration_seconds,
+                                       effective_duration_seconds=duration,
+                                       profile_override='linear' if args.physical_speed_mm_min is not None else None)
+    metadata['source_config_sha256'] = hashlib.sha256(Path(args.config).read_bytes()).hexdigest()
+    metadata['hardening_source_sha256'] = hashlib.sha256(Path(args.plastic).read_bytes()).hexdigest()
+    metadata_path = Path(metadata['starter']).parent/(metadata['prefix']+'.radioss.json')
+    metadata_path.write_text(json.dumps(metadata, indent=2)+'\n')
+    print(json.dumps(metadata, indent=2))
+    if args.run:
+        csv = run_generated(metadata, timeout=args.timeout_seconds)
+        from assess_courant import assess
+        # TYPE25 IMS=2 force on the core secondary is FN-FT. Both DEF Y
+        # channels are cumulative impulses; differentiate their difference once.
+        if metadata.get('platen_reference_points'):
+            result = assess(metadata_path, csv, force_source='rp')
+        else:
+            result = assess(
+                metadata_path, csv,
+                force_column='Contact force and energy                 3 Contact 3                                var 64',
+                tangential_column='Contact force and energy                 3 Contact 3                                var 67',
+                force_sign=-1, force_kind='impulse')
+        metadata_path.with_name(metadata['prefix']+'.assessment.json').write_text(json.dumps(result,indent=2)+'\n')
+        print('Solver stages terminated normally. Energy assessment:', result['global_energy_screen'])
+    else:
+        print('Generated only. Run with the qualified OpenCourant starter and engine.')
+    print('Native erosion/contact are requested; calibration and experimental agreement remain unverified.')
+
+
+if __name__ == '__main__':
+    main()

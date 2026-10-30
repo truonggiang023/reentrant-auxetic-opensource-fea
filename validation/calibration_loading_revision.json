@@ -1,0 +1,273 @@
+{
+  "status": "Completed RP, mesh and loading-duration controls; physical-rate and nonlinear calibration remain incomplete",
+  "calibrated": false,
+  "paper_loading_conditions": {
+    "source": "User-provided full Section4 paragraph, Dong et al. Materials & Design182(2019)108036",
+    "doi": "10.1016/j.matdes.2019.108036",
+    "solver_or_time_integration_reported": false,
+    "prescribed_conditions": {
+      "indenter_velocity_mm_per_min": 2.0,
+      "velocity_mm_per_s": 0.03333333333333333,
+      "indenter_and_pedestal": "elastic steel",
+      "horizontal_edge_elements": 19,
+      "bevel_edge_elements": 10,
+      "total_elements": 10068,
+      "element_type": "C3D8R",
+      "out_of_plane_honeycomb_displacement": "constrained",
+      "self_contact": "all surfaces",
+      "friction_core_indenter_and_pedestal": 0.35,
+      "fracture_anchor": {
+        "triaxiality": 0.333,
+        "fracture_strain": 0.047
+      },
+      "failure_displacement_mm": 0.001,
+      "damage_evolution": "linear displacement softening"
+    },
+    "unreported": [
+      "Standard versus Explicit/step formulation",
+      "mass scaling or AMS",
+      "core self-friction coefficient",
+      "triaxialities for fracture strain estimates .08-.018",
+      "acceleration/startup protocol"
+    ],
+    "actual_core_height_mm": 48.0,
+    "constant_velocity_cases": [
+      {
+        "target_strain": 0.12,
+        "stroke_mm": 5.76,
+        "duration_seconds": 172.79999999999998
+      },
+      {
+        "target_strain": 0.65,
+        "stroke_mm": 31.200000000000003,
+        "duration_seconds": 936.0000000000001
+      },
+      {
+        "target_strain": 0.78,
+        "stroke_mm": 37.44,
+        "duration_seconds": 1123.2
+      }
+    ],
+    "accelerated_diagnostics": [
+      {
+        "duration_seconds": 0.01,
+        "mean_nominal_strain_rate_per_s": 12.0,
+        "smoothstep_peak_nominal_strain_rate_per_s": 22.499999999999996
+      },
+      {
+        "duration_seconds": 0.04,
+        "mean_nominal_strain_rate_per_s": 3.0,
+        "smoothstep_peak_nominal_strain_rate_per_s": 5.624999999999999
+      }
+    ],
+    "physical_nominal_strain_rate_per_s": 0.0006944444444444445,
+    "material_rate_model": "Current native model has one hardening curve, independent of strain rate. Actual material rate sensitivity is not identified by this model.",
+    "prepared_native_config": "configs/dong2019_paper_velocity012.json",
+    "prepared_abaqus_script": "abaqus/run_paper_velocity012.py",
+    "physical_explicit_execution_verified": false,
+    "calibrated": false
+  },
+  "rp_completed_control": {
+    "completed": true,
+    "target_strain": 0.12,
+    "last_observed_strain": 0.11999970833333333,
+    "last_force_sample": {
+      "time": 0.0099635,
+      "strain": 0.1199995625,
+      "reaction_y_N": -2251.599999999889,
+      "bottom_reaction_y_N": 2252.7999999999147,
+      "nominal_stress_MPa": 1.185052631578889,
+      "top_bottom_reaction_sum_y_N": 1.2000000000257387
+    },
+    "same_run_contact_stress_MPa": 1.1845052631579096,
+    "signed_momentum_balance": {
+      "completed": true,
+      "last_observed_nominal_strain": 0.11999970833333333,
+      "last_force_sample": {
+        "time": 0.0099635,
+        "strain": 0.1199995625,
+        "reaction_y_N": -2251.599999999889,
+        "bottom_reaction_y_N": 2252.7999999999147,
+        "nominal_stress_MPa": 1.185052631578889,
+        "top_bottom_reaction_sum_y_N": 1.2000000000257387
+      },
+      "contact_last_stress_MPa": 1.1845052631579096,
+      "balance_relative_rms": 0.7330889837423535,
+      "max_balance_residual_N": 124.9435999999059,
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "core kinetic/internal energy ratio exceeds limit"
+        ],
+        "max_kinetic_internal_ratio": 0.3521728620166264,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 0.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "global_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "global kinetic/internal energy ratio exceeds limit"
+        ],
+        "samples_after_startup": 380,
+        "last_observed_time": 0.009976,
+        "max_kinetic_internal_ratio": 2.2226694205420734,
+        "max_hourglass_internal_ratio": 0.0,
+        "max_added_original_mass_ratio": 1.5100056186546377e-13,
+        "thresholds": {
+          "kinetic_internal": 0.05,
+          "hourglass_internal": 0.05,
+          "added_original_mass": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+      },
+      "force_columns": {
+        "reaction": "Loading face nodal histories             21888 load-node-21888                          var 79",
+        "normal": "Contact force and energy                 3 Contact 3                                var 64",
+        "tangential": "Contact force and energy                 3 Contact 3                                var 67",
+        "momentum": "Part 3                                    YMOM"
+      },
+      "input_sha256": {
+        "rp_coreams_complete_0000.rad": "1b5f20ad2bd75f06057fd26462d2476977f7473c22fe29ca3370225b0e4e68eb",
+        "rp_coreams_complete_0001.rad": "0104abc8147d4d37e0c73eec67dd2685b7c454a27e781e029440b5e8e7bdd8f9"
+      },
+      "quasi_static_validated": false,
+      "calibrated": false
+    },
+    "notes": [
+      "J2-only control on original mesh; not a calibrated paper reproduction.",
+      "The contact/RP comparison is within the same run; historical damage cases have different loading/material and are not matched controls."
+    ]
+  },
+  "structured_mesh_control": {
+    "core_elements": 10544,
+    "core_nodes": 29126,
+    "native_stiffness_work_N_per_mm": 590.1698328117957,
+    "static_C3D8I_stiffness_N_per_mm": 585.1354,
+    "relative_native_minus_static": 0.00860387666136031,
+    "max_late_KE_IE": 7.150465570394802e-05,
+    "raw_nodal_derivative_balance_passed": false,
+    "scope": "Elastic component work/energy agreement; full nonlinear/contact/erosion convergence unverified",
+    "geometry_note": "Same polygon area/perimeter; wall-aligned strips and junctions. Does not reproduce the reported19/10 edge seeding or exact10068 count.",
+    "prototype_mesh_reproduced_exactly_by_library": true
+  },
+  "pressure_control": {
+    "work_stiffness_N_per_mm": 733.7875221758771,
+    "max_late_KE_IE": 5.43597619781355e-05,
+    "adopted": false,
+    "reason": "Reduced pressure softened a regular well-resolved beam by13.45%; not selected to force a paper fit."
+  },
+  "depth_invariance": {
+    "relative_shallow_minus_deep_normalized": -0.00017769756311014628,
+    "scope": "Matched short-duration diagnostic; significant inertia prevents absolute static-stiffness claims."
+  },
+  "beam_controls": [
+    {
+      "case": "regular_icpre3",
+      "native_k_work": 0.8523160000000001,
+      "native_k_energy": 0.8523160000000001,
+      "native_final_KE_IE": 3.1719385767719955e-10,
+      "ccx_k": 0.8523186,
+      "native_relative_difference": -3.0505024763982647e-06,
+      "analytical_EB_k": 0.8468050365300096,
+      "completed": true,
+      "metadata_sha": "db467c5178ed318af67227684727cfd3f544e4ab180a2239ef8573b7db42c40f",
+      "source_hashes": {
+        "wall_0000.rad": "d9a493313fc6b9eac613daf6f22042018eddcd908ebdbbb6caa0da99f0e0f0a2",
+        "wall_0001.rad": "d74e59e85cd2a105ad549c3e656837eb00c0db07771727df4744f7d67be78021",
+        "wallT01.csv": "7864f226cbbf995f299782e1d0709b1f29fcd81df20d042add0fbff230ee1e09",
+        "ccx.inp": "a3c12bd9cf5da584a5113092b77d6c0d09e5b1f0f1fb91ac7328276a1c22d543",
+        "ccx.dat": "f57ddf997af9f1f73acf64239b7e6fba9f442b60e9d72569766e0bbe5a99829b"
+      }
+    },
+    {
+      "case": "regular_icpre1",
+      "native_k_work": 0.7376694,
+      "native_k_energy": 0.7376694,
+      "native_final_KE_IE": 6.071465076360766e-09,
+      "ccx_k": 0.8523186,
+      "native_relative_difference": -0.13451448789220366,
+      "analytical_EB_k": 0.8468050365300096,
+      "completed": true,
+      "metadata_sha": "1db91742fcbeeb250611bf07b24064d2a05231cca3b2a19d71ece4cd8c7bb833",
+      "source_hashes": {
+        "wall_0000.rad": "2f584d95cf52fa6576772a4cf6045cd755ace3c768a4e511f5b959ca58b4647b",
+        "wall_0001.rad": "d74e59e85cd2a105ad549c3e656837eb00c0db07771727df4744f7d67be78021",
+        "wallT01.csv": "7d1c164f003195333da0593a41f45f9a9d70c1defa8cb703d5ce63a73f9e9874",
+        "ccx.inp": "a3c12bd9cf5da584a5113092b77d6c0d09e5b1f0f1fb91ac7328276a1c22d543",
+        "ccx.dat": "f57ddf997af9f1f73acf64239b7e6fba9f442b60e9d72569766e0bbe5a99829b"
+      }
+    },
+    {
+      "case": "skew_icpre3",
+      "native_k_work": 0.9042376,
+      "native_k_energy": 0.9042376,
+      "native_final_KE_IE": 6.350611830341937e-10,
+      "ccx_k": 0.8563583,
+      "native_relative_difference": 0.05591035901678065,
+      "analytical_EB_k": 0.8468050365300096,
+      "completed": true,
+      "metadata_sha": "8c22fdbaf7541a9c27dc039790297d81e0d5e654446d1ed5ac71b775b1a5e811",
+      "source_hashes": {
+        "wall_0000.rad": "7c20ba18b4fe081259ca8d3a15e66e6edb502ac7f5d0f4fa8be78d489ddb4898",
+        "wall_0001.rad": "d74e59e85cd2a105ad549c3e656837eb00c0db07771727df4744f7d67be78021",
+        "wallT01.csv": "5966917b9772a34455168d4ba5f360b15724c766b00084a0cf3b8041c95adc72",
+        "ccx.inp": "0f2e7c37a88ff1204a4f595a468b9c973b5f57ad583ba7f639a79bc8a52fd48a",
+        "ccx.dat": "b5973e30a5e3b912d174e27f2780d48567f9e755256911f59d73c9ef4020afd7"
+      }
+    },
+    {
+      "case": "skew_icpre1",
+      "native_k_work": 0.6640906000000001,
+      "native_k_energy": 0.664083,
+      "native_final_KE_IE": 1.1500710001611244e-05,
+      "ccx_k": 0.8563583,
+      "native_relative_difference": -0.22451782157071398,
+      "analytical_EB_k": 0.8468050365300096,
+      "completed": true,
+      "metadata_sha": "a164841195a3852fbcc01fdf900e8c53422a81e6f6c0ecb6fa188329dd6790ca",
+      "source_hashes": {
+        "wall_0000.rad": "07559033827f1d9196504960527397474fb91aa020875f8bc4ac0508b42c6bf7",
+        "wall_0001.rad": "d74e59e85cd2a105ad549c3e656837eb00c0db07771727df4744f7d67be78021",
+        "wallT01.csv": "3eff49c11d4be6f719d2bc898415969bd47c5deeb82ca8c73316b7e623cd8530",
+        "ccx.inp": "0f2e7c37a88ff1204a4f595a468b9c973b5f57ad583ba7f639a79bc8a52fd48a",
+        "ccx.dat": "b5973e30a5e3b912d174e27f2780d48567f9e755256911f59d73c9ef4020afd7"
+      }
+    }
+  ],
+  "source_sha256": {
+    "results/calibration_completion/rp_coreams_complete.radioss.json": "f58add66f6450da9d826cb019ef081287083952ca4755715645361dd692e7c90",
+    "results/calibration_completion/rp_coreams_complete.run.json": "3437495e99b756ad3d7b0d154d0ee9c93d8a09bb0f0cf11e0b88d6bedb1e762e",
+    "results/calibration_completion/rp_coreams_complete.assessment.json": "dc4a407603874be5cbd4d2b673f728750210f00dbe0ee01a42e2afe1ba839ba1",
+    "results/calibration_completion/structured/native_slow_ams/diagnostic.json": "f9899ae60a304ab94463bbade0b2250aeb1a17740488f30fa8921df7d0fa4413",
+    "results/calibration_completion/structured/native_slow_ams/elastic.radioss.json": "5b7659bd4db5b4e5cd129b27eb837a5202772f2ba4885adc105ad0f034f064de",
+    "results/calibration_completion/structured/native_slow_ams/elastic.run.json": "e7176b01c0dc2b8e0018d65d05a045b9a3c911f2d95b4f3b94ab9c5031be6578",
+    "results/calibration_completion/structured/static_fixed/ccx_report.json": "8ccf9420307ecc3d22081082278d00cb7eca5e787ad316c07e252bd2c353461f",
+    "results/calibration_completion/icpre1_slow/diagnostic.json": "e1373584453b29c10c5fc72956bb3746eb6bc092dccb0fe76a79e8cb4b840e6f",
+    "results/calibration_completion/rate_comparison.json": "c1629e14d007c21d7ab041bc3c6ce661aee6b0d7c577c409d3d51b9340210b88",
+    "results/calibration_completion/rp_rate_slow.radioss.json": "ff3688d84ab9111e9f9954a3fe97ff9cf123999823eb9f56f035a1063076a71c",
+    "results/calibration_completion/rp_rate_slow.run.json": "2a10a4d48c4effa95869822e35985b90938ccc8e61e3930eb6df3ebabc2432bc",
+    "results/calibration_completion/rp_rate_slow.assessment.json": "38d9068bdc8693aaedf31daac6ef96817387192d3c1d190b9fe4ec884b634b41"
+  },
+  "completed_rate_control": {
+    "fast_duration_s": 0.01,
+    "slow_duration_s": 0.04,
+    "material_rate_law": "one hardening curve, rate independent",
+    "status_path": "results/calibration_completion/rate_comparison.status.json",
+    "result_path": "validation/loading_rate012.json",
+    "meaning": "Matched smoothstep duration sensitivity. Neither duration is the physical2mm/min condition.",
+    "status": "completed",
+    "plot_path": "validation/loading_rate012.png",
+    "relative_curve_L2": 0.04687295850522202,
+    "last_stress_MPa": {
+      "0.01": 1.185052631578889,
+      "0.04": 1.2814736842105687
+    },
+    "quasi_static_validated": false,
+    "calibrated": false
+  }
+}

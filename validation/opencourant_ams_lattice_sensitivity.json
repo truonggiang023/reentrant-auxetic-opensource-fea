@@ -1,0 +1,405 @@
+{
+  "status": "completed same-model AMS step-halving comparison; convergence and experimental agreement not established",
+  "backend": "OpenCourant latest-20261011 Linux64 GNU double precision",
+  "runtime_source_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "comparison_control": {
+    "same_starter_except_model_prefix": true,
+    "same_engine_except_model_prefix_and_AMS_target": true,
+    "duration_seconds": 0.01,
+    "same_material_mesh_geometry_contact_and_boundary_conditions": true,
+    "parallel_ranks": 1,
+    "OMP_threads": 4
+  },
+  "run_evidence": [
+    {
+      "name": "thin_free_x_ams1e6",
+      "AMS_target_seconds": 1e-06,
+      "completed": true,
+      "history_samples": 400,
+      "eroded_solid_count": 254,
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "core kinetic/internal energy ratio exceeds limit"
+        ],
+        "max_kinetic_internal_ratio": 0.608633243876405,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 254.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "core_energy_after_selected_strains": [
+        {
+          "nominal_strain_at_least": 0.005,
+          "maximum_core_KE_IE": 0.12259867575032729,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.03954706813404953,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.05,
+          "maximum_core_KE_IE": 0.01733613958449623,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.008467449622869995,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.1,
+          "maximum_core_KE_IE": 0.01564879926113611,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.008467449622869995,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.12,
+          "maximum_core_KE_IE": 0.01564879926113611,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.008467449622869995,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.2,
+          "maximum_core_KE_IE": 0.015596539070353726,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.007663261319809166,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.35,
+          "maximum_core_KE_IE": 0.008003527550525927,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.0029771921397712107,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.5,
+          "maximum_core_KE_IE": 0.0032170067499418106,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.0014373400881715825,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        }
+      ],
+      "input_sha256": {
+        "thin_free_x_ams1e6_0000.rad": "3e2d6fc4d7ac3909046db1d597cf5e26b8d0217723a7956afc8775ab7c1a82e9",
+        "thin_free_x_ams1e6_0001.rad": "f0bd0b4c58068a793f6421ed9b98729eb2676dc4f1a19ff02fd1cc50a33bbc46"
+      },
+      "history_sha256": "ad134d3499c48ad1a156ae04bd98f6711d5056694c60b4a0958f3c417ee0dca6",
+      "metadata_sha256": "92db404b91ac71d52211cb11f782235d5e693a43eff86f52df942863b849f30e",
+      "duration_seconds": 0.01,
+      "target_nominal_strain": 0.65,
+      "core_x_anchor": {
+        "enabled": false,
+        "node": null,
+        "position_mm": null,
+        "qualification": "optional legacy boundary sensitivity; the paper does not specify an interior X pin"
+      },
+      "wall_mm": 0.3,
+      "normal_termination_and_bound_outputs_verified": true,
+      "total_cycles": 10002,
+      "elapsed_wall_seconds": 934.93,
+      "execution_record_sha256": "e6a4942222c175a1d0b2e4789497df6b4ee9a1b51f805b275516b54ddf245d65"
+    },
+    {
+      "name": "thin_free_x_ams5e7",
+      "AMS_target_seconds": 5e-07,
+      "completed": true,
+      "history_samples": 400,
+      "eroded_solid_count": 243,
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "core kinetic/internal energy ratio exceeds limit"
+        ],
+        "max_kinetic_internal_ratio": 0.42280283513493583,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 243.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "core_energy_after_selected_strains": [
+        {
+          "nominal_strain_at_least": 0.005,
+          "maximum_core_KE_IE": 0.0946113792458208,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.04629059413226797,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.05,
+          "maximum_core_KE_IE": 0.02284244246764465,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.015443956092000558,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.1,
+          "maximum_core_KE_IE": 0.02284244246764465,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.015443956092000558,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.12,
+          "maximum_core_KE_IE": 0.02284244246764465,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.015443956092000558,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.2,
+          "maximum_core_KE_IE": 0.013603837160327073,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.00941193478746673,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.35,
+          "maximum_core_KE_IE": 0.011372847368952829,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.0063459323252656,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        },
+        {
+          "nominal_strain_at_least": 0.5,
+          "maximum_core_KE_IE": 0.0054751425898223365,
+          "maximum_core_nonbulk_KE_IE_diagnostic": 0.0020035603136559035,
+          "qualification": "Nonbulk diagnostic subtracts centroid translation only; it does not replace the total-core inertia screen or prove quasi-statics"
+        }
+      ],
+      "input_sha256": {
+        "thin_free_x_ams5e7_0000.rad": "f43eb8967d6ab6820bc899b430d7ddc5529cef02ecf5bf4b7268fbf178c9b568",
+        "thin_free_x_ams5e7_0001.rad": "cbac85aced80b89767afd74527ee4d6d7eaf920469a81f7215aa6abb7c39148a"
+      },
+      "history_sha256": "10a6110c4db3c8ed654584711f87caf619f862cff6010096c0385f74809f452d",
+      "metadata_sha256": "47e446ae09fc2d03631f406e819cc1db3814ea25349c5178e4f082c9c2fc786d",
+      "duration_seconds": 0.01,
+      "target_nominal_strain": 0.65,
+      "core_x_anchor": {
+        "enabled": false,
+        "node": null,
+        "position_mm": null,
+        "qualification": "optional legacy boundary sensitivity; the paper does not specify an interior X pin"
+      },
+      "wall_mm": 0.3,
+      "normal_termination_and_bound_outputs_verified": true,
+      "total_cycles": 20002,
+      "elapsed_wall_seconds": 1741.34,
+      "execution_record_sha256": "2ab706b4f5891e60572ea28addf94b722f7695c6240041c2267bbc6947608792"
+    }
+  ],
+  "curve_metrics": {
+    "common_nominal_strain_interval": [
+      8.163684750000001e-07,
+      0.6499976309307
+    ],
+    "strain_grid_points": 2001,
+    "stress_RMSE_MPa": 0.15153006439039565,
+    "stress_relative_L2_difference": 0.1679683090499453,
+    "integrated_nominal_work_MPa": [
+      0.5690577900276828,
+      0.5366070723316313
+    ],
+    "peak_stress_MPa": [
+      1.4653026943760707,
+      1.370771101916944
+    ],
+    "integrated_nominal_work_relative_difference": 0.057025346572397884,
+    "interval_stress_metrics": [
+      {
+        "strain_interval": [
+          0,
+          0.12
+        ],
+        "mean_stress_MPa": [
+          0.8289598597896901,
+          0.8057976395070141
+        ],
+        "relative_L2_difference": 0.03761624030397779,
+        "RMSE_MPa": 0.03349303995027812
+      },
+      {
+        "strain_interval": [
+          0.12,
+          0.35
+        ],
+        "mean_stress_MPa": [
+          0.8581816322631772,
+          0.8995578953471077
+        ],
+        "relative_L2_difference": 0.15531663093234543,
+        "RMSE_MPa": 0.1369042730976535
+      },
+      {
+        "strain_interval": [
+          0.35,
+          0.5
+        ],
+        "mean_stress_MPa": [
+          0.7971018628816134,
+          0.7121605385227804
+        ],
+        "relative_L2_difference": 0.16821558040670725,
+        "RMSE_MPa": 0.13478624295292657
+      },
+      {
+        "strain_interval": [
+          0.5,
+          0.65
+        ],
+        "mean_stress_MPa": [
+          1.0170831337448734,
+          0.8406434572221672
+        ],
+        "relative_L2_difference": 0.2209579840401826,
+        "RMSE_MPa": 0.2273800035570193
+      },
+      {
+        "strain_interval": [
+          0.1,
+          0.5
+        ],
+        "mean_stress_MPa": [
+          0.8503768683178123,
+          0.8415565647767004
+        ],
+        "relative_L2_difference": 0.15276508698265795,
+        "RMSE_MPa": 0.13272062277765112
+      }
+    ],
+    "eroded_id_intersection_over_union": 0.5628930817610063,
+    "macro_stress_bins": [
+      {
+        "nominal_strain_interval": [
+          0.05,
+          0.1
+        ],
+        "mean_stress_MPa": [
+          1.0144168392002786,
+          0.9987143259639263
+        ],
+        "absolute_difference_MPa": 0.0157025132363523
+      },
+      {
+        "nominal_strain_interval": [
+          0.1,
+          0.15000000000000002
+        ],
+        "mean_stress_MPa": [
+          1.168986213672001,
+          1.1546225059420936
+        ],
+        "absolute_difference_MPa": 0.014363707729907471
+      },
+      {
+        "nominal_strain_interval": [
+          0.15000000000000002,
+          0.2
+        ],
+        "mean_stress_MPa": [
+          1.0768465774284905,
+          0.959819245812074
+        ],
+        "absolute_difference_MPa": 0.11702733161641654
+      },
+      {
+        "nominal_strain_interval": [
+          0.2,
+          0.25
+        ],
+        "mean_stress_MPa": [
+          0.7251123031328655,
+          0.9015931903728698
+        ],
+        "absolute_difference_MPa": 0.17648088724000432
+      },
+      {
+        "nominal_strain_interval": [
+          0.25,
+          0.3
+        ],
+        "mean_stress_MPa": [
+          0.6876258293721417,
+          0.835083531206871
+        ],
+        "absolute_difference_MPa": 0.14745770183472928
+      },
+      {
+        "nominal_strain_interval": [
+          0.3,
+          0.35
+        ],
+        "mean_stress_MPa": [
+          0.7525028889717307,
+          0.7442203761383779
+        ],
+        "absolute_difference_MPa": 0.008282512833352795
+      },
+      {
+        "nominal_strain_interval": [
+          0.35000000000000003,
+          0.4
+        ],
+        "mean_stress_MPa": [
+          0.7060247632353149,
+          0.7556770857570408
+        ],
+        "absolute_difference_MPa": 0.04965232252172591
+      },
+      {
+        "nominal_strain_interval": [
+          0.4,
+          0.45
+        ],
+        "mean_stress_MPa": [
+          0.7891966252334284,
+          0.6378417867568019
+        ],
+        "absolute_difference_MPa": 0.15135483847662645
+      },
+      {
+        "nominal_strain_interval": [
+          0.45,
+          0.5
+        ],
+        "mean_stress_MPa": [
+          0.8960842001760972,
+          0.7429627430544984
+        ],
+        "absolute_difference_MPa": 0.15312145712159886
+      },
+      {
+        "nominal_strain_interval": [
+          0.5,
+          0.55
+        ],
+        "mean_stress_MPa": [
+          0.8720485817378081,
+          0.7859230139553646
+        ],
+        "absolute_difference_MPa": 0.08612556778244351
+      },
+      {
+        "nominal_strain_interval": [
+          0.55,
+          0.6000000000000001
+        ],
+        "mean_stress_MPa": [
+          0.9799029886319593,
+          0.8779843752892633
+        ],
+        "absolute_difference_MPa": 0.10191861334269603
+      },
+      {
+        "nominal_strain_interval": [
+          0.6000000000000001,
+          0.6500000000000001
+        ],
+        "mean_stress_MPa": [
+          1.1992978308648525,
+          0.8580229824218739
+        ],
+        "absolute_difference_MPa": 0.3412748484429786
+      }
+    ],
+    "macro_stress_bin_qualification": "Fixed width0.05 nominal strain bins defined before half-step completion; supplements raw history differences and does not hide failed raw or energy checks."
+  },
+  "interpretation": [
+    "Halving the AMS target changes the complete stress history by16.8% in relativeL2 norm and nominalwork by5.70%; step convergence is not established.",
+    "The0.1\u20130.5 meanstress changes only1.04%, while historyL2 difference remains15.28%; fitting only a plateau mean would conceal failure-event shifts.",
+    "CoreKE/IE is below2.3% after nominalstrain0.05 in these runs, but near-zero-energy startup violates the current5%screen. Low later inertia alone cannot waive AMS, speed, contact, mesh or experimental checks.",
+    "Both simulations use the same explicitly assumed fracture-locus endpoint coordinates; this numerical study does not determine missing experimental calibration data."
+  ],
+  "quasi_static_validated": false,
+  "AMS_step_convergence_established": false,
+  "experimental_agreement": "not established",
+  "reproduction": "/workspace/fea-research/compare_lattice_ams.py reads the exact .radioss.json, .run.json, bound .out and T01.csv files and verifies normalized deck equivalence before comparing. It never extrapolates the force histories beyond their common sampled strain interval."
+}

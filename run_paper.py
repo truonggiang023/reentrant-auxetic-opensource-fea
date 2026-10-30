@@ -16,8 +16,9 @@ import numpy as np
 
 from reentrant_fea.geometry import core_polygon
 from reentrant_fea.mesh import mesh_wedges,mesh_bricks
-from reentrant_fea.plastic import from_reference
+from reentrant_fea.plastic import load_plastic
 from reentrant_fea.paper_contact_solver import write_paper_contact_deck
+from reentrant_fea.provenance import record_generation
 
 
 ROOT = Path(__file__).resolve().parent
@@ -26,7 +27,8 @@ ROOT = Path(__file__).resolve().parent
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config",default="configs/dong2019_contact.json")
-    ap.add_argument("--plastic",default="reference_setup_numeric_source.py")
+    ap.add_argument("--plastic",default="reference_setup_numeric_source.py",
+                    help="True stress/plastic strain: one Abaqus *Plastic block or literal PLASTIC_DATA Python source; neither is executed")
     ap.add_argument("--output",default="results/dong2019_contact.inp")
     ap.add_argument("--ccx",default=None)
     ap.add_argument("--run",action="store_true")
@@ -43,7 +45,7 @@ def main():
     c["target_output_only"] = args.target_output_only
     poly=core_polygon(c)
     mesher=mesh_bricks if c.get("element_type") in ("C3D8","C3D8R") else mesh_wedges
-    kwargs={"strategy":c.get("brick_mesh","recombine")} if mesher==mesh_bricks else {}
+    kwargs={"strategy":c.get("brick_mesh","recombine"),"config":c} if mesher==mesh_bricks else {}
     nodes,els,top,bottom=mesher(poly,c["depth"],c["mesh_size"],c["depth_layers"],**kwargs)
     imperfection=None
     if args.imperfection_mm:
@@ -55,9 +57,21 @@ def main():
         imperfection[:,0]=args.imperfection_mm*np.sin(np.pi*yi)*np.cos(np.pi*yi)
     out=(ROOT/args.output).resolve()
     meta=write_paper_contact_deck(out,nodes,els,c,
-                                  from_reference(ROOT/args.plastic),
+                                  load_plastic(ROOT/args.plastic),
                                   imperfections=imperfection,
                                   self_contact=args.self_contact)
+    generation=record_generation(
+        out, ROOT/args.config, ROOT/args.plastic, config=c, metadata=meta,
+        source_paths=[Path(__file__), ROOT/'src/reentrant_fea/geometry.py',
+                      ROOT/'src/reentrant_fea/mesh.py',
+                      ROOT/'src/reentrant_fea/paper_contact_solver.py',
+                      ROOT/'src/reentrant_fea/contact.py', ROOT/'native/ductile.c'])
+    # Overrides can change geometry/contact without changing the JSON file.
+    generation['invocation'] = {'self_contact':args.self_contact,
+                              'imperfection_mm':args.imperfection_mm,
+                              'target_output_only':args.target_output_only,
+                              'threads':args.threads}
+    out.with_suffix('.generation.json').write_text(json.dumps(generation,indent=2)+'\n')
     print(json.dumps(meta,indent=2))
     print("Material:",meta["damage_model"])
     if c.get("ductile_damage"):

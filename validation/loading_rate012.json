@@ -1,0 +1,288 @@
+{
+  "status": "completed loading-duration comparison; material calibration not established",
+  "calibrated": false,
+  "constitutive_rate_law_fitted": false,
+  "same_starter_physics_verified": true,
+  "interval_strain": [
+    0.005,
+    0.119
+  ],
+  "relative_L2_fast_minus_slow": 0.04687295850522202,
+  "mean_stress_fast_minus_slow_MPa": -0.017799426806817547,
+  "cases": [
+    {
+      "prefix": "results/calibration_completion/rp_coreams_complete",
+      "duration_seconds": 0.01,
+      "nominal_mean_strain_rate_per_s": 12.0,
+      "peak_nominal_strain_rate_per_s": 22.499999999999996,
+      "metadata_sha256": "f58add66f6450da9d826cb019ef081287083952ca4755715645361dd692e7c90",
+      "execution_receipt_sha256": "3437495e99b756ad3d7b0d154d0ee9c93d8a09bb0f0cf11e0b88d6bedb1e762e",
+      "last_force_sample": {
+        "time": 0.0099635,
+        "strain": 0.1199995625,
+        "reaction_y_N": -2251.599999999889,
+        "bottom_reaction_y_N": 2252.7999999999147,
+        "nominal_stress_MPa": 1.185052631578889,
+        "top_bottom_reaction_sum_y_N": 1.2000000000257387
+      },
+      "global_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "global kinetic/internal energy ratio exceeds limit"
+        ],
+        "samples_after_startup": 380,
+        "last_observed_time": 0.009976,
+        "max_kinetic_internal_ratio": 2.2226694205420734,
+        "max_hourglass_internal_ratio": 0.0,
+        "max_added_original_mass_ratio": 1.5100056186546377e-13,
+        "thresholds": {
+          "kinetic_internal": 0.05,
+          "hourglass_internal": 0.05,
+          "added_original_mass": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+      },
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "core kinetic/internal energy ratio exceeds limit"
+        ],
+        "max_kinetic_internal_ratio": 0.3521728620166264,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 0.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "metrics": {
+        "panel": "thin",
+        "coverage_strain": [
+          0.005,
+          0.119
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": true,
+          "slope_MPa": 25.694196843042594,
+          "intercept_MPa": 0.03747657260941853
+        },
+        "plateau": {
+          "interval_strain": [
+            0.1,
+            0.55
+          ],
+          "available": false,
+          "reason": "Observed curve does not cover the whole interval; no extrapolation"
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.35,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.65,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.75,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            0.005,
+            0.119
+          ],
+          "energy_absorption_MPa": 0.10989127649595788,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": false,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 0.005,
+          "required_interval_strain": [
+            0.1,
+            0.77
+          ],
+          "reason": "Insufficient strain coverage for densification; no extrapolation"
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      },
+      "metrics_scope": "Observed .005-.119 fit window only; raw signed histories retained",
+      "negative_samples_outside_fit": 4,
+      "paper_discrepancy": {
+        "interval_requested": [
+          0.03,
+          0.119
+        ],
+        "interval_scored": [
+          0.03,
+          0.119
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 0.8312121697610718,
+        "overlap_rmse_by_test_MPa": [
+          0.8159152456204891,
+          0.8462326242126774
+        ],
+        "overlap_bias_MPa": 0.8220924169558179,
+        "experimental_half_range_rms_MPa": 0.015350591487409965,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+      }
+    },
+    {
+      "prefix": "results/calibration_completion/rp_rate_slow",
+      "duration_seconds": 0.04,
+      "nominal_mean_strain_rate_per_s": 3.0,
+      "peak_nominal_strain_rate_per_s": 5.624999999999999,
+      "metadata_sha256": "ff3688d84ab9111e9f9954a3fe97ff9cf123999823eb9f56f035a1063076a71c",
+      "execution_receipt_sha256": "2a10a4d48c4effa95869822e35985b90938ccc8e61e3930eb6df3ebabc2432bc",
+      "last_force_sample": {
+        "time": 0.03985,
+        "strain": 0.1199995625,
+        "reaction_y_N": -2434.8000000000807,
+        "bottom_reaction_y_N": 2435.300000000097,
+        "nominal_stress_MPa": 1.2814736842105687,
+        "top_bottom_reaction_sum_y_N": 0.5000000000163709
+      },
+      "global_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "global kinetic/internal energy ratio exceeds limit"
+        ],
+        "samples_after_startup": 380,
+        "last_observed_time": 0.0399,
+        "max_kinetic_internal_ratio": 0.18295847177090122,
+        "max_hourglass_internal_ratio": 0.0,
+        "max_added_original_mass_ratio": 1.5100056186546377e-13,
+        "thresholds": {
+          "kinetic_internal": 0.05,
+          "hourglass_internal": 0.05,
+          "added_original_mass": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+      },
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": true,
+        "reasons": [],
+        "max_kinetic_internal_ratio": 0.02003120826749121,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 0.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "metrics": {
+        "panel": "thin",
+        "coverage_strain": [
+          0.005,
+          0.119
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": true,
+          "slope_MPa": 26.19242973429213,
+          "intercept_MPa": 0.011426660331776105
+        },
+        "plateau": {
+          "interval_strain": [
+            0.1,
+            0.55
+          ],
+          "available": false,
+          "reason": "Observed curve does not cover the whole interval; no extrapolation"
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.35,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.65,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.75,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            0.005,
+            0.119
+          ],
+          "energy_absorption_MPa": 0.11191352590121667,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": false,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 0.005,
+          "required_interval_strain": [
+            0.1,
+            0.77
+          ],
+          "reason": "Insufficient strain coverage for densification; no extrapolation"
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      },
+      "metrics_scope": "Observed .005-.119 fit window only; raw signed histories retained",
+      "negative_samples_outside_fit": 0,
+      "paper_discrepancy": {
+        "interval_requested": [
+          0.03,
+          0.119
+        ],
+        "interval_scored": [
+          0.03,
+          0.119
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 0.8619806479083674,
+        "overlap_rmse_by_test_MPa": [
+          0.8466542083666054,
+          0.8770392956944257
+        ],
+        "overlap_bias_MPa": 0.8491516799962091,
+        "experimental_half_range_rms_MPa": 0.015350591487409965,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+      }
+    }
+  ]
+}

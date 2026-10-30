@@ -94,13 +94,16 @@ def mesh_bricks_subdivision(poly, depth, mesh_size, layers=1):
     return nodes,elements,top,bottom
 
 
-def mesh_bricks(poly, depth, mesh_size, layers=1, strategy='recombine'):
+def mesh_bricks(poly, depth, mesh_size, layers=1, strategy='recombine', config=None):
     """All-quad blossom recombination followed by one conforming refinement.
 
     Refinement splits residual triangles into quads and gives two elements
     through initially single-quad wall widths. It avoids subdividing every
     skinny triangle into three skew quads, which can overexcite hourglass modes.
     """
+    if strategy=='structured_walls':
+        from .structured_mesh import mesh_structured_walls
+        return mesh_structured_walls(poly,depth,mesh_size,layers,config)
     if strategy=='triangle_subdivision':
         return mesh_bricks_subdivision(poly,depth,mesh_size,layers)
     if strategy!='recombine':raise ValueError('Unknown brick mesh strategy')

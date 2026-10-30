@@ -1,0 +1,327 @@
+{
+  "status": "native material component qualification passed; full calibration and lattice agreement remain unestablished",
+  "tests_passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "test_command": "source /workspace/opencourant/env.sh && /workspace/fea-venv/bin/python -m pytest tests/test_radioss_uniaxial.py -q --basetemp=/workspace/opencourant-validation/uniaxial-boundaries-dense",
+  "runtime_binary_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "test_geometry": "1mm cube with a single native HEPH brick; no mass scaling",
+  "qualification_sources_sha256": {
+    "tests/test_radioss_uniaxial.py": "f1bbf41851728d3da683f4bd28e4a369d7b117ef03de48aa76342e61d6655b47",
+    "reference_setup_numeric_source.py": "d8786cd6b608ed115c4539577b423ef6bee059cb3f1be358291d51c81fc6955e",
+    "src/reentrant_fea/plastic.py": "0c00aac2ee083026d86875b617ef5b11fec0b6d989bdacd4f5bb25a5dce32e6e"
+  },
+  "checks": {
+    "hardening": {
+      "directory": "/workspace/opencourant-validation/uniaxial-boundaries-dense/test_full_table_uses_true_flow0",
+      "csv_samples": 2000,
+      "duration_seconds": 0.001,
+      "history_interval_seconds": 5e-07,
+      "stress_channels": [
+        "SX",
+        "SY",
+        "SZ",
+        "SXY",
+        "SYZ",
+        "SXZ"
+      ],
+      "equivalent_plastic_strain_channel": "PLAS",
+      "boundary_conditions": "free lateral faces with minimal rigid-body restraints",
+      "loading_sign": 1,
+      "observed_triaxiality_range_before_softening": [
+        0.33316530398023325,
+        0.3335183662669625
+      ],
+      "actual_input_and_output_sha256": {
+        "hardening_0001.rad": "8e5341ce49067f2ad8ba7a64b92440daf0ca5c6f8f4a3b781cedf41c8eaa3ad5",
+        "hardening_0000.out": "1b2ac112527aaae7073e913536ae24b1544bd1a85a2c6d6da11aceb48c2e5122",
+        "hardeningT01.csv": "44ece1a4b28e2c20d345e0a32b15b55c94c5b97345fc9571f9ec20ea6afdb501",
+        "hardening_0001.out": "bf5e08c5171ae1420d396a7f02bef5edd2de7c63f31692bd455805b87776474d",
+        "hardening_0000.rad": "9529b125c0b06b26c87182c8f1336235b77aeea01bdd346b8ac52c4594d0d38d"
+      },
+      "hardening_boundary_convention": {
+        "convention": "constant flow stress after the last supplied plastic strain, matching the CCX law",
+        "original_point_count": 178,
+        "last_supplied_point": {
+          "plastic_strain": 0.038144409,
+          "true_flow_stress_MPa": 351.151075
+        },
+        "boundary_segment_point": {
+          "plastic_strain": 1.038144409,
+          "true_flow_stress_MPa": 351.151075
+        },
+        "boundary_segment_is_measured_data": false,
+        "reason": "OpenCourant FUNCT otherwise linearly extrapolates the final supplied slope"
+      },
+      "max_observed_peeq": 0.07187057,
+      "max_relative_true_flow_stress_error": 0.00032786495309794316,
+      "beyond_last_input_point_samples": 798,
+      "mean_flow_stress_beyond_input_table_MPa": 351.1510735096297
+    },
+    "anchor": {
+      "directory": "/workspace/opencourant-validation/uniaxial-boundaries-dense/test_uniaxial_anchor_initiates0",
+      "csv_samples": 1225,
+      "duration_seconds": 0.001,
+      "history_interval_seconds": 5e-07,
+      "stress_channels": [
+        "SX",
+        "SY",
+        "SZ",
+        "SXY",
+        "SYZ",
+        "SXZ"
+      ],
+      "equivalent_plastic_strain_channel": "PLAS",
+      "boundary_conditions": "free lateral faces with minimal rigid-body restraints",
+      "loading_sign": 1,
+      "observed_triaxiality_range_before_softening": [
+        0.33327866054291716,
+        0.3334707213715179
+      ],
+      "actual_input_and_output_sha256": {
+        "anchor_0000.out": "4c7f5bed45b5028116ed5fa6e5d5bfef8d8992070aed652a3c4e7f79f6ac5dc9",
+        "anchor_0000.rad": "2b684b96e0e048e5b1f6b0a517a8c6dcc8aea70ee692ffb430cd4839de91076c",
+        "anchor_0001.rad": "120a878f1e37ca5a2454e0d63566b731917b9eccd9bd2f895285f5cded8ae3f2",
+        "anchor_0001.out": "28b4ca0436d5b611fbbb6206f23f0100f4379c4d275e3187ccdd8b14542b6f7f",
+        "anchorT01.csv": "a051db892ed61ff291e14a09cc73644a655227e4678ff09582c19c8c4a43657c"
+      },
+      "hardening_boundary_convention": {
+        "convention": "constant flow stress after the last supplied plastic strain, matching the CCX law",
+        "original_point_count": 2,
+        "last_supplied_point": {
+          "plastic_strain": 1.0,
+          "true_flow_stress_MPa": 300.0
+        },
+        "boundary_segment_point": {
+          "plastic_strain": 2.0,
+          "true_flow_stress_MPa": 300.0
+        },
+        "boundary_segment_is_measured_data": false,
+        "reason": "OpenCourant FUNCT otherwise linearly extrapolates the final supplied slope"
+      },
+      "fracture_boundary_convention": {
+        "convention": "constant fracture strain outside the supplied triaxiality interval, matching the assumed CCX endpoint clamp",
+        "original_point_count": 3,
+        "numerical_boundary_points": [
+          [
+            -1.0,
+            0.08
+          ],
+          [
+            2.0,
+            0.018
+          ]
+        ],
+        "boundary_points_are_measured_data": false,
+        "reason": "OpenCourant TABLE otherwise extrapolates endpoint slopes and can produce nonpositive fracture strains"
+      },
+      "original_fracture_locus": [
+        [
+          0.0,
+          0.08
+        ],
+        [
+          0.333,
+          0.047
+        ],
+        [
+          1.0,
+          0.018
+        ]
+      ],
+      "expected_onset_peeq": 0.04698550724637681,
+      "observed_onset_peeq_from_stress_loss": 0.04698106655844255,
+      "softening_samples": 13,
+      "final_peeq": 0.04799164,
+      "expected_erosion_peeq_unit_length": 0.04798550724637681,
+      "initial_active_flag": 1.0,
+      "final_active_flag": 0.0,
+      "failure_displacement_mm": 0.001,
+      "characteristic_length_mm": 1.0
+    },
+    "high_eta": {
+      "directory": "/workspace/opencourant-validation/uniaxial-boundaries-dense/test_fracture_endpoints_are_cl0",
+      "csv_samples": 966,
+      "duration_seconds": 0.001,
+      "history_interval_seconds": 5e-07,
+      "stress_channels": [
+        "SX",
+        "SY",
+        "SZ",
+        "SXY",
+        "SYZ",
+        "SXZ"
+      ],
+      "equivalent_plastic_strain_channel": "PLAS",
+      "boundary_conditions": "constrained lateral strain; diagnostic of high stress triaxiality only",
+      "loading_sign": 1,
+      "observed_triaxiality_range_before_softening": [
+        2.9807871581313474,
+        6.705346034329246
+      ],
+      "actual_input_and_output_sha256": {
+        "high_eta_0000.out": "719acf86fa62c75ba628d7b759d8afbfcdbbc33976c6b8c874fedecc87aebd62",
+        "high_eta_0001.out": "6a9b0cba457a74e5e44e7d4926c1bc33de71f8c834a544978f5b6778ed6b958e",
+        "high_eta_0001.rad": "81b465a5e80c9106a8d8f80856a2b04794add23aa86fb9a5c499083eff9d11a9",
+        "high_eta_0000.rad": "2c5ba77e81539fd2384c5acc963fb4fe0004a5a7f99f21721e84e0fc77b4515e",
+        "high_etaT01.csv": "08e966ccab67b207d2110d1d063f47bd55f5e44148834ae6c437561f9762f436"
+      },
+      "hardening_boundary_convention": {
+        "convention": "constant flow stress after the last supplied plastic strain, matching the CCX law",
+        "original_point_count": 2,
+        "last_supplied_point": {
+          "plastic_strain": 1.0,
+          "true_flow_stress_MPa": 300.0
+        },
+        "boundary_segment_point": {
+          "plastic_strain": 2.0,
+          "true_flow_stress_MPa": 300.0
+        },
+        "boundary_segment_is_measured_data": false,
+        "reason": "OpenCourant FUNCT otherwise linearly extrapolates the final supplied slope"
+      },
+      "fracture_boundary_convention": {
+        "convention": "constant fracture strain outside the supplied triaxiality interval, matching the assumed CCX endpoint clamp",
+        "original_point_count": 3,
+        "numerical_boundary_points": [
+          [
+            -1.0,
+            0.08
+          ],
+          [
+            2.0,
+            0.018
+          ]
+        ],
+        "boundary_points_are_measured_data": false,
+        "reason": "OpenCourant TABLE otherwise extrapolates endpoint slopes and can produce nonpositive fracture strains"
+      },
+      "original_fracture_locus": [
+        [
+          0.0,
+          0.08
+        ],
+        [
+          0.333,
+          0.047
+        ],
+        [
+          1.0,
+          0.018
+        ]
+      ],
+      "expected_onset_peeq": 0.018,
+      "observed_onset_peeq_from_stress_loss": 0.017986400859280202,
+      "softening_samples": 19,
+      "final_peeq": 0.01899079,
+      "expected_erosion_peeq_unit_length": 0.019,
+      "initial_active_flag": 1.0,
+      "final_active_flag": 0.0,
+      "failure_displacement_mm": 0.001,
+      "characteristic_length_mm": 1.0
+    },
+    "negative_eta": {
+      "directory": "/workspace/opencourant-validation/uniaxial-boundaries-dense/test_fracture_endpoints_are_cl1",
+      "csv_samples": 1097,
+      "duration_seconds": 0.001,
+      "history_interval_seconds": 5e-07,
+      "stress_channels": [
+        "SX",
+        "SY",
+        "SZ",
+        "SXY",
+        "SYZ",
+        "SXZ"
+      ],
+      "equivalent_plastic_strain_channel": "PLAS",
+      "boundary_conditions": "free lateral faces with minimal rigid-body restraints",
+      "loading_sign": -1,
+      "observed_triaxiality_range_before_softening": [
+        -0.333614480948662,
+        -0.33313979423796436
+      ],
+      "actual_input_and_output_sha256": {
+        "negative_etaT01.csv": "c743d06cdf827e7b399f4e0c3f9797931f6d21efe83b54467f4f6391933ab99c",
+        "negative_eta_0001.out": "b9743e84d6f192b81e80804656c4f8a2c6c055ebc96af6b1d3a35e48d53d708e",
+        "negative_eta_0000.out": "452c1010a49f203d2a9180614f4d4f15608c24630a22a539baa9690624e7a475",
+        "negative_eta_0001.rad": "48462d417f3f54d8bf95e9c8eef29e2e920142114e81a440b7c75f27ffa48a57",
+        "negative_eta_0000.rad": "5cf7d5608c555fef4dc4e7ac0092f357f9e5053d86a6fc4775ed0f3fadd8bb75"
+      },
+      "hardening_boundary_convention": {
+        "convention": "constant flow stress after the last supplied plastic strain, matching the CCX law",
+        "original_point_count": 2,
+        "last_supplied_point": {
+          "plastic_strain": 1.0,
+          "true_flow_stress_MPa": 300.0
+        },
+        "boundary_segment_point": {
+          "plastic_strain": 2.0,
+          "true_flow_stress_MPa": 300.0
+        },
+        "boundary_segment_is_measured_data": false,
+        "reason": "OpenCourant FUNCT otherwise linearly extrapolates the final supplied slope"
+      },
+      "fracture_boundary_convention": {
+        "convention": "constant fracture strain outside the supplied triaxiality interval, matching the assumed CCX endpoint clamp",
+        "original_point_count": 3,
+        "numerical_boundary_points": [
+          [
+            -1.0,
+            0.08
+          ],
+          [
+            2.0,
+            0.018
+          ]
+        ],
+        "boundary_points_are_measured_data": false,
+        "reason": "OpenCourant TABLE otherwise extrapolates endpoint slopes and can produce nonpositive fracture strains"
+      },
+      "original_fracture_locus": [
+        [
+          0.0,
+          0.08
+        ],
+        [
+          0.333,
+          0.047
+        ],
+        [
+          1.0,
+          0.018
+        ]
+      ],
+      "expected_onset_peeq": 0.08,
+      "observed_onset_peeq_from_stress_loss": 0.07998511212576076,
+      "softening_samples": 6,
+      "final_peeq": 0.08100179,
+      "expected_erosion_peeq_unit_length": 0.081,
+      "initial_active_flag": 1.0,
+      "final_active_flag": 0.0,
+      "failure_displacement_mm": 0.001,
+      "characteristic_length_mm": 1.0
+    }
+  },
+  "corrected_defects": [
+    {
+      "defect": "Native FUNCT linearly extrapolated hardening past the final supplied point while the CCX law clamps.",
+      "observed_old_peeq": 0.06777854,
+      "observed_old_flow_stress_MPa": 633.3824,
+      "required_constant_boundary_stress_MPa": 351.151075,
+      "fix": "Append a constant numerical segment without changing supplied hardening points."
+    },
+    {
+      "defect": "Native TABLE linearly extrapolated fracture-endpoint slopes. The example upper extension becomes negative above eta about1.414.",
+      "fix": "Prepend/append constant endpoint segments, preserving all supplied locus points and the explicitly assumed CCX endpoint-clamp convention."
+    }
+  ],
+  "limitations": [
+    "The fracture locus remains uncalibrated. These coupons check the configured law, not independently measured failure behavior.",
+    "The single paper point is interpreted as the paper-used plastic initiation input; plotted total tensile strain is not treated as measured PEEQ.",
+    "Endpoint clamping is an investigator assumption, not additional paper data. Numerical boundary points are marked nonmeasured.",
+    "The negative-eta test intentionally demonstrates that native INIEVO accumulates compression damage; the CCX compression cutoff is not mapped. Native and CCX remain different constitutive models.",
+    "A unit-cube characteristic length of1mm does not qualify general anisotropic-mesh length regularization or energy objectivity.",
+    "Native default numerical damping and failure-increment integration differ from CCX and require lattice-level energy/rate sensitivity.",
+    "No full-lattice experimental agreement or complete fracture-surface contact validation is claimed."
+  ]
+}

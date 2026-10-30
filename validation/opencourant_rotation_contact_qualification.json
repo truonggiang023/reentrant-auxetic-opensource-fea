@@ -1,0 +1,143 @@
+{
+  "status": "controlled originally back-facing face rotation self-contact component test passed",
+  "backend": "official OpenCourant latest-20261011 Linux64 GNU double precision",
+  "runtime_source_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "test": "tests/test_radioss_contact.py::test_self_contact_detects_originally_back_facing_face_after_half_turn",
+  "test_source_sha256": "ecf44299685276145958452ec8f56d6a7144fe09a01fd12c68b48c3a2e79445d",
+  "command": "source /workspace/opencourant/env.sh && /workspace/fea-venv/bin/python -m pytest tests/test_radioss_contact.py -q --basetemp=/workspace/fea-research/contact-components-final",
+  "test_outcome": {
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "solver_runs": 2
+  },
+  "model": {
+    "units": [
+      "Mg",
+      "mm",
+      "s",
+      "N",
+      "MPa"
+    ],
+    "solid_elements": 2,
+    "single_part_with_disconnected_bodies": 1,
+    "fixed_target_bounds_mm": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        1
+      ]
+    ],
+    "moving_cube_side_mm": 0.4,
+    "initial_moving_center_mm": [
+      0.5,
+      2.5,
+      0.5
+    ],
+    "final_moving_center_mm": [
+      0.5,
+      1.1,
+      0.5
+    ],
+    "rotation_degrees": 180,
+    "rotation_axis": "Z",
+    "rotation_and_translation_end_seconds": 0.0002,
+    "final_hold_until_seconds": 0.00025,
+    "motion_sampling_points": 201,
+    "contact": "TYPE25 secondary1 main0 native SELF surfacePART/ALL/1, Idel1 Iedge22",
+    "maximum_contact_gap_mm": 0.005,
+    "mass_scaling": false
+  },
+  "reaction_semantics": "Differentiate summed fixed-target cumulative REACY impulses by actual output intervals. Target is fixed, so its reaction has no target inertial contribution.",
+  "controls": "No-contact control uses identical geometry, material, prescribed paths, time output and fixed constraints, with no contact interface.",
+  "runs": {
+    "type25_self_contact": {
+      "working_directory": "/workspace/fea-research/contact-components-final/test_self_contact_detects_orig0/contact",
+      "normal_termination": true,
+      "starter_zero_errors_and_warnings": true,
+      "observed_samples": 500,
+      "last_time_seconds": 0.0002495323,
+      "artifacts_sha256": {
+        "rotation_contact_0000.rad": "c9c479e3c2096677051efe005423fc39f4359accd22ef09602a0bb8bcb3a9903",
+        "rotation_contact_0001.rad": "055f826b747b853ac83374ba63e6b806957396cb85d13eb5a387d7d23ce46cdb",
+        "rotation_contact_0000.out": "58ef1910bbd93d7a0cff32bbb9e9ef20d72941e42b6d842243cd89a9852fe3ce",
+        "rotation_contact_0001.out": "60e8e4d30e100342df66c7cd2dd690c52134a34db19cb9618c7d4ebc8f28fbc0",
+        "rotation_contactT01.csv": "d537423e66542bd09089a9af2b124c0c03b73f10a81432ad27ef51795460f675"
+      },
+      "peak_fixed_target_contact_reaction_N": 2310.67999216146,
+      "peak_early_reaction_before144deg_N": 0.0,
+      "first_nonzero_reaction_angle_degrees": 159.99975,
+      "median_final_hold_reaction_N": 2310.188087774393,
+      "relative_hold_force_std": 7.874876379710185e-05,
+      "maximum_pairwise_rigidity_relative_error": 3.242035150813338e-05,
+      "initial_top_normal_dot_target_direction": -0.352,
+      "final_same_face_normal_dot_target_direction": 0.06400000000000003,
+      "final_original_top_face_y_mm": [
+        0.9000000000000001,
+        0.9000000000000001,
+        0.9000000000000001,
+        0.9000000000000001
+      ],
+      "final_moving_center_mm": [
+        0.49999999999999994,
+        1.1,
+        0.5
+      ]
+    },
+    "no_contact_negative_control": {
+      "working_directory": "/workspace/fea-research/contact-components-final/test_self_contact_detects_orig0/no_contact",
+      "normal_termination": true,
+      "starter_zero_errors_and_warnings": true,
+      "observed_samples": 500,
+      "last_time_seconds": 0.0002495507,
+      "artifacts_sha256": {
+        "rotation_control_0000.rad": "5711303d4a660b60bce8b05cb60d55c579195f12916c28e511c3d2340e09bb6d",
+        "rotation_control_0001.rad": "8d548c2d6943bdf38a5765022d83366fdabf94e814f6b8471344a95960f745e1",
+        "rotation_control_0000.out": "d998e0d857abf1ea322e51e9b9561d332c40c6408e79c2b6d2e327e377278262",
+        "rotation_control_0001.out": "7b7f55f770c0a0d8c65afb29db6b901605a53162388965dd2f2285cc0dd0a52e",
+        "rotation_controlT01.csv": "9e0125a3f844a6c7a0b7b0d275af7107970a6df3012bda14578af42222d93745"
+      },
+      "peak_fixed_target_contact_reaction_N": 0.0,
+      "peak_early_reaction_before144deg_N": 0.0,
+      "first_nonzero_reaction_angle_degrees": null,
+      "median_final_hold_reaction_N": 0.0,
+      "relative_hold_force_std": 0.0,
+      "maximum_pairwise_rigidity_relative_error": 3.242035150813338e-05,
+      "initial_top_normal_dot_target_direction": -0.352,
+      "final_same_face_normal_dot_target_direction": 0.06400000000000003,
+      "final_original_top_face_y_mm": [
+        0.9000000000000001,
+        0.9000000000000001,
+        0.9000000000000001,
+        0.9000000000000001
+      ],
+      "final_moving_center_mm": [
+        0.49999999999999994,
+        1.1,
+        0.5
+      ]
+    }
+  },
+  "assertions_proved": [
+    "The actual output preserves all moving-solid pair distances within1e-4 relative error and reaches180degree reversed face orientation.",
+    "The original top-face normal initially points away from the fixed target; the same face faces the target at the final pose.",
+    "No target contact traction occurs before144degrees. Actual target reaction first appears near160degrees.",
+    "A nonzero nearly steady target traction remains during the final held pose.",
+    "Identical prescribed motion without contact gives exactly zero target reaction."
+  ],
+  "initially_non_facing_rotation_contact_demonstrated": true,
+  "complete_general_self_contact_validated": false,
+  "experimental_agreement": false,
+  "limitations": [
+    "Prescribed-motion component; force magnitude is not an experimental calibration target.",
+    "No friction-history or fragment-collection validation; friction is zero in this isolated test.",
+    "The dense prescribed paths approximate rigid rotation; actual geometric error is measured.",
+    "No mesh/time-step/penalty sensitivity qualification follows from this one configuration.",
+    "Full damaged honeycomb contact coverage and quasi-static collapse remain unqualified."
+  ]
+}

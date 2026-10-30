@@ -1,0 +1,619 @@
+{
+  "status": "calibration incomplete; numerical and geometry prerequisites unresolved",
+  "calibrated": false,
+  "selected_material": null,
+  "paper": {
+    "doi": "10.1016/j.matdes.2019.108036",
+    "supplied_panel": "Fig12(b), t=0.3 mm",
+    "training": "Fig12(a), t=1 mm",
+    "holdout": "Fig12(b), t=0.3 mm",
+    "paper_fe_is_experimental_target": false,
+    "reported_thin_plateau_MPa": 0.28,
+    "reported_thin_densification_strain": 0.58,
+    "morphology_target_strains": [
+      0.12,
+      0.35,
+      0.65
+    ]
+  },
+  "reference_sha256": {
+    "dong2019_fig12_thin.csv": "73838e72f4d88aa67250e1d2d77e898e09bbe9e3814a1d350850a307da2fd70f",
+    "dong2019_fig12_thick.csv": "a0541e9bc9bfb87ed98e0dd4b578d9ac92dc3c6583c53a911e486815c9c32551",
+    "dong2019_fig12_provenance.json": "73bf9b59455bea62812836bbac6c328c34e9813fcb7586cf07365ea8de21d89d"
+  },
+  "reference_diagnostics": {
+    "thin": {
+      "experiment_1": {
+        "panel": "thin",
+        "coverage_strain": [
+          0.0260416667,
+          0.777083333
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": false,
+          "reason": "Observed curve does not cover the whole interval; no extrapolation"
+        },
+        "plateau": {
+          "interval_strain": [
+            0.1,
+            0.55
+          ],
+          "available": true,
+          "mean_stress_MPa": 0.3056757635391244
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 0.28122807
+          },
+          {
+            "strain": 0.35,
+            "available": true,
+            "stress_MPa": 0.337719298
+          },
+          {
+            "strain": 0.65,
+            "available": true,
+            "stress_MPa": 0.715964912
+          },
+          {
+            "strain": 0.75,
+            "available": true,
+            "stress_MPa": 0.682807018
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            0.0260416667,
+            0.777083333
+          ],
+          "energy_absorption_MPa": 0.30565899082928943,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": true,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 0.0260416667,
+          "required_interval_strain": [
+            0.1,
+            0.77
+          ],
+          "strain": 0.572916667,
+          "efficiency": 0.5292679966634355,
+          "boundary_peak": false,
+          "zero_stress_samples_ignored": 0
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      },
+      "experiment_2": {
+        "panel": "thin",
+        "coverage_strain": [
+          0.00416666667,
+          0.780208333
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": true,
+          "slope_MPa": 7.547990599724541,
+          "intercept_MPa": 0.004773911103473525
+        },
+        "plateau": {
+          "interval_strain": [
+            0.1,
+            0.55
+          ],
+          "available": true,
+          "mean_stress_MPa": 0.27115761054170073
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 0.259122807
+          },
+          {
+            "strain": 0.35,
+            "available": true,
+            "stress_MPa": 0.230877193
+          },
+          {
+            "strain": 0.65,
+            "available": true,
+            "stress_MPa": 0.773684211
+          },
+          {
+            "strain": 0.75,
+            "available": true,
+            "stress_MPa": 0.917368421
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            0.00416666667,
+            0.780208333
+          ],
+          "energy_absorption_MPa": 0.29181058091768414,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": true,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 0.00416666667,
+          "required_interval_strain": [
+            0.1,
+            0.77
+          ],
+          "strain": 0.55625,
+          "efficiency": 0.48662696361069246,
+          "boundary_peak": false,
+          "zero_stress_samples_ignored": 0
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      }
+    },
+    "thick": {
+      "experiment_1": {
+        "panel": "thick",
+        "coverage_strain": [
+          0.0348387097,
+          0.48516129
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": false,
+          "reason": "Observed curve does not cover the whole interval; no extrapolation"
+        },
+        "plateau": {
+          "available": false,
+          "reason": "No panel-specific interval supplied"
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 5.625
+          },
+          {
+            "strain": 0.35,
+            "available": true,
+            "stress_MPa": 6.6059027800000045
+          },
+          {
+            "strain": 0.65,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.75,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            0.0348387097,
+            0.48516129
+          ],
+          "energy_absorption_MPa": 3.926747308500695,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": false,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 0.0348387097,
+          "reason": "No thick-panel densification interval supplied"
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      },
+      "experiment_2": {
+        "panel": "thick",
+        "coverage_strain": [
+          0.00451612903,
+          0.497419355
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": true,
+          "slope_MPa": 451.79488792748026,
+          "intercept_MPa": -2.4972311163984675
+        },
+        "plateau": {
+          "available": false,
+          "reason": "No panel-specific interval supplied"
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 4.34027778
+          },
+          {
+            "strain": 0.35,
+            "available": true,
+            "stress_MPa": 7.656249999999996
+          },
+          {
+            "strain": 0.65,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.75,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            0.00451612903,
+            0.497419355
+          ],
+          "energy_absorption_MPa": 4.016683469587072,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": false,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 0.00451612903,
+          "reason": "No thick-panel densification interval supplied"
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      }
+    }
+  },
+  "assessments": [
+    {
+      "assessment": "validation/opencourant-thin-total-force-assessment.json",
+      "sha256": "b0aebfb1776404a02b10718ae3e2c3111983aafa65f88b6b87f65991556b4447",
+      "backend": "OpenCourant / Radioss format experimental",
+      "config_wall_mm": 0.3,
+      "wall_thickness_evidence": "declared in source assessment",
+      "matched_solver_comparison": false,
+      "solver_completed": true,
+      "reference_area_mm2": 1900,
+      "force_mapping": {
+        "csv_column": "Contact force and energy                 3 Contact 3                                var 64",
+        "compressive_sign": -1,
+        "area_mm2": 1900.0,
+        "channel_kind": "impulse",
+        "sampling": "interval average",
+        "verification": "caller-selected verified channel and physical quantity",
+        "tangential_csv_column": "Contact force and energy                 3 Contact 3                                var 67",
+        "component_operation": "FN-FT",
+        "contact_force_quantity": "total_force_on_secondary",
+        "convention": "TYPE25 IMS=2 secondary force; subtract FT from FN before sign and impulse differentiation"
+      },
+      "source_quasi_static_validated": false,
+      "comparison_scope": "caller-supplied thin-wall assessment; not an independently rerun solver",
+      "metrics": {
+        "panel": "thin",
+        "coverage_strain": [
+          8.003612500000001e-07,
+          0.6499976629451499
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": true,
+          "slope_MPa": 25.787552661130903,
+          "intercept_MPa": -0.002975186342459541
+        },
+        "plateau": {
+          "interval_strain": [
+            0.1,
+            0.55
+          ],
+          "available": true,
+          "mean_stress_MPa": 0.9036657322523972
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 1.390065043523866
+          },
+          {
+            "strain": 0.35,
+            "available": true,
+            "stress_MPa": 0.7762566338086265
+          },
+          {
+            "strain": 0.65,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.75,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            8.003612500000001e-07,
+            0.6499976629451499
+          ],
+          "energy_absorption_MPa": 0.6071482019059073,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": false,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 8.003612500000001e-07,
+          "required_interval_strain": [
+            0.1,
+            0.77
+          ],
+          "reason": "Insufficient strain coverage for densification; no extrapolation"
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      },
+      "discrepancy_to_both_experiments": {
+        "early": {
+          "interval_requested": [
+            0.03,
+            0.12
+          ],
+          "interval_scored": [
+            0.03,
+            0.12
+          ],
+          "coverage_fraction": 1.0,
+          "full_interval_covered": true,
+          "overlap_rmse_MPa": 0.8898845011673109,
+          "overlap_rmse_by_test_MPa": [
+            0.8746331501278578,
+            0.9048788336197325
+          ],
+          "overlap_bias_MPa": 0.8734189509473224,
+          "experimental_half_range_rms_MPa": 0.015306871140456351,
+          "samples_per_test": 300,
+          "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+        },
+        "plateau": {
+          "interval_requested": [
+            0.1,
+            0.55
+          ],
+          "interval_scored": [
+            0.1,
+            0.55
+          ],
+          "coverage_fraction": 1.0,
+          "full_interval_covered": true,
+          "overlap_rmse_MPa": 0.6524955586768866,
+          "overlap_rmse_by_test_MPa": [
+            0.6358414813969884,
+            0.668735013829101
+          ],
+          "overlap_bias_MPa": 0.6159702819249908,
+          "experimental_half_range_rms_MPa": 0.022737743577294942,
+          "samples_per_test": 300,
+          "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+        },
+        "full_visible": {
+          "interval_requested": [
+            0.03,
+            0.77
+          ],
+          "interval_scored": [
+            0.03,
+            0.6499976629451499
+          ],
+          "coverage_fraction": 0.837834679655608,
+          "full_interval_covered": false,
+          "overlap_rmse_MPa": 0.6769877530397962,
+          "overlap_rmse_by_test_MPa": [
+            0.6643835139688186,
+            0.6893615755887389
+          ],
+          "overlap_bias_MPa": 0.6464606152593074,
+          "experimental_half_range_rms_MPa": 0.022372780941751918,
+          "samples_per_test": 300,
+          "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+        }
+      },
+      "calibration_eligible": false
+    },
+    {
+      "assessment": "results/check012/assessment.json",
+      "sha256": "aa47ff94741e20c1449acee2015a4cfdff5939df2640602da2b9d695891049ae",
+      "backend": "CalculiX",
+      "config_wall_mm": null,
+      "wall_thickness_evidence": "caller supplied as thin-wall diagnostic; thickness not independently verified here",
+      "matched_solver_comparison": false,
+      "solver_completed": true,
+      "reference_area_mm2": 1900.0,
+      "force_mapping": "coupled platen reference-point RF2 and relative U2",
+      "source_quasi_static_validated": false,
+      "comparison_scope": "caller-supplied thin-wall assessment; not an independently rerun solver",
+      "metrics": {
+        "panel": "thin",
+        "coverage_strain": [
+          0.00012,
+          0.12
+        ],
+        "early_slope": {
+          "interval_strain": [
+            0.005,
+            0.02
+          ],
+          "available": true,
+          "slope_MPa": 54.99454368288222,
+          "intercept_MPa": 0.43637077470394076
+        },
+        "plateau": {
+          "interval_strain": [
+            0.1,
+            0.55
+          ],
+          "available": false,
+          "reason": "Observed curve does not cover the whole interval; no extrapolation"
+        },
+        "target_stresses": [
+          {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 1.6492252631578945
+          },
+          {
+            "strain": 0.35,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.65,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          },
+          {
+            "strain": 0.75,
+            "available": false,
+            "reason": "Target is outside observed strain range; no extrapolation"
+          }
+        ],
+        "energy_absorption": {
+          "available": true,
+          "observed_interval_strain": [
+            0.00012,
+            0.12
+          ],
+          "energy_absorption_MPa": 0.18094593344783555,
+          "starts_at_zero_strain": false,
+          "convention": "Integral of stress over observed strain only; no missing initial energy inferred"
+        },
+        "densification": {
+          "available": false,
+          "definition": "Investigator diagnostic: argmax of observed-range integral(stress)/stress",
+          "paper_defined": false,
+          "energy_origin_strain": 0.00012,
+          "required_interval_strain": [
+            0.1,
+            0.77
+          ],
+          "reason": "Insufficient strain coverage for densification; no extrapolation"
+        },
+        "qualification": "Curve diagnostics only; no calibration or experimental agreement established"
+      },
+      "discrepancy_to_both_experiments": {
+        "early": {
+          "interval_requested": [
+            0.03,
+            0.12
+          ],
+          "interval_scored": [
+            0.03,
+            0.12
+          ],
+          "coverage_fraction": 1.0,
+          "full_interval_covered": true,
+          "overlap_rmse_MPa": 1.3687518119688036,
+          "overlap_rmse_by_test_MPa": [
+            1.3539910180756354,
+            1.383355112943264
+          ],
+          "overlap_bias_MPa": 1.3650992833717823,
+          "experimental_half_range_rms_MPa": 0.015306871140456351,
+          "samples_per_test": 300,
+          "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+        },
+        "plateau": {
+          "interval_requested": [
+            0.1,
+            0.55
+          ],
+          "interval_scored": [
+            0.1,
+            0.12
+          ],
+          "coverage_fraction": 0.04444444444444442,
+          "full_interval_covered": false,
+          "overlap_rmse_MPa": 1.329002347375176,
+          "overlap_rmse_by_test_MPa": [
+            1.309432967867315,
+            1.3482877220087897
+          ],
+          "overlap_bias_MPa": 1.3285654306999164,
+          "experimental_half_range_rms_MPa": 0.019912265190205544,
+          "samples_per_test": 300,
+          "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+        },
+        "full_visible": {
+          "interval_requested": [
+            0.03,
+            0.77
+          ],
+          "interval_scored": [
+            0.03,
+            0.12
+          ],
+          "coverage_fraction": 0.12162162162162161,
+          "full_interval_covered": false,
+          "overlap_rmse_MPa": 1.3687518119688036,
+          "overlap_rmse_by_test_MPa": [
+            1.3539910180756354,
+            1.383355112943264
+          ],
+          "overlap_bias_MPa": 1.3650992833717823,
+          "experimental_half_range_rms_MPa": 0.015306871140456351,
+          "samples_per_test": 300,
+          "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+        }
+      },
+      "calibration_eligible": false
+    }
+  ],
+  "fixed_material_inputs": {
+    "young_MPa": 69000.0,
+    "poisson": 0.3,
+    "density_Mg_mm3": 2.67e-09,
+    "plastic_table": "already true stress / plastic strain; no reconversion",
+    "fracture_anchor": [
+      0.333,
+      0.047
+    ],
+    "failure_displacement_mm": 0.001
+  },
+  "selection_requirements": [
+    "Qualify thick and thin geometry, relative density and meshes separately.",
+    "Resolve undamaged elastic stiffness discrepancy with matched BC/formulation controls.",
+    "Complete surface-to-RP and direct-face controls with observed relative displacement.",
+    "Bind actual solver completion and input/output receipts for thick training candidates.",
+    "Qualify core kinetic/internal energy, energy/work balance, speed and numerical sensitivity.",
+    "Fit missing locus coordinates only on thick-wall experiments; transfer unchanged to thin holdout.",
+    "Cover late thin response through .77 and compare .12/.35/.65 stored deformation frames.",
+    "Assess identifiability and uncertainty before claiming a calibrated material."
+  ],
+  "metric_limits": "Observed energy origins can differ between curves; these are not directly comparable total-energy measurements. Intervals and efficiency densification are investigator diagnostics, not paper definitions. Missing coverage is not extrapolated; printed curves have digitization uncertainty."
+}

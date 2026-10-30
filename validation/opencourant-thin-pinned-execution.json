@@ -1,0 +1,23 @@
+{
+  "input_sha256": {
+    "thin_native_clamped_ams1e6_0000.rad": "a1bf50664ae48a5565433fca976a1268af280371378da7e89defa6f8d94455d7",
+    "thin_native_clamped_ams1e6_0001.rad": "672861ecf45dd1afc057747af298e491075c8d41d33da9c2d450b566d81be54c"
+  },
+  "executables_sha256": {
+    "/workspace/opencourant/runtime/OpenCourant/exec/starter_linux64_gf": "0bbea37273656b270bea53cf756b115bcd5d9a8875a3c41283922a3b927719d1",
+    "/workspace/opencourant/runtime/OpenCourant/exec/engine_linux64_gf": "54cc9fc2a7cea6f1215afb6da9109d368650ff1fa7985625cb111f47d7e92be4",
+    "/workspace/opencourant/runtime/OpenCourant/exec/th_to_csv_linux64_gf": "704d647331ae4befd329d18b991d644f2af930abd117c5d204c23925f75fc8db"
+  },
+  "output_sha256": {
+    "thin_native_clamped_ams1e6_0000.out": "0da2ce44e5c41439ca296c356f179b31a14ac293b194b1f3d41bf028e64b92f2",
+    "thin_native_clamped_ams1e6_0001.out": "69a9f16295a94197251a4b82a059bed047f83d9f9d1dd4537b9e6f2066b0939a",
+    "thin_native_clamped_ams1e6T01": "21abc64be9c1f4b61d393c4155a1b4da0430b66ec2070f505b0c85a80a3e13bd",
+    "thin_native_clamped_ams1e6T01.csv": "2e59b1fb64af198d1ceec95f54f2883c9d93cc086903a201983ff0b0509328bf"
+  },
+  "stages": [
+    "starter -np 1",
+    "engine",
+    "th_to_csv"
+  ],
+  "solver_stages_terminated_normally": true
+}

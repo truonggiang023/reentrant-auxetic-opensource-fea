@@ -1,0 +1,67 @@
+{
+  "l1": 12,
+  "l2": 12,
+  "bevel": 5.66,
+  "wall": 0.3,
+  "rows": 6,
+  "cols": 5,
+  "height": 47.7,
+  "depth": 25,
+  "lambda_m": 1,
+  "mesh_size": 0.85,
+  "depth_layers": 1,
+  "young": 69000,
+  "poisson": 0.3,
+  "density": 2.67e-09,
+  "compression_strain": 0.12,
+  "friction": 0.35,
+  "steel_young": 210000,
+  "steel_poisson": 0.3,
+  "platen_margin": 1,
+  "platen_gap": 0,
+  "platen_thickness": 10,
+  "normal_penalty": 10000,
+  "initial_increment": 0.001,
+  "minimum_increment": 1e-06,
+  "maximum_increment": 0.005,
+  "reference_area": 1900,
+  "contact_type": "SURFACE TO SURFACE",
+  "stick_slope": 1000,
+  "target_output_only": true,
+  "ductile_damage": {
+    "fracture_locus": [
+      [
+        0,
+        0.08
+      ],
+      [
+        0.333,
+        0.047
+      ],
+      [
+        1,
+        0.018
+      ]
+    ],
+    "failure_displacement": 0.001,
+    "residual_stiffness": 0.0001,
+    "compression_cutoff": -0.3333333333333333,
+    "calibrated": false,
+    "provenance": "Dong 2019 Section 4, p8: .047 at eta=.333 and uf=.001; other strains span .08-.018 without triaxiality coordinates. eta=0 and 1 endpoints, clamping and compression cutoff are explicit demonstration assumptions, not paper data.",
+    "viscosity_time": 0.005
+  },
+  "element_type": "C3D8R",
+  "brick_mesh": "recombine",
+  "output_interval": 0.005,
+  "loading_profile": "linear",
+  "platen_reference_points": true,
+  "platen_contact_surface": "all",
+  "self_friction": 0.35,
+  "restart_cycle_interval": 10000,
+  "paper_condition_notes": [
+    "User-provided Section4 paragraph does not identify Standard/Explicit or time integration.",
+    "Use --physical-speed-mm-min 2 to derive actual duration from mesh envelope.",
+    "Core/platen friction .35 is specified; core self-friction .35 is retained as an explicit unreported assumption.",
+    "Damage locus endpoint triaxialities remain hypotheses; material is not calibrated."
+  ]
+}

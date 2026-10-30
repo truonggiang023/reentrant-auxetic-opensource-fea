@@ -1,0 +1,52 @@
+{
+  "status": "confirmed boundary-condition difference in the completed legacy baseline; response sensitivity remains unquantified",
+  "baseline_input_path": "results/opencourant/thin_native_clamped_ams1e6_0000.rad",
+  "baseline_input_sha256": "a1bf50664ae48a5565433fca976a1268af280371378da7e89defa6f8d94455d7",
+  "actual_core_x_restraint": {
+    "enabled": true,
+    "native_group": "/GRNOD/NODE/4",
+    "native_constraint": "/BCS/4 Ux=0",
+    "nodes": [
+      {
+        "id": 9780,
+        "xyz_mm": [
+          37.8829407149,
+          7.95,
+          0.0
+        ]
+      }
+    ],
+    "position": "interior first-row node, about8.1mm above the lower core boundary",
+    "core_initial_y_bounds_mm": [
+      -0.15,
+      47.85
+    ]
+  },
+  "same_mesh_ccx_bottom_roller": {
+    "node_id": 1293,
+    "xyz_mm": [
+      37.8829407149,
+      -0.15,
+      0.0
+    ],
+    "native_completed_baseline_uses_this_node": false
+  },
+  "paper_conditions": {
+    "reference": "Dong2019 Section4.1 p8",
+    "documented": [
+      "elastic steel platens",
+      "platen/core friction0.35",
+      "selfcontact",
+      "constrained out-of-plane displacement"
+    ],
+    "interior_in_plane_pin_documented": false
+  },
+  "numerical_assessment": [
+    "Explicit time integration has a nonsingular mass-based update without fixing an in-plane core translation solely to invert a static stiffness matrix.",
+    "An interior fixed X displacement can constrain local lateral buckling/drift; it is not a neutral static gauge once frictional contact and nonuniform deformation are present.",
+    "Removing it is a justified boundary-condition sensitivity case. The completed baseline must remain labelled as using this interior pin.",
+    "No stress reduction, mode agreement, or explanation of the full paper discrepancy is claimed without an actual unpinned comparison."
+  ],
+  "preservation": "The completed baseline deck/hash are retained as historical evidence. Updating a writer default does not change its recorded inputs or retrospectively validate it.",
+  "experimental_agreement": "not established"
+}

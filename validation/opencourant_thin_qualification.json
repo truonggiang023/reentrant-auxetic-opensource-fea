@@ -1,0 +1,90 @@
+{
+  "case": "legacy interior-X-pin baseline, not the current free-X default",
+  "backend": "OpenCourant latest-20261011",
+  "wall_mm": 0.3,
+  "engine_completed": true,
+  "engine_errors": [],
+  "cycles": 10002,
+  "elapsed_wall_seconds": 976.37,
+  "duration_seconds": 0.01,
+  "ams_time_step_seconds": 1e-06,
+  "core_nodes": 21870,
+  "core_elements": 7392,
+  "eroded_core_elements": 252,
+  "target_strain": 0.65,
+  "last_recorded_force_strain": 0.6499976629451499,
+  "nominal_area_mm2": 1900,
+  "curve_diagnostic": {
+    "interval_requested": [
+      0.03,
+      0.64
+    ],
+    "interval_scored": [
+      0.03,
+      0.64
+    ],
+    "coverage_fraction": 1.0,
+    "full_interval_covered": true,
+    "overlap_rmse_MPa": 0.5730258265927314,
+    "overlap_rmse_by_test_MPa": [
+      0.5595746015539137,
+      0.5861684580223886
+    ],
+    "overlap_bias_MPa": 0.5505310595442222,
+    "experimental_half_range_rms_MPa": 0.022311219528314233,
+    "samples_per_test": 300,
+    "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+  },
+  "stress_samples_MPa": {
+    "0.12": 1.1546254283655828,
+    "0.35": 0.7186463817772193,
+    "near_0.65": 0.9678534798677143
+  },
+  "global_engine_print_screen": {
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "sampled global energy error exceeds limit",
+      "sampled kinetic/internal energy ratio exceeds limit"
+    ],
+    "sample_count_after_startup": 10,
+    "max_kinetic_internal_ratio": 1.230112854390311,
+    "max_abs_energy_error_percent": 5.2,
+    "max_added_original_mass_ratio": 0.0,
+    "thresholds": {
+      "kinetic_internal_ratio": 0.05,
+      "abs_energy_error_percent": 5.0,
+      "added_original_mass_ratio": 0.01,
+      "ignored_startup_fraction": 0.05
+    },
+    "quasi_static_validated": false,
+    "qualification": "sampled screen only; core energies, hourglass/contact work and speed sensitivity still required"
+  },
+  "core_energy_screen": {
+    "part_id": 1,
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "core kinetic/internal energy ratio exceeds limit"
+    ],
+    "max_kinetic_internal_ratio": 0.37853542879993285,
+    "max_hourglass_internal_ratio": 0.0,
+    "last_recorded_eroded_elements": 252.0,
+    "quasi_static_validated": false,
+    "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+  },
+  "core_max_kinetic_internal_ratio_on_experimental_interval": 0.02559409488458325,
+  "boundary_audit": "opencourant_boundary_audit.json",
+  "metadata_execution_hash_recorded": false,
+  "provenance_note": "This observed run predates execution-time metadata hashing. Deck and output hashes were recorded; no metadata execution hash has been invented retroactively. New runner records it prospectively.",
+  "quasi_static_validated": false,
+  "calibrated": false,
+  "experimental_agreement": "not established; substantial stress overprediction and intermediate morphology difference",
+  "input_archive": "opencourant-thin-pinned-inputs.tar.gz",
+  "input_archive_sha256": "3a7941e99403a50e9cf9e0afa2bda5beb9ee985f552b94ea50f8f46abe64cb42",
+  "limitations": [
+    "Legacy core X pin is absent from the paper and removed by default in the current exporter; keep this baseline separate",
+    "Full-lattice AMS, loading-speed, mesh and contact response sensitivities remain unqualified",
+    "INIEVO compression damage and native characteristic length differ from the old CCX UMAT",
+    "Initial energy transients and erosion/orphan-node motion must not be hidden by plotting choices",
+    "Paper data are raster-digitized approximations, not raw experimental records"
+  ]
+}

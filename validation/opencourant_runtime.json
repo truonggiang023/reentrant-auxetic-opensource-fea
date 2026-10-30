@@ -1,0 +1,96 @@
+{
+  "backend": "OpenCourant",
+  "release": "latest-20261011",
+  "archive_url": "https://github.com/OpenCourant/OpenCourant/releases/download/latest-20261011/OpenCourant_linux64.zip",
+  "archive_sha256": "6cb419677ca36d73acb96218cc0cf5e4f7d50494d9c7812ba27935e3c0f8ec94",
+  "digest_source": "https://github.com/OpenCourant/OpenCourant/releases/expanded_assets/latest-20261011",
+  "binary_commit": "cb760c206e346eff12161a2268b134ef9d48a4ef",
+  "installed_root": "/workspace/opencourant/runtime/OpenCourant",
+  "smoke_directory": "/workspace/opencourant/smoke.H68Ow3",
+  "starter_status": "completed_with_warning",
+  "starter_errors": 0,
+  "starter_warning_ids": [
+    "100214"
+  ],
+  "starter_warning_explanation": "Official historical smoke input has unsupported /IOFLAG fields (100214); input check reports zero errors.",
+  "engine_normal_termination": true,
+  "smoke_checks": {
+    "CYCLE": {
+      "actual": 16750.0,
+      "reference": 16750.0,
+      "passed": true
+    },
+    "TIME": {
+      "actual": 0.01996,
+      "reference": 0.01996,
+      "passed": true
+    },
+    "TSTEP": {
+      "actual": 1.191e-06,
+      "reference": 1.191e-06,
+      "passed": true
+    },
+    "ELTID": {
+      "actual": 65.0,
+      "reference": 65.0,
+      "passed": true
+    },
+    "ERROR": {
+      "actual": -0.0,
+      "reference": -0.0,
+      "passed": true
+    },
+    "IENERGY": {
+      "actual": 0.004376,
+      "reference": 0.004376,
+      "passed": true
+    },
+    "KENERGYT": {
+      "actual": 0.00124,
+      "reference": 0.00124,
+      "passed": true
+    },
+    "KENERGYR": {
+      "actual": 0.0001197,
+      "reference": 0.0001197,
+      "passed": true
+    },
+    "EXTWORK": {
+      "actual": 0.005737,
+      "reference": 0.005737,
+      "passed": true
+    },
+    "MASERR": {
+      "actual": 0.0,
+      "reference": 0.0,
+      "passed": true
+    }
+  },
+  "completed_cycles": 16796,
+  "input_sha256": {
+    "TWISBEAM_0000.rad": "744aedcce64eb815a24b104640911c551cd61d95effc718c37b4736ac95e1c2a",
+    "TWISBEAM_0001.rad": "38b5e84fa8127dac953ec94cd10ccda3c3615f85bae619d0abdc77b58f838f3d",
+    "TWISBEAMD0B": "989a8c0e30b50fab199b83320a4ec8b601e29e75dc79f289b79bc064f3d15462",
+    "ref.extract": "4ebddccc58ba6efdb0cfcb0d24761c3745420aea2656721d316c27fc6f0c2b5a"
+  },
+  "qualification": "Runtime and official shell smoke regression only; not honeycomb fracture/contact validation.",
+  "binary_sha256": {
+    "starter_linux64_gf": "0bbea37273656b270bea53cf756b115bcd5d9a8875a3c41283922a3b927719d1",
+    "engine_linux64_gf": "54cc9fc2a7cea6f1215afb6da9109d368650ff1fa7985625cb111f47d7e92be4",
+    "th_to_csv_linux64_gf": "704d647331ae4befd329d18b991d644f2af930abd117c5d204c23925f75fc8db"
+  },
+  "setup_command": "bash scripts/setup_opencourant.sh",
+  "initialization": "source /workspace/opencourant/env.sh",
+  "launch_commands": [
+    "starter_linux64_gf -i model_0000.rad -np 1",
+    "engine_linux64_gf -i model_0001.rad"
+  ],
+  "runtime_requirements": {
+    "platform": "Linux x86-64",
+    "openmp_threads": 2,
+    "openmp_stacksize": "400m",
+    "persistent_services": false,
+    "license_required": false
+  },
+  "time_history_note": "Use supported binary TFILE/4 and shipped th_to_csv converter; ASCII TFILE/2 is not verified."
+}

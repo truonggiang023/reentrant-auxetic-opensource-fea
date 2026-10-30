@@ -1,0 +1,313 @@
+{
+  "status": "Corrected postprocessing of two existing completed native runs; calibration remains blocked",
+  "script": "scripts/reassess_total_contact.py",
+  "script_sha256": "793ce4d8bcd17bc16ab659b8ceb5ea7f657b0d0334faf3c37b0abd0a590b0ca1",
+  "force_quantity": "Compressive total Y force on core secondary = -d(FNY-FTY)/dt; interval-averaged N",
+  "force_convention_audit": {
+    "path": "validation/opencourant_total_contact_force_audit.json",
+    "sha256": "7d8c9fe9294aa19862275d158296c464200878442066c2ddb82e1dc98856c0ec"
+  },
+  "reference_csv": "validation/paper_reference/dong2019_fig12_thin.csv",
+  "reference_sha256": "73838e72f4d88aa67250e1d2d77e898e09bbe9e3814a1d350850a307da2fd70f",
+  "cases": [
+    {
+      "case": "baseline_ams_1e-6",
+      "duration_seconds": 0.01,
+      "ams_requested_time_step_seconds": 1e-06,
+      "assessment": "opencourant-thin-total-force-assessment.json",
+      "assessment_sha256": "b0aebfb1776404a02b10718ae3e2c3111983aafa65f88b6b87f65991556b4447",
+      "metadata_path": "results/opencourant/thin_free_x_ams1e6.radioss.json",
+      "metadata_sha256": "92db404b91ac71d52211cb11f782235d5e693a43eff86f52df942863b849f30e",
+      "raw_history_path": "results/opencourant/thin_free_x_ams1e6T01.csv",
+      "raw_history_sha256": "ad134d3499c48ad1a156ae04bd98f6711d5056694c60b4a0958f3c417ee0dca6",
+      "execution_record_path": "results/opencourant/thin_free_x_ams1e6.run.json",
+      "execution_record_sha256": "e6a4942222c175a1d0b2e4789497df6b4ee9a1b51f805b275516b54ddf245d65",
+      "native_input_sha256": {
+        "thin_free_x_ams1e6_0000.rad": "3e2d6fc4d7ac3909046db1d597cf5e26b8d0217723a7956afc8775ab7c1a82e9",
+        "thin_free_x_ams1e6_0001.rad": "f0bd0b4c58068a793f6421ed9b98729eb2676dc4f1a19ff02fd1cc50a33bbc46"
+      },
+      "hardening_source_sha256": "d8786cd6b608ed115c4539577b423ef6bee059cb3f1be358291d51c81fc6955e",
+      "force_mapping": {
+        "csv_column": "Contact force and energy                 3 Contact 3                                var 64",
+        "compressive_sign": -1,
+        "area_mm2": 1900.0,
+        "channel_kind": "impulse",
+        "sampling": "interval average",
+        "verification": "caller-selected verified channel and physical quantity",
+        "tangential_csv_column": "Contact force and energy                 3 Contact 3                                var 67",
+        "component_operation": "FN-FT",
+        "contact_force_quantity": "total_force_on_secondary",
+        "convention": "TYPE25 IMS=2 secondary force; subtract FT from FN before sign and impulse differentiation"
+      },
+      "total_force_curve_objective": {
+        "interval_requested": [
+          0.03,
+          0.64
+        ],
+        "interval_scored": [
+          0.03,
+          0.64
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 0.6761272336155117,
+        "overlap_rmse_by_test_MPa": [
+          0.6628105946213427,
+          0.6891866131395992
+        ],
+        "overlap_bias_MPa": 0.6452969456992368,
+        "experimental_half_range_rms_MPa": 0.022311219528314233,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+      },
+      "historical_normal_only_objective": {
+        "interval_requested": [
+          0.03,
+          0.64
+        ],
+        "interval_scored": [
+          0.03,
+          0.64
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 0.6073619417576789,
+        "overlap_rmse_by_test_MPa": [
+          0.5940425885856918,
+          0.6203954057999838
+        ],
+        "overlap_bias_MPa": 0.5857736896829642,
+        "experimental_half_range_rms_MPa": 0.022311219528314233,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+      },
+      "normal_only_omission_rms_MPa": 0.0849024973152117,
+      "stress_samples": {
+        "0.12": {
+          "total_contact_MPa": 1.390065043523866,
+          "legacy_normal_only_MPa": 1.1847781741753487,
+          "paper_experiment_MPa": [
+            0.28122807,
+            0.259122807
+          ]
+        },
+        "0.35": {
+          "total_contact_MPa": 0.7762566338086265,
+          "legacy_normal_only_MPa": 0.7775462982557969,
+          "paper_experiment_MPa": [
+            0.337719298,
+            0.230877193
+          ]
+        },
+        "0.64": {
+          "total_contact_MPa": 1.430562532861872,
+          "legacy_normal_only_MPa": 1.367487000775251,
+          "paper_experiment_MPa": [
+            0.6125614038000003,
+            0.6440000039726302
+          ]
+        }
+      },
+      "last_force_strain": 0.6499976629451499,
+      "last_force_nominal_stress_MPa": 1.2910947368420382,
+      "observed_history_strain": 0.6499984633064,
+      "eroded_elements": 254,
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "core kinetic/internal energy ratio exceeds limit"
+        ],
+        "max_kinetic_internal_ratio": 0.608633243876405,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 254.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "global_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "global kinetic/internal energy ratio exceeds limit"
+        ],
+        "samples_after_startup": 380,
+        "last_observed_time": 0.009976,
+        "max_kinetic_internal_ratio": 4.7963362943572445,
+        "max_hourglass_internal_ratio": 0.0,
+        "max_added_original_mass_ratio": 2.0613032773102465e-13,
+        "thresholds": {
+          "kinetic_internal": 0.05,
+          "hourglass_internal": 0.05,
+          "added_original_mass": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+      },
+      "quasi_static_validated": false,
+      "eligible_for_calibration_selection": false
+    },
+    {
+      "case": "half_ams_5e-7",
+      "duration_seconds": 0.01,
+      "ams_requested_time_step_seconds": 5e-07,
+      "assessment": "opencourant-thin-total-force-half-ams-assessment.json",
+      "assessment_sha256": "664bc6bb0bb0dca076b6a8b799d574c837867e580c0532e8757419b065653f70",
+      "metadata_path": "results/opencourant/thin_free_x_ams5e7.radioss.json",
+      "metadata_sha256": "47e446ae09fc2d03631f406e819cc1db3814ea25349c5178e4f082c9c2fc786d",
+      "raw_history_path": "results/opencourant/thin_free_x_ams5e7T01.csv",
+      "raw_history_sha256": "10a6110c4db3c8ed654584711f87caf619f862cff6010096c0385f74809f452d",
+      "execution_record_path": "results/opencourant/thin_free_x_ams5e7.run.json",
+      "execution_record_sha256": "2ab706b4f5891e60572ea28addf94b722f7695c6240041c2267bbc6947608792",
+      "native_input_sha256": {
+        "thin_free_x_ams5e7_0000.rad": "f43eb8967d6ab6820bc899b430d7ddc5529cef02ecf5bf4b7268fbf178c9b568",
+        "thin_free_x_ams5e7_0001.rad": "cbac85aced80b89767afd74527ee4d6d7eaf920469a81f7215aa6abb7c39148a"
+      },
+      "hardening_source_sha256": "d8786cd6b608ed115c4539577b423ef6bee059cb3f1be358291d51c81fc6955e",
+      "force_mapping": {
+        "csv_column": "Contact force and energy                 3 Contact 3                                var 64",
+        "compressive_sign": -1,
+        "area_mm2": 1900.0,
+        "channel_kind": "impulse",
+        "sampling": "interval average",
+        "verification": "caller-selected verified channel and physical quantity",
+        "tangential_csv_column": "Contact force and energy                 3 Contact 3                                var 67",
+        "component_operation": "FN-FT",
+        "contact_force_quantity": "total_force_on_secondary",
+        "convention": "TYPE25 IMS=2 secondary force; subtract FT from FN before sign and impulse differentiation"
+      },
+      "total_force_curve_objective": {
+        "interval_requested": [
+          0.03,
+          0.64
+        ],
+        "interval_scored": [
+          0.03,
+          0.64
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 0.6415172678404418,
+        "overlap_rmse_by_test_MPa": [
+          0.6280422247868459,
+          0.6547150324833846
+        ],
+        "overlap_bias_MPa": 0.6049471430405717,
+        "experimental_half_range_rms_MPa": 0.022311219528314233,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+      },
+      "historical_normal_only_objective": {
+        "interval_requested": [
+          0.03,
+          0.64
+        ],
+        "interval_scored": [
+          0.03,
+          0.64
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 0.5674069953251961,
+        "overlap_rmse_by_test_MPa": [
+          0.5537334775278038,
+          0.580758669804334
+        ],
+        "overlap_bias_MPa": 0.5421520130097687,
+        "experimental_half_range_rms_MPa": 0.022311219528314233,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+      },
+      "normal_only_omission_rms_MPa": 0.08794561704292853,
+      "stress_samples": {
+        "0.12": {
+          "total_contact_MPa": 1.3821462188396036,
+          "legacy_normal_only_MPa": 1.1736519108301753,
+          "paper_experiment_MPa": [
+            0.28122807,
+            0.259122807
+          ]
+        },
+        "0.35": {
+          "total_contact_MPa": 0.7074882329196119,
+          "legacy_normal_only_MPa": 0.6992404100800064,
+          "paper_experiment_MPa": [
+            0.337719298,
+            0.230877193
+          ]
+        },
+        "0.64": {
+          "total_contact_MPa": 0.858590036999101,
+          "legacy_normal_only_MPa": 0.8100894359150327,
+          "paper_experiment_MPa": [
+            0.6125614038000003,
+            0.6440000039726302
+          ]
+        }
+      },
+      "last_force_strain": 0.6499976309307,
+      "last_force_nominal_stress_MPa": 0.8685684210526415,
+      "observed_history_strain": 0.64999843129195,
+      "eroded_elements": 243,
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "core kinetic/internal energy ratio exceeds limit"
+        ],
+        "max_kinetic_internal_ratio": 0.42280283513493583,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 243.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "global_energy_screen": {
+        "sampled_energy_screen_passed": false,
+        "reasons": [
+          "global kinetic/internal energy ratio exceeds limit"
+        ],
+        "samples_after_startup": 380,
+        "last_observed_time": 0.0099755,
+        "max_kinetic_internal_ratio": 4.427444102488042,
+        "max_hourglass_internal_ratio": 0.0,
+        "max_added_original_mass_ratio": 2.0613032773102465e-13,
+        "thresholds": {
+          "kinetic_internal": 0.05,
+          "hourglass_internal": 0.05,
+          "added_original_mass": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+      },
+      "quasi_static_validated": false,
+      "eligible_for_calibration_selection": false
+    }
+  ],
+  "ams_sensitivity": {
+    "strain_interval": [
+      0.03,
+      0.64
+    ],
+    "samples": 500,
+    "total_force_rmse_difference_MPa": 0.146169194978269,
+    "relative_total_force_curve_L2_difference": 0.14974411949497174,
+    "nominal_work_per_volume_MPa_baseline": 0.5812531703982503,
+    "nominal_work_per_volume_MPa_half_ams": 0.5573341124211708,
+    "relative_work_difference_half_minus_baseline": -0.041150843032290316,
+    "quasi_static_validated": false,
+    "timestep_convergence_established": false,
+    "qualification": "Two actual AMS steps only; no extrapolation, mesh convergence or quasi-static proof."
+  },
+  "calibrated": false,
+  "experimental_agreement": false,
+  "eligible_for_calibration_selection": false,
+  "limitations": [
+    "Thin-wall results are diagnostics/holdout, not training-data candidate selection.",
+    "Native core/platen all-face geometry and AMS dynamics remain unqualified.",
+    "Historical normal-only plots/assessments are preserved and superseded for total contact force.",
+    "These existing runs retain their original higher-precision hardening inputs; no rounded user table is retrofitted.",
+    "CSV finite differences yield interval-averaged forces; T01 REALR4/default-converter precision limits pointwise detail.",
+    "Paper experiments are digitized raster lines, not raw laboratory measurements.",
+    "No missing fracture-locus coordinates are inferred or calibrated by correcting force bookkeeping."
+  ]
+}

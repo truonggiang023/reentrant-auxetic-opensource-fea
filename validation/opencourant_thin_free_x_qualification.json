@@ -1,0 +1,137 @@
+{
+  "case": "free-X baseline, current default boundary; uncalibrated",
+  "backend": "OpenCourant latest-20261011",
+  "wall_mm": 0.3,
+  "engine_completed": true,
+  "engine_errors": [],
+  "cycles": 10002,
+  "elapsed_wall_seconds": 934.93,
+  "duration_seconds": 0.01,
+  "ams_time_step_seconds": 1e-06,
+  "core_nodes": 21870,
+  "core_elements": 7392,
+  "eroded_core_elements": 254,
+  "target_strain": 0.65,
+  "last_observed_history_strain": 0.6499984633064,
+  "last_recorded_force_strain": 0.6499976629451499,
+  "nominal_area_mm2": 1900,
+  "curve_diagnostic": {
+    "interval_requested": [
+      0.03,
+      0.64
+    ],
+    "interval_scored": [
+      0.03,
+      0.64
+    ],
+    "coverage_fraction": 1.0,
+    "full_interval_covered": true,
+    "overlap_rmse_MPa": 0.6073619417576789,
+    "overlap_rmse_by_test_MPa": [
+      0.5940425885856918,
+      0.6203954057999838
+    ],
+    "overlap_bias_MPa": 0.5857736896829642,
+    "experimental_half_range_rms_MPa": 0.022311219528314233,
+    "samples_per_test": 300,
+    "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+  },
+  "stress_samples_MPa": {
+    "0.12": 1.1847781741753487,
+    "0.35": 0.7775462982557969,
+    "last_recorded_force": 1.2911578947368028
+  },
+  "global_engine_print_screen": {
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "sampled global energy error exceeds limit",
+      "sampled kinetic/internal energy ratio exceeds limit"
+    ],
+    "sample_count_after_startup": 10,
+    "max_kinetic_internal_ratio": 1.5559380378657488,
+    "max_abs_energy_error_percent": 5.8,
+    "max_added_original_mass_ratio": 0.0,
+    "thresholds": {
+      "kinetic_internal_ratio": 0.05,
+      "abs_energy_error_percent": 5.0,
+      "added_original_mass_ratio": 0.01,
+      "ignored_startup_fraction": 0.05
+    },
+    "quasi_static_validated": false,
+    "qualification": "sampled screen only; core energies, hourglass/contact work and speed sensitivity still required"
+  },
+  "global_dense_energy_screen": {
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "global kinetic/internal energy ratio exceeds limit"
+    ],
+    "samples_after_startup": 380,
+    "last_observed_time": 0.009976,
+    "max_kinetic_internal_ratio": 4.7963362943572445,
+    "max_hourglass_internal_ratio": 0.0,
+    "max_added_original_mass_ratio": 2.0613032773102465e-13,
+    "thresholds": {
+      "kinetic_internal": 0.05,
+      "hourglass_internal": 0.05,
+      "added_original_mass": 0.01,
+      "ignored_startup_fraction": 0.05
+    },
+    "quasi_static_validated": false,
+    "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+  },
+  "core_energy_screen": {
+    "part_id": 1,
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "core kinetic/internal energy ratio exceeds limit"
+    ],
+    "max_kinetic_internal_ratio": 0.608633243876405,
+    "max_hourglass_internal_ratio": 0.0,
+    "last_recorded_eroded_elements": 254.0,
+    "quasi_static_validated": false,
+    "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+  },
+  "core_energy_by_strain_interval": {
+    "0.01..0.12": {
+      "samples": 77,
+      "max_core_kinetic_internal_ratio": 0.06593686696255832
+    },
+    "0.12..0.35": {
+      "samples": 82,
+      "max_core_kinetic_internal_ratio": 0.01564879926113611
+    },
+    "0.35..0.65": {
+      "samples": 191,
+      "max_core_kinetic_internal_ratio": 0.008003527550525927
+    }
+  },
+  "core_x_anchor": {
+    "enabled": false,
+    "node": null,
+    "position_mm": null,
+    "qualification": "optional legacy boundary sensitivity; the paper does not specify an interior X pin"
+  },
+  "metadata_execution_hash_recorded": true,
+  "comparison_to_legacy_pin_on_common_strain": {
+    "strain_interval": [
+      0.03,
+      0.64
+    ],
+    "samples": 500,
+    "rmse_stress_difference_MPa": 0.10459362689629091,
+    "relative_curve_L2_difference": 0.11996751057913362,
+    "qualification": "boundary sensitivity only; discrepancy to experiments remains substantial"
+  },
+  "quasi_static_validated": false,
+  "calibrated": false,
+  "experimental_agreement": "not established; substantial stress overprediction and morphology difference",
+  "input_archive": "opencourant-thin-free-x-inputs.tar.gz",
+  "input_archive_sha256": "5c85034a893c0bab619efb10b663e1b9c7c593166ce0fb3299f641ab4e0ff79c",
+  "limitations": [
+    "Full-lattice AMS, loading-speed, mesh and contact response sensitivities are not qualified",
+    "Low core kinetic energy over selected strain windows does not establish work balance or quasi-static convergence",
+    "INIEVO compression damage and native characteristic length differ from the old CCX UMAT",
+    "Paper data are raster-digitized approximations, not raw experimental records",
+    "The user-supplied tensile flow table is audited separately; it does not locate the missing fracture-locus points"
+  ]
+}

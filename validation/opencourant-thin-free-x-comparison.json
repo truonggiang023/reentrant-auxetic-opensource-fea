@@ -1,0 +1,27 @@
+{
+  "assessment": "results/opencourant/thin_free_x_ams1e6.assessment.json",
+  "assessment_sha256": "9c3f4e89c49393044ec26831b563dd912f0de4cbcaa8eadd046856ab324483f0",
+  "reference_csv": "/workspace/reentrant-auxetic-opensource-fea/validation/paper_reference/dong2019_fig12_thin.csv",
+  "reference_sha256": "73838e72f4d88aa67250e1d2d77e898e09bbe9e3814a1d350850a307da2fd70f",
+  "wall_mm": 0.3,
+  "wall_thickness_evidence": "assessment.config_wall_mm",
+  "current_run_completed": true,
+  "backend": "OpenCourant",
+  "case_label": "Free-X baseline; uncalibrated; AMS and quasi-static unqualified",
+  "quasi_static_validated": false,
+  "accepted_reaction_samples": 399,
+  "recorded_strain_range": [
+    8.003612500000001e-07,
+    0.6499976629451499
+  ],
+  "last_converged_nominal_strain": null,
+  "stress_area_convention_mm2": 1900,
+  "assessment_qualification": "solver evidence only; independent material, contact and quasi-static qualification required",
+  "experimental_agreement": "not established",
+  "extrapolated": false,
+  "limitations": [
+    "Published reference is digitized, not raw experimental data.",
+    "No solver data is manufactured after the last accepted recorded frame.",
+    "Completion and calibration require independent validation beyond this comparison."
+  ]
+}

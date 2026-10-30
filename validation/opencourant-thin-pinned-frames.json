@@ -1,0 +1,85 @@
+{
+  "metadata": "results/opencourant/thin_native_clamped_ams1e6.radioss.json",
+  "metadata_sha256": "96855e30425e037625248afb4d1f235452ea2d5eab5acfd7d6f8f2167f22d749",
+  "converter": "/workspace/opencourant/runtime/OpenCourant/exec/anim_to_vtk_linux64_gf",
+  "converter_sha256": "9c97eee2991f6949d16477831cc684165f53b790f498cbef51b8e8fd67bf28ae",
+  "method": "Official ASCII VTK conversion; deformed POINTS rendered directly; EROSION_STATUS==1 required; front face selected from initial POINTS-Displacement Z.",
+  "strain_source": "Piecewise-linear interpolation of exact imposed displacement_fraction_samples at actual VTK TIME, multiplied by target_nominal_strain; no mesh interpolation.",
+  "frames": [
+    {
+      "target_strain": 0.12,
+      "available": true,
+      "animation": "results/opencourant/thin_native_clamped_ams1e6A033",
+      "animation_sha256": "84d540f3a003a69d78d0477edbbf6087b0fad5e1ec9cb36c40e53b93bbc957f7",
+      "actual_strain": 0.12384206848000001,
+      "actual_time_seconds": 0.0032,
+      "strain_error": 0.003842068480000016,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 2,
+      "active_core_front_faces": 7390,
+      "active_max_element_damage": 0.0,
+      "projected_geometry": {
+        "active_front_faces": 7390,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 0,
+        "max_overlap_mm2": 0.0,
+        "sum_pair_overlap_mm2": 0.0,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    },
+    {
+      "target_strain": 0.35,
+      "available": true,
+      "animation": "results/opencourant/thin_native_clamped_ams1e6A053",
+      "animation_sha256": "bbbad12f5099375b8ffd322e970496e7c30d8af38ee499878090c3bad8f47a97",
+      "actual_strain": 0.34934901247999994,
+      "actual_time_seconds": 0.0052,
+      "strain_error": -0.0006509875200000348,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 121,
+      "active_core_front_faces": 7271,
+      "active_max_element_damage": 0.228768,
+      "projected_geometry": {
+        "active_front_faces": 7271,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 139,
+        "max_overlap_mm2": 0.0017272189342922273,
+        "sum_pair_overlap_mm2": 0.0314623084698352,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    },
+    {
+      "target_strain": 0.65,
+      "available": true,
+      "animation": "results/opencourant/thin_native_clamped_ams1e6A100",
+      "animation_sha256": "5d8476d4f8c506e78e1c494524cf97091a12af97c19c0658a857a48a4fa26d1c",
+      "actual_strain": 0.6499936611388999,
+      "actual_time_seconds": 0.009901,
+      "strain_error": -6.338861100130266e-06,
+      "total_core_cells": 7392,
+      "eroded_core_cells": 252,
+      "active_core_front_faces": 7140,
+      "active_max_element_damage": 0.186695,
+      "projected_geometry": {
+        "active_front_faces": 7140,
+        "invalid_projected_element_ids": [],
+        "overlap_pairs": 438,
+        "max_overlap_mm2": 0.0026361350312881383,
+        "sum_pair_overlap_mm2": 0.08397587978064547,
+        "qualification": "front projection of active cells only; does not establish complete 3-D contact validity"
+      }
+    }
+  ],
+  "conversion_failures": [
+    "Frame timestamp falls outside imposed loading history"
+  ],
+  "experimental_mode_agreement": "not established",
+  "deformation_amplification": 1,
+  "eroded_elements_rendered": false,
+  "mesh_interpolation": false,
+  "paper_morphology_reference": {
+    "pdf_sha256": "9af42ee348be93b564b9dcc1e57a6a4c70bc8a96756b03ecc0647309571226de",
+    "source": "Dong et al. (2019), Fig. 11(b), PDF page 9",
+    "method": "Crops of original embedded raster at verified printed strain rows; separate actual current meshes; no paper image copied into tracked repository files"
+  }
+}

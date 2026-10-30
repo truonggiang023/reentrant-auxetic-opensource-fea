@@ -1,0 +1,311 @@
+{
+  "status": "Completed bound RP control comparison; calibration not established",
+  "calibrated": false,
+  "quasi_static_validated": false,
+  "qualification": "Use curve and energy diagnostics together; passing solver/energy screens is not full quasi-static or fracture qualification.",
+  "comparison_script_sha256": "cf6c63ea8d1b6e1229689e17d7a4b674becc692544932ba42e6d77f009d6893b",
+  "strain_measure": "Observed relative top/bottom RP DY divided by actual core height",
+  "stress_measure": "Signed interval reaction from one time derivative of REACY, divided by declared nominal area",
+  "paper_references": {
+    "thick": {
+      "path": "/home/runner/work/reentrant-auxetic-opensource-fea/reentrant-auxetic-opensource-fea/validation/paper_reference/dong2019_fig12_thick.csv",
+      "sha256": "a0541e9bc9bfb87ed98e0dd4b578d9ac92dc3c6583c53a911e486815c9c32551",
+      "replicates": [
+        {
+          "observed_strain_range": [
+            0.0348387097,
+            0.48516129
+          ],
+          "stress_at_012": {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 5.625
+          },
+          "early_slope": {
+            "interval_strain": [
+              0.005,
+              0.02
+            ],
+            "available": false,
+            "reason": "Observed interval not covered; no extrapolation"
+          },
+          "peak_through_008": {
+            "interval_strain": [
+              0.0,
+              0.08
+            ],
+            "available": true,
+            "whole_interval_covered": false,
+            "definition": "Largest observed stress sample through 0.08; not necessarily a local fracture peak",
+            "strain": 0.0574193548,
+            "stress_MPa": 13.4895833,
+            "at_sampled_window_boundary": false
+          }
+        },
+        {
+          "observed_strain_range": [
+            0.00451612903,
+            0.497419355
+          ],
+          "stress_at_012": {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 4.34027778
+          },
+          "early_slope": {
+            "interval_strain": [
+              0.005,
+              0.02
+            ],
+            "available": true,
+            "slope_MPa": 451.7948879274803,
+            "intercept_MPa": -2.497231116398468
+          },
+          "peak_through_008": {
+            "interval_strain": [
+              0.0,
+              0.08
+            ],
+            "available": true,
+            "whole_interval_covered": true,
+            "definition": "Largest observed stress sample through 0.08; not necessarily a local fracture peak",
+            "strain": 0.0593548387,
+            "stress_MPa": 13.4375,
+            "at_sampled_window_boundary": false
+          }
+        }
+      ],
+      "qualification": "Digitized experimental traces, not raw tests; paper FE trace is not an experimental fitting target"
+    },
+    "thin": {
+      "path": "/home/runner/work/reentrant-auxetic-opensource-fea/reentrant-auxetic-opensource-fea/validation/paper_reference/dong2019_fig12_thin.csv",
+      "sha256": "73838e72f4d88aa67250e1d2d77e898e09bbe9e3814a1d350850a307da2fd70f",
+      "replicates": [
+        {
+          "observed_strain_range": [
+            0.0260416667,
+            0.777083333
+          ],
+          "stress_at_012": {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 0.28122807
+          },
+          "early_slope": {
+            "interval_strain": [
+              0.005,
+              0.02
+            ],
+            "available": false,
+            "reason": "Observed interval not covered; no extrapolation"
+          },
+          "peak_through_008": {
+            "interval_strain": [
+              0.0,
+              0.08
+            ],
+            "available": true,
+            "whole_interval_covered": false,
+            "definition": "Largest observed stress sample through 0.08; not necessarily a local fracture peak",
+            "strain": 0.0770833333,
+            "stress_MPa": 0.314385965,
+            "at_sampled_window_boundary": false
+          }
+        },
+        {
+          "observed_strain_range": [
+            0.00416666667,
+            0.780208333
+          ],
+          "stress_at_012": {
+            "strain": 0.12,
+            "available": true,
+            "stress_MPa": 0.259122807
+          },
+          "early_slope": {
+            "interval_strain": [
+              0.005,
+              0.02
+            ],
+            "available": true,
+            "slope_MPa": 7.547990599724541,
+            "intercept_MPa": 0.004773911103473519
+          },
+          "peak_through_008": {
+            "interval_strain": [
+              0.0,
+              0.08
+            ],
+            "available": true,
+            "whole_interval_covered": true,
+            "definition": "Largest observed stress sample through 0.08; not necessarily a local fracture peak",
+            "strain": 0.0791666667,
+            "stress_MPa": 0.284912281,
+            "at_sampled_window_boundary": true
+          }
+        }
+      ],
+      "qualification": "Digitized experimental traces, not raw tests; paper FE trace is not an experimental fitting target"
+    }
+  },
+  "cases": [
+    {
+      "label": "thick_j2_full",
+      "prefix": "results/thick-trial/thick_j2_full",
+      "panel": "thick",
+      "wall_mm": 1.0,
+      "model": "J2 without damage",
+      "damage_enabled": false,
+      "fracture_locus": null,
+      "duration_seconds": 0.04227430555555556,
+      "height_mm": 48.7,
+      "reference_area_mm2": 1900,
+      "ams": {
+        "enabled": true,
+        "scope": "core",
+        "selected_part_ids": [
+          1
+        ],
+        "part_group_id": 50,
+        "requested_time_step_seconds": 1e-06,
+        "time_step_scale_factor": 0.67,
+        "pcg_relative_tolerance": 0.0001,
+        "pcg_maximum_iterations": 1000,
+        "timestep_sensitivity_required": true,
+        "modifies_inertial_operator": true
+      },
+      "observed_strain_coverage": [
+        6.174930184804928e-07,
+        0.4999981519507186
+      ],
+      "last_observed_nominal_strain": 0.49999876796714576,
+      "target_nominal_strain": 0.5,
+      "scope": "Only the observed control strain range; no missing collapse response inferred",
+      "last_force_sample": {
+        "time": 0.042116,
+        "strain": 0.4999981519507186,
+        "reaction_y_N": -100773.58490566745,
+        "bottom_reaction_y_N": 100773.58490566745,
+        "nominal_stress_MPa": 53.03872889771971,
+        "top_bottom_reaction_sum_y_N": 0.0
+      },
+      "stress_at_exact_012": {
+        "strain": 0.12,
+        "available": true,
+        "convention": "No extrapolation from the last interval sample to nominal target",
+        "stress_MPa": 20.150993496736735
+      },
+      "early_slope": {
+        "interval_strain": [
+          0.005,
+          0.02
+        ],
+        "available": true,
+        "slope_MPa": 535.3063600321642,
+        "intercept_MPa": 4.068290789413607
+      },
+      "peak_through_008": {
+        "interval_strain": [
+          0.0,
+          0.08
+        ],
+        "available": true,
+        "whole_interval_covered": true,
+        "definition": "Largest observed stress sample through 0.08; not necessarily a local fracture peak",
+        "strain": 0.07749166324435318,
+        "stress_MPa": 20.939849624060212,
+        "at_sampled_window_boundary": false
+      },
+      "paper_discrepancy": {
+        "interval_requested": [
+          0.04,
+          0.119
+        ],
+        "interval_scored": [
+          0.04,
+          0.119
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 14.79968188961038,
+        "overlap_rmse_by_test_MPa": [
+          15.208176209117559,
+          14.379587770856075
+        ],
+        "overlap_bias_MPa": 13.99419010985217,
+        "experimental_half_range_rms_MPa": 1.2886775699883872,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration",
+        "reference_rms_MPa": 7.52535458610911,
+        "relative_RMSE_to_reference_RMS": 1.9666424645197176,
+        "normalization": "Investigator diagnostic: pooled residual RMS divided by pooled experimental stress RMS on the same equal-strain overlap grid; not a paper acceptance criterion"
+      },
+      "global_energy_screen": {
+        "sampled_energy_screen_passed": true,
+        "reasons": [],
+        "samples_after_startup": 380,
+        "last_observed_time": 0.042169,
+        "max_kinetic_internal_ratio": 0.005929430291178211,
+        "max_hourglass_internal_ratio": 0.0,
+        "max_added_original_mass_ratio": 1.9638836917999107e-13,
+        "thresholds": {
+          "kinetic_internal": 0.05,
+          "hourglass_internal": 0.05,
+          "added_original_mass": 0.01,
+          "ignored_startup_fraction": 0.05
+        },
+        "quasi_static_validated": false,
+        "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+      },
+      "core_energy_screen": {
+        "part_id": 1,
+        "sampled_energy_screen_passed": true,
+        "reasons": [],
+        "max_kinetic_internal_ratio": 0.001869255981995104,
+        "max_hourglass_internal_ratio": 0.0,
+        "last_recorded_eroded_elements": 0.0,
+        "quasi_static_validated": false,
+        "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+      },
+      "core_elements": 6818,
+      "core_nodes": 19530,
+      "source_config_sha256": "44f7dafe624dc8d6c1f8db9d2c739535ba31e59d41831b20d7d5a316532eecf7",
+      "hardening_source_sha256": "d8786cd6b608ed115c4539577b423ef6bee059cb3f1be358291d51c81fc6955e",
+      "platen_contact_surface": "inner_y",
+      "negative_signed_stress_samples": 0,
+      "input_sha256": {
+        "thick_j2_full_0000.rad": "4a9df684ecfaed3baf9760dfcac61f2b9cca8080ee8515fe9d5575e87785169a",
+        "thick_j2_full_0001.rad": "8640a2cd10b4fd285884a34eb949d40b45e0889ac2367e58a31e333791586e06"
+      },
+      "metadata_sha256": "574a3cf7b54d812c25a1c444567fabee961876a335ab583be044cdc13c563814",
+      "history_sha256": "13197fe3a4f56ef2c45015ff5e9bf2a68a961de8134209a14934290c03fea2a0",
+      "execution_receipt_sha256": "4002cc6ea1c6cc2d6581bb0e5816e0efad6e5dce6922850a7cb0b3fa7afdbfe2",
+      "calibrated": false,
+      "full_curve_paper_discrepancy": {
+        "interval_requested": [
+          0.04,
+          0.45
+        ],
+        "interval_scored": [
+          0.04,
+          0.45
+        ],
+        "coverage_fraction": 1.0,
+        "full_interval_covered": true,
+        "overlap_rmse_MPa": 18.06843060415284,
+        "overlap_rmse_by_test_MPa": [
+          17.614428532880964,
+          18.511301317146856
+        ],
+        "overlap_bias_MPa": 17.220101258153417,
+        "experimental_half_range_rms_MPa": 1.3895284010731306,
+        "samples_per_test": 300,
+        "objective_scope": "shared strain interval only; incomplete curves cannot win calibration"
+      }
+    }
+  ],
+  "paper_reference_provenance_sha256": "73bf9b59455bea62812836bbac6c328c34e9813fcb7586cf07365ea8de21d89d",
+  "source_commit": "d9b0030c560efc526193aece07c4248feb4fb374",
+  "protocol": "Accelerated mean crosshead speed 576 mm/s; not physical 2 mm/min.",
+  "workflow_run_id": "41038613087"
+}

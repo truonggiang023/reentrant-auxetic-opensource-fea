@@ -1,4 +1,4 @@
-"""Dong et al. 2019 thin-wall replication candidate: CalculiX is the ONLY FE solver.
+"""CalculiX deck writer for the Dong et al. 2019 thin-wall research candidate.
 
 Creates real, separately meshed steel platens and sliding contact instead of
 bonding or clamping the honeycomb end nodes. Optional wall contact uses

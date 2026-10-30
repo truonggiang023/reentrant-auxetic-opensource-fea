@@ -1,0 +1,141 @@
+{
+  "status": "single conforming refinement sensitivity check; not a mesh-convergence proof or fracture calibration",
+  "script": "scripts/probe_elastic_mesh_refinement.py",
+  "script_sha256": "c54a1aa284700d0ef80c8fe59021625f65057243384cc297e7b6c62825d60f04",
+  "solver_driver_sha256": "2852035a6fe5f8cd5f53865282a67f21fe3d820a7a6461a2829c38c092fd93cf",
+  "coarse_mesh": "/workspace/fea-research/matched-elastic-lattice-final/mesh_and_bcs.json",
+  "coarse_mesh_sha256": "f95ea4c46a45721905c8a9244daed2b930ebe09dac17503b069ab2708307bfbe",
+  "coarse_report": "/workspace/reentrant-auxetic-opensource-fea/validation/matched_elastic_ccx_audit.json",
+  "coarse_report_sha256": "1632b8be1f2f4eeda79b80eb9df80d98f328dbb892f44fcaaf865f7a4b8398be",
+  "refined_mesh": "/workspace/fea-research/matched-elastic-refined/mesh_and_bcs.json",
+  "refined_mesh_sha256": "0a6f1ecda68e8850ceb84500244464f15b06a4e0db71f5f21edec3c88600d85d",
+  "refinement": {
+    "method": "Shared edge midpoints and bilinear face centers; four children per old quad; no depth refinement",
+    "parent_element_count": 7392,
+    "original_node_count": 21870,
+    "original_nodes_preserved_exactly": true,
+    "geometry_before": {
+      "node_count": 21870,
+      "element_count": 7392,
+      "original_z_planes_mm": [
+        0.0,
+        25.0
+      ],
+      "summed_plan_area_mm2": 407.6455021557411,
+      "summed_extruded_volume_mm3": 10191.137553893528,
+      "minimum_corner_jacobian_mm2": 0.00566695783230002,
+      "maximum_corner_jacobian_ratio": 8.51460504807322,
+      "all_corner_jacobians_positive": true,
+      "dimensions_mm": {
+        "width": 76.497146699265,
+        "height": 48.0,
+        "depth": 25.0
+      }
+    },
+    "geometry_after": {
+      "node_count": 73406,
+      "element_count": 29568,
+      "original_z_planes_mm": [
+        0.0,
+        25.0
+      ],
+      "summed_plan_area_mm2": 407.64550215573604,
+      "summed_extruded_volume_mm3": 10191.1375538934,
+      "minimum_corner_jacobian_mm2": 0.0014167394580749883,
+      "maximum_corner_jacobian_ratio": 4.757302524036694,
+      "all_corner_jacobians_positive": true,
+      "dimensions_mm": {
+        "width": 76.497146699265,
+        "height": 48.0,
+        "depth": 25.0
+      }
+    }
+  },
+  "node_counts": {
+    "top": 650,
+    "bottom": 650
+  },
+  "unchanged_x_pin": 1293,
+  "material": {
+    "young_MPa": 69000.0,
+    "poisson": 0.3
+  },
+  "prescribed_top_y_mm": -0.01,
+  "cases": [
+    {
+      "element_type": "C3D8R",
+      "exit_code": 0,
+      "elapsed_wall_seconds": 4.323222850998718,
+      "input_sha256": "cc683817d231fcbf1ddf4ebacb9782574bbd91928cd0c494d19195f9b8d63782",
+      "solver_reported_version": "2.20",
+      "solver_warning_count": 0,
+      "usable": true,
+      "top_total_reaction_N": [
+        3.388458e-12,
+        -5.433955,
+        6.522927e-11
+      ],
+      "bottom_total_reaction_N": [
+        1.077766e-10,
+        5.433955,
+        1.952077e-12
+      ],
+      "y_force_balance_N": 0.0,
+      "stiffness_N_per_mm": 543.3955,
+      "nominal_effective_modulus_MPa": 13.727886315789473,
+      "reaction_work_Nmm": 0.027169775,
+      "solver_internal_energy_Nmm": 0.02660568,
+      "relative_reported_energy_minus_work": -0.020761857615677736,
+      "solver_total_volume_mm3": 10191.14,
+      "output_sha256": {
+        "c3d8r.dat": "67900faaf23061365dd4b33ad399ba4cbcb6592ef23f84a62a1039a1c76a01fd",
+        "c3d8r.log": "d14d9e70dbfb9d3d01f531a90eb2078b8300c8938a74864edf50ae98c8d4e964",
+        "c3d8r.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+        "c3d8r.frd": "3069e628f338e8f95a83c20538f74f7dcc68c82c35377d5a01f15b1c04bbd1cc"
+      },
+      "coarse_stiffness_N_per_mm": 448.4803,
+      "relative_fine_minus_coarse_stiffness": 0.21163738964676915,
+      "coarse_reaction_work_Nmm": 0.022424015000000002
+    },
+    {
+      "element_type": "C3D8I",
+      "exit_code": 0,
+      "elapsed_wall_seconds": 9.565325740000844,
+      "input_sha256": "c43aa9a0db7487ac0dcb325c5755e6c4d90d3cb433402f0780ebcf8bc11f5e1b",
+      "solver_reported_version": "2.20",
+      "solver_warning_count": 0,
+      "usable": true,
+      "top_total_reaction_N": [
+        -1.394004e-11,
+        -5.836818,
+        -2.237641e-12
+      ],
+      "bottom_total_reaction_N": [
+        -1.535293e-09,
+        5.836818,
+        5.187095e-13
+      ],
+      "y_force_balance_N": 0.0,
+      "stiffness_N_per_mm": 583.6818,
+      "nominal_effective_modulus_MPa": 14.74564547368421,
+      "reaction_work_Nmm": 0.02918409,
+      "solver_internal_energy_Nmm": 0.02918409,
+      "relative_reported_energy_minus_work": 0.0,
+      "solver_total_volume_mm3": 10191.14,
+      "output_sha256": {
+        "c3d8i.dat": "80301cba778e18874404738bf11de4030b4b0023ad21158872dad30f9956c5e5",
+        "c3d8i.log": "2dd0b0b90f0732678fdfe9508cb13314e468a03d38eb48c25559f607cd78ca80",
+        "c3d8i.sta": "01e324ec0ea28f4d1fd7f5e2da1277af53812b873e218be1604c17a4c8e4990d",
+        "c3d8i.frd": "dadcf2bef4873ce423350414c2a9541d2ac837368221fcf31da20ec2528dcc90"
+      },
+      "coarse_stiffness_N_per_mm": 584.0973,
+      "relative_fine_minus_coarse_stiffness": -0.0007113540843282085,
+      "coarse_reaction_work_Nmm": 0.029204865
+    }
+  ],
+  "limitations": [
+    "Same original polygon and Z depth; finite-thickness discretization and element formulation sensitivity remain.",
+    "No paper curve was used to tune stiffness, E or the refinement.",
+    "A converged elastic reference requires checking subsequent refinements and integration/locking sensitivity; fracture/large-deformation/contact convergence is separate."
+  ]
+}

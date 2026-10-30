@@ -1,0 +1,847 @@
+{
+  "backend": "OpenCourant / Radioss format experimental",
+  "completed": false,
+  "engine_normal_termination": true,
+  "errors": [],
+  "run_binding_verified": true,
+  "metadata_binding_verified": true,
+  "duration_seconds": 0.0032,
+  "last_observed_history_time": 0.003175,
+  "target_nominal_strain": 0.65,
+  "last_printed_engine_time": 0.0032,
+  "deleted_solid_elements": [
+    631,
+    7123,
+    7387,
+    7388,
+    7389
+  ],
+  "config_wall_mm": 0.3,
+  "stress_area_convention_mm2": 1900,
+  "history_samples": 128,
+  "global_energy_screen": {
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "time history does not cover the end of loading",
+      "global kinetic/internal energy ratio exceeds limit"
+    ],
+    "samples_after_startup": 121,
+    "last_observed_time": 0.003175,
+    "max_kinetic_internal_ratio": 5.38668761926142,
+    "max_hourglass_internal_ratio": 0.0,
+    "max_added_original_mass_ratio": 2.0613032773102465e-13,
+    "thresholds": {
+      "kinetic_internal": 0.05,
+      "hourglass_internal": 0.05,
+      "added_original_mass": 0.01,
+      "ignored_startup_fraction": 0.05
+    },
+    "quasi_static_validated": false,
+    "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+  },
+  "core_energy_screen": {
+    "part_id": 1,
+    "sampled_energy_screen_passed": false,
+    "reasons": [
+      "part history does not cover the end of loading",
+      "core kinetic/internal energy ratio exceeds limit"
+    ],
+    "max_kinetic_internal_ratio": 1.310156025709381,
+    "max_hourglass_internal_ratio": 0.0,
+    "last_recorded_eroded_elements": 3.0,
+    "quasi_static_validated": false,
+    "qualification": "core screen only; balance, contact/erosion work and speed sensitivity remain required"
+  },
+  "input_sha256": {
+    "bench_y_only_0000.rad": "0cf1211203bc8f89bae253477f7f1d9d8cf58d90061f3ae2132bda069a9c95eb",
+    "bench_y_only_0001.rad": "80f6e233cbf1b9dba19f96905960288b6f7d47ff4c2f8ab7a09b1d4898943a7f"
+  },
+  "history_sha256": "c83c08fa2b533065d2d086956b86d1a2a0aef9c1710bd46d1ed6cf2a621e90a7",
+  "metadata_sha256": "16904383c1a24075f5ad28aea297a751af7a88570e2d2b17a2c09054eae6d157",
+  "calibrated": false,
+  "experimental_agreement": "not established",
+  "quasi_static_validated": false,
+  "reaction_history": [
+    {
+      "time": 1.25e-05,
+      "strain": 8.003612500000001e-07,
+      "reaction_y_N": 6.5733391999999995,
+      "nominal_stress_MPa": 0.0034596522105263157
+    },
+    {
+      "time": 3.8e-05,
+      "strain": 2.4330982000000007e-06,
+      "reaction_y_N": 0.695648846153847,
+      "nominal_stress_MPa": 0.0003661309716599195
+    },
+    {
+      "time": 6.35e-05,
+      "strain": 4.06583515e-06,
+      "reaction_y_N": 0.050650399999999,
+      "nominal_stress_MPa": 2.6658105263157367e-05
+    },
+    {
+      "time": 8.850000000000001e-05,
+      "strain": 5.666557650000001e-06,
+      "reaction_y_N": 0.33754560000000033,
+      "nominal_stress_MPa": 0.0001776555789473686
+    },
+    {
+      "time": 0.0001135,
+      "strain": 1.2349584649999996e-05,
+      "reaction_y_N": 26.949050000000003,
+      "nominal_stress_MPa": 0.014183710526315792
+    },
+    {
+      "time": 0.0001385,
+      "strain": 2.3361982150000002e-05,
+      "reaction_y_N": 3.937140000000001,
+      "nominal_stress_MPa": 0.0020721789473684216
+    },
+    {
+      "time": 0.00016350000000000002,
+      "strain": 3.437437965000001e-05,
+      "reaction_y_N": 0.6494919999999915,
+      "nominal_stress_MPa": 0.0003418378947368376
+    },
+    {
+      "time": 0.0001885,
+      "strain": 4.538677715e-05,
+      "reaction_y_N": 2.0795560000000024,
+      "nominal_stress_MPa": 0.001094503157894738
+    },
+    {
+      "time": 0.00021349999999999999,
+      "strain": 6.628052664999997e-05,
+      "reaction_y_N": 38.292464000000024,
+      "nominal_stress_MPa": 0.020153928421052646
+    },
+    {
+      "time": 0.0002385,
+      "strain": 9.559172414999999e-05,
+      "reaction_y_N": 8.904236000000012,
+      "nominal_stress_MPa": 0.004686440000000006
+    },
+    {
+      "time": 0.000263,
+      "strain": 0.0001243166977,
+      "reaction_y_N": 2.952266666666666,
+      "nominal_stress_MPa": 0.0015538245614035084
+    },
+    {
+      "time": 0.0002875,
+      "strain": 0.00015304167125,
+      "reaction_y_N": 7.542940000000004,
+      "nominal_stress_MPa": 0.003969968421052634
+    },
+    {
+      "time": 0.00031249999999999995,
+      "strain": 0.00019566503124999996,
+      "reaction_y_N": 44.22511599999998,
+      "nominal_stress_MPa": 0.02327637684210525
+    },
+    {
+      "time": 0.0003375,
+      "strain": 0.0002516005537500001,
+      "reaction_y_N": 10.473371999999994,
+      "nominal_stress_MPa": 0.005512301052631576
+    },
+    {
+      "time": 0.0003625,
+      "strain": 0.00030753607625,
+      "reaction_y_N": 11.675247999999995,
+      "nominal_stress_MPa": 0.00614486736842105
+    },
+    {
+      "time": 0.00038750000000000004,
+      "strain": 0.00036347159875000013,
+      "reaction_y_N": 17.749851999999983,
+      "nominal_stress_MPa": 0.009342027368421043
+    },
+    {
+      "time": 0.0004125,
+      "strain": 0.00043660709625000004,
+      "reaction_y_N": 61.27570400000011,
+      "nominal_stress_MPa": 0.032250370526315845
+    },
+    {
+      "time": 0.00043749999999999995,
+      "strain": 0.0005269425687499999,
+      "reaction_y_N": 20.538548000000002,
+      "nominal_stress_MPa": 0.01080976210526316
+    },
+    {
+      "time": 0.0004625,
+      "strain": 0.0006172780412500001,
+      "reaction_y_N": 27.229567999999976,
+      "nominal_stress_MPa": 0.014331351578947356
+    },
+    {
+      "time": 0.0004875,
+      "strain": 0.0007076135137500001,
+      "reaction_y_N": 33.26763200000001,
+      "nominal_stress_MPa": 0.017509280000000006
+    },
+    {
+      "time": 0.0005124999999999999,
+      "strain": 0.0008187676737499999,
+      "reaction_y_N": 63.21357600000012,
+      "nominal_stress_MPa": 0.033270303157894796
+    },
+    {
+      "time": 0.0005375,
+      "strain": 0.00095074052125,
+      "reaction_y_N": 45.45869999999989,
+      "nominal_stress_MPa": 0.02392563157894731
+    },
+    {
+      "time": 0.0005625000000000001,
+      "strain": 0.0010827133687500005,
+      "reaction_y_N": 39.56942400000003,
+      "nominal_stress_MPa": 0.020826012631578964
+    },
+    {
+      "time": 0.0005874999999999999,
+      "strain": 0.0012146862162499997,
+      "reaction_y_N": 48.6324760000001,
+      "nominal_stress_MPa": 0.025596040000000056
+    },
+    {
+      "time": 0.0006125,
+      "strain": 0.0013708332137499998,
+      "reaction_y_N": 88.90747999999974,
+      "nominal_stress_MPa": 0.04679341052631565
+    },
+    {
+      "time": 0.0006375,
+      "strain": 0.0015511543612500003,
+      "reaction_y_N": 67.01552000000011,
+      "nominal_stress_MPa": 0.03527132631578953
+    },
+    {
+      "time": 0.0006625,
+      "strain": 0.0017314755087500001,
+      "reaction_y_N": 63.82771999999992,
+      "nominal_stress_MPa": 0.03359353684210522
+    },
+    {
+      "time": 0.0006875,
+      "strain": 0.0019117966562499995,
+      "reaction_y_N": 75.94156000000004,
+      "nominal_stress_MPa": 0.039969242105263175
+    },
+    {
+      "time": 0.0007125,
+      "strain": 0.0021193900162499997,
+      "reaction_y_N": 120.78492000000031,
+      "nominal_stress_MPa": 0.06357101052631596
+    },
+    {
+      "time": 0.0007375,
+      "strain": 0.0023542555887499997,
+      "reaction_y_N": 96.3733199999996,
+      "nominal_stress_MPa": 0.05072279999999978
+    },
+    {
+      "time": 0.0007624999999999999,
+      "strain": 0.0025891211612499997,
+      "reaction_y_N": 98.99760000000025,
+      "nominal_stress_MPa": 0.05210400000000013
+    },
+    {
+      "time": 0.0007875,
+      "strain": 0.00282398673375,
+      "reaction_y_N": 106.8724399999997,
+      "nominal_stress_MPa": 0.05624865263157879
+    },
+    {
+      "time": 0.0008125000000000001,
+      "strain": 0.003088971031250001,
+      "reaction_y_N": 159.99840000000043,
+      "nominal_stress_MPa": 0.08420968421052655
+    },
+    {
+      "time": 0.0008374999999999999,
+      "strain": 0.003384074053749999,
+      "reaction_y_N": 138.82728000000006,
+      "nominal_stress_MPa": 0.07306698947368424
+    },
+    {
+      "time": 0.0008625,
+      "strain": 0.00367917707625,
+      "reaction_y_N": 134.69115999999968,
+      "nominal_stress_MPa": 0.07089008421052614
+    },
+    {
+      "time": 0.0008875,
+      "strain": 0.003974280098750001,
+      "reaction_y_N": 154.08884000000037,
+      "nominal_stress_MPa": 0.0810993894736844
+    },
+    {
+      "time": 0.0009125,
+      "strain": 0.004302102658750001,
+      "reaction_y_N": 208.9628799999993,
+      "nominal_stress_MPa": 0.10998046315789436
+    },
+    {
+      "time": 0.0009375,
+      "strain": 0.004662644756250001,
+      "reaction_y_N": 187.84228000000047,
+      "nominal_stress_MPa": 0.09886435789473709
+    },
+    {
+      "time": 0.0009625,
+      "strain": 0.005023186853750002,
+      "reaction_y_N": 220.60576000000037,
+      "nominal_stress_MPa": 0.1161082947368423
+    },
+    {
+      "time": 0.0009875,
+      "strain": 0.005383728951250003,
+      "reaction_y_N": 231.13531999999933,
+      "nominal_stress_MPa": 0.12165016842105228
+    },
+    {
+      "time": 0.0010125,
+      "strain": 0.005779351548750001,
+      "reaction_y_N": 294.34995999999916,
+      "nominal_stress_MPa": 0.15492103157894693
+    },
+    {
+      "time": 0.0010375,
+      "strain": 0.00621005464625,
+      "reaction_y_N": 239.70540000000184,
+      "nominal_stress_MPa": 0.12616073684210624
+    },
+    {
+      "time": 0.0010625,
+      "strain": 0.0066407577437500006,
+      "reaction_y_N": 244.2654799999993,
+      "nominal_stress_MPa": 0.12856077894736803
+    },
+    {
+      "time": 0.0010875,
+      "strain": 0.0070714608412499975,
+      "reaction_y_N": 265.44299999999896,
+      "nominal_stress_MPa": 0.1397068421052626
+    },
+    {
+      "time": 0.0011125,
+      "strain": 0.007539371401249997,
+      "reaction_y_N": 368.1569600000023,
+      "nominal_stress_MPa": 0.1937668210526328
+    },
+    {
+      "time": 0.0011375,
+      "strain": 0.008044489423749999,
+      "reaction_y_N": 349.2259199999994,
+      "nominal_stress_MPa": 0.18380311578947336
+    },
+    {
+      "time": 0.0011625,
+      "strain": 0.008549607446249998,
+      "reaction_y_N": 314.4990799999989,
+      "nominal_stress_MPa": 0.1655258315789468
+    },
+    {
+      "time": 0.001188,
+      "strain": 0.0090648278292,
+      "reaction_y_N": 332.4646923076924,
+      "nominal_stress_MPa": 0.17498141700404865
+    },
+    {
+      "time": 0.0012135000000000002,
+      "strain": 0.009622282989150004,
+      "reaction_y_N": 456.05115999999936,
+      "nominal_stress_MPa": 0.24002692631578915
+    },
+    {
+      "time": 0.0012385,
+      "strain": 0.01020561356165,
+      "reaction_y_N": 437.7332000000016,
+      "nominal_stress_MPa": 0.23038589473684296
+    },
+    {
+      "time": 0.0012634999999999999,
+      "strain": 0.010788944134149995,
+      "reaction_y_N": 401.59759999999994,
+      "nominal_stress_MPa": 0.2113671578947368
+    },
+    {
+      "time": 0.0012885000000000001,
+      "strain": 0.01137227470665,
+      "reaction_y_N": 417.4467999999987,
+      "nominal_stress_MPa": 0.21970884210526248
+    },
+    {
+      "time": 0.0013135,
+      "strain": 0.011999650689649997,
+      "reaction_y_N": 546.4076000000028,
+      "nominal_stress_MPa": 0.28758294736842255
+    },
+    {
+      "time": 0.0013384999999999998,
+      "strain": 0.012664546837149994,
+      "reaction_y_N": 557.8399999999991,
+      "nominal_stress_MPa": 0.29359999999999953
+    },
+    {
+      "time": 0.0013635000000000001,
+      "strain": 0.01332944298465,
+      "reaction_y_N": 513.0799999999978,
+      "nominal_stress_MPa": 0.2700421052631567
+    },
+    {
+      "time": 0.0013885,
+      "strain": 0.013994339132149997,
+      "reaction_y_N": 513.9532000000033,
+      "nominal_stress_MPa": 0.27050168421052806
+    },
+    {
+      "time": 0.0014134999999999998,
+      "strain": 0.014704857557649992,
+      "reaction_y_N": 641.1015999999986,
+      "nominal_stress_MPa": 0.33742189473684137
+    },
+    {
+      "time": 0.0014385000000000001,
+      "strain": 0.01545423940515,
+      "reaction_y_N": 642.0711999999978,
+      "nominal_stress_MPa": 0.3379322105263146
+    },
+    {
+      "time": 0.0014635,
+      "strain": 0.016203621252649996,
+      "reaction_y_N": 599.8007999999994,
+      "nominal_stress_MPa": 0.31568463157894705
+    },
+    {
+      "time": 0.0014885,
+      "strain": 0.016953003100149997,
+      "reaction_y_N": 623.5936000000046,
+      "nominal_stress_MPa": 0.32820715789473925
+    },
+    {
+      "time": 0.0015135,
+      "strain": 0.01774935664515,
+      "reaction_y_N": 772.8471999999977,
+      "nominal_stress_MPa": 0.4067616842105251
+    },
+    {
+      "time": 0.0015385,
+      "strain": 0.018585723117649996,
+      "reaction_y_N": 784.3263999999974,
+      "nominal_stress_MPa": 0.41280336842105125
+    },
+    {
+      "time": 0.0015635,
+      "strain": 0.01942208959015,
+      "reaction_y_N": 722.9880000000044,
+      "nominal_stress_MPa": 0.3805200000000023
+    },
+    {
+      "time": 0.0015885,
+      "strain": 0.020258456062650004,
+      "reaction_y_N": 736.4095999999968,
+      "nominal_stress_MPa": 0.3875839999999983
+    },
+    {
+      "time": 0.0016135,
+      "strain": 0.02114292252215,
+      "reaction_y_N": 899.758399999999,
+      "nominal_stress_MPa": 0.47355705263157843
+    },
+    {
+      "time": 0.0016385,
+      "strain": 0.02206836304465,
+      "reaction_y_N": 937.2672000000039,
+      "nominal_stress_MPa": 0.4932985263157915
+    },
+    {
+      "time": 0.0016635,
+      "strain": 0.02299380356715,
+      "reaction_y_N": 887.1967999999985,
+      "nominal_stress_MPa": 0.4669456842105255
+    },
+    {
+      "time": 0.0016885,
+      "strain": 0.023919244089649995,
+      "reaction_y_N": 875.9827999999969,
+      "nominal_stress_MPa": 0.4610435789473668
+    },
+    {
+      "time": 0.0017135000000000002,
+      "strain": 0.024893698076650008,
+      "reaction_y_N": 1024.761199999999,
+      "nominal_stress_MPa": 0.5393479999999995
+    },
+    {
+      "time": 0.0017385,
+      "strain": 0.025909904274150002,
+      "reaction_y_N": 1076.1792000000069,
+      "nominal_stress_MPa": 0.5664101052631615
+    },
+    {
+      "time": 0.0017634999999999999,
+      "strain": 0.026926110471649996,
+      "reaction_y_N": 1030.8559999999973,
+      "nominal_stress_MPa": 0.5425557894736828
+    },
+    {
+      "time": 0.0017885000000000002,
+      "strain": 0.027942316669150008,
+      "reaction_y_N": 1015.3063999999974,
+      "nominal_stress_MPa": 0.5343717894736829
+    },
+    {
+      "time": 0.0018135,
+      "strain": 0.029008241314650005,
+      "reaction_y_N": 1173.1292000000053,
+      "nominal_stress_MPa": 0.6174364210526344
+    },
+    {
+      "time": 0.0018384999999999999,
+      "strain": 0.030116518712149997,
+      "reaction_y_N": 1222.8715999999963,
+      "nominal_stress_MPa": 0.6436166315789454
+    },
+    {
+      "time": 0.0018635000000000001,
+      "strain": 0.031224796109650007,
+      "reaction_y_N": 1170.4899999999986,
+      "nominal_stress_MPa": 0.6160473684210519
+    },
+    {
+      "time": 0.0018885,
+      "strain": 0.032333073507150006,
+      "reaction_y_N": 1155.2156000000061,
+      "nominal_stress_MPa": 0.608008210526319
+    },
+    {
+      "time": 0.0019134999999999998,
+      "strain": 0.033491572160149995,
+      "reaction_y_N": 1307.1847999999975,
+      "nominal_stress_MPa": 0.6879919999999987
+    },
+    {
+      "time": 0.0019385000000000001,
+      "strain": 0.03469285188265001,
+      "reaction_y_N": 1354.8103999999937,
+      "nominal_stress_MPa": 0.7130581052631546
+    },
+    {
+      "time": 0.0019635,
+      "strain": 0.03589413160515,
+      "reaction_y_N": 1295.4964000000125,
+      "nominal_stress_MPa": 0.6818402105263224
+    },
+    {
+      "time": 0.0019885,
+      "strain": 0.03709541132765,
+      "reaction_y_N": 1279.8119999999835,
+      "nominal_stress_MPa": 0.673585263157886
+    },
+    {
+      "time": 0.0020135,
+      "strain": 0.03834721925515001,
+      "reaction_y_N": 1424.5640000000078,
+      "nominal_stress_MPa": 0.7497705263157936
+    },
+    {
+      "time": 0.0020385,
+      "strain": 0.039642069727650005,
+      "reaction_y_N": 1460.0568000000092,
+      "nominal_stress_MPa": 0.7684509473684259
+    },
+    {
+      "time": 0.0020635000000000002,
+      "strain": 0.04093692020015001,
+      "reaction_y_N": 1407.4319999999814,
+      "nominal_stress_MPa": 0.7407536842105165
+    },
+    {
+      "time": 0.0020885,
+      "strain": 0.04223177067265001,
+      "reaction_y_N": 1392.568400000011,
+      "nominal_stress_MPa": 0.7329307368421111
+    },
+    {
+      "time": 0.0021135,
+      "strain": 0.04357726675964999,
+      "reaction_y_N": 1535.2960000000107,
+      "nominal_stress_MPa": 0.8080505263157951
+    },
+    {
+      "time": 0.0021384999999999998,
+      "strain": 0.04496590540714998,
+      "reaction_y_N": 1573.1519999999755,
+      "nominal_stress_MPa": 0.8279747368420923
+    },
+    {
+      "time": 0.0021635,
+      "strain": 0.04635454405465,
+      "reaction_y_N": 1523.9200000000167,
+      "nominal_stress_MPa": 0.8020631578947456
+    },
+    {
+      "time": 0.0021885,
+      "strain": 0.047743182702149986,
+      "reaction_y_N": 1507.8760000000104,
+      "nominal_stress_MPa": 0.7936189473684265
+    },
+    {
+      "time": 0.0022135,
+      "strain": 0.049182401151650006,
+      "reaction_y_N": 1637.9039999999804,
+      "nominal_stress_MPa": 0.862054736842095
+    },
+    {
+      "time": 0.0022385,
+      "strain": 0.050664706099150005,
+      "reaction_y_N": 1677.4280000000022,
+      "nominal_stress_MPa": 0.8828568421052643
+    },
+    {
+      "time": 0.0022635,
+      "strain": 0.052147011046649996,
+      "reaction_y_N": 1627.13600000001,
+      "nominal_stress_MPa": 0.8563873684210579
+    },
+    {
+      "time": 0.0022884999999999997,
+      "strain": 0.05362931599414999,
+      "reaction_y_N": 1610.4839999999938,
+      "nominal_stress_MPa": 0.8476231578947335
+    },
+    {
+      "time": 0.0023135,
+      "strain": 0.05516195802715001,
+      "reaction_y_N": 1736.7800000000084,
+      "nominal_stress_MPa": 0.9140947368421096
+    },
+    {
+      "time": 0.0023385,
+      "strain": 0.056737479799650006,
+      "reaction_y_N": 1769.9880000000087,
+      "nominal_stress_MPa": 0.931572631578952
+    },
+    {
+      "time": 0.0023635,
+      "strain": 0.058313001572150025,
+      "reaction_y_N": 1729.7079999999792,
+      "nominal_stress_MPa": 0.9103726315789364
+    },
+    {
+      "time": 0.0023885,
+      "strain": 0.059888523344650016,
+      "reaction_y_N": 1713.8480000000127,
+      "nominal_stress_MPa": 0.9020252631579014
+    },
+    {
+      "time": 0.0024135,
+      "strain": 0.061513968900150005,
+      "reaction_y_N": 1832.5439999999708,
+      "nominal_stress_MPa": 0.9644968421052478
+    },
+    {
+      "time": 0.002438,
+      "strain": 0.0631485826582,
+      "reaction_y_N": 1867.400000000032,
+      "nominal_stress_MPa": 0.9828421052631747
+    },
+    {
+      "time": 0.0024625000000000003,
+      "strain": 0.06478319641625002,
+      "reaction_y_N": 1825.6239999999718,
+      "nominal_stress_MPa": 0.9608547368420904
+    },
+    {
+      "time": 0.0024875,
+      "strain": 0.06645116963875002,
+      "reaction_y_N": 1814.1120000000142,
+      "nominal_stress_MPa": 0.9547957894736917
+    },
+    {
+      "time": 0.0025125,
+      "strain": 0.06816483379874999,
+      "reaction_y_N": 1919.0160000000162,
+      "nominal_stress_MPa": 1.01000842105264
+    },
+    {
+      "time": 0.0025375,
+      "strain": 0.06992418889624998,
+      "reaction_y_N": 1956.9559999999742,
+      "nominal_stress_MPa": 1.0299768421052495
+    },
+    {
+      "time": 0.0025625,
+      "strain": 0.07168354399374999,
+      "reaction_y_N": 1920.4000000000071,
+      "nominal_stress_MPa": 1.010736842105267
+    },
+    {
+      "time": 0.0025875,
+      "strain": 0.07344289909124997,
+      "reaction_y_N": 1905.8480000000193,
+      "nominal_stress_MPa": 1.0030778947368522
+    },
+    {
+      "time": 0.0026125000000000002,
+      "strain": 0.07524726408874999,
+      "reaction_y_N": 2005.9599999999773,
+      "nominal_stress_MPa": 1.0557684210526197
+    },
+    {
+      "time": 0.0026375,
+      "strain": 0.07709663898625,
+      "reaction_y_N": 2042.348000000013,
+      "nominal_stress_MPa": 1.0749200000000068
+    },
+    {
+      "time": 0.0026625,
+      "strain": 0.07894601388374999,
+      "reaction_y_N": 2002.1520000000091,
+      "nominal_stress_MPa": 1.0537642105263205
+    },
+    {
+      "time": 0.0026875,
+      "strain": 0.08079538878124998,
+      "reaction_y_N": 1995.763999999984,
+      "nominal_stress_MPa": 1.0504021052631494
+    },
+    {
+      "time": 0.0027125,
+      "strain": 0.08268895214125,
+      "reaction_y_N": 2093.7080000000155,
+      "nominal_stress_MPa": 1.1019515789473766
+    },
+    {
+      "time": 0.0027375,
+      "strain": 0.08462670396374998,
+      "reaction_y_N": 2123.2959999999985,
+      "nominal_stress_MPa": 1.117524210526315
+    },
+    {
+      "time": 0.0027625,
+      "strain": 0.08656445578625001,
+      "reaction_y_N": 2083.119999999988,
+      "nominal_stress_MPa": 1.0963789473684147
+    },
+    {
+      "time": 0.0027875,
+      "strain": 0.08850220760875,
+      "reaction_y_N": 2078.3960000000106,
+      "nominal_stress_MPa": 1.093892631578953
+    },
+    {
+      "time": 0.0028125,
+      "strain": 0.09048319190625,
+      "reaction_y_N": 2169.728000000002,
+      "nominal_stress_MPa": 1.1419621052631588
+    },
+    {
+      "time": 0.0028374999999999997,
+      "strain": 0.09250740867874997,
+      "reaction_y_N": 2201.663999999994,
+      "nominal_stress_MPa": 1.1587705263157861
+    },
+    {
+      "time": 0.0028625,
+      "strain": 0.09453162545125,
+      "reaction_y_N": 2162.4599999999946,
+      "nominal_stress_MPa": 1.1381368421052602
+    },
+    {
+      "time": 0.0028875,
+      "strain": 0.09655584222374998,
+      "reaction_y_N": 2160.7000000000153,
+      "nominal_stress_MPa": 1.1372105263157974
+    },
+    {
+      "time": 0.0029125,
+      "strain": 0.09862220678375,
+      "reaction_y_N": 2246.7679999999846,
+      "nominal_stress_MPa": 1.1825094736842023
+    },
+    {
+      "time": 0.0029375,
+      "strain": 0.10073071913124998,
+      "reaction_y_N": 2268.9480000000153,
+      "nominal_stress_MPa": 1.1941831578947448
+    },
+    {
+      "time": 0.0029625,
+      "strain": 0.10283923147874999,
+      "reaction_y_N": 2234.8119999999763,
+      "nominal_stress_MPa": 1.1762168421052506
+    },
+    {
+      "time": 0.0029875,
+      "strain": 0.10494774382625,
+      "reaction_y_N": 2236.5280000000134,
+      "nominal_stress_MPa": 1.177120000000007
+    },
+    {
+      "time": 0.0030125,
+      "strain": 0.10709719642374999,
+      "reaction_y_N": 2317.791999999997,
+      "nominal_stress_MPa": 1.219890526315788
+    },
+    {
+      "time": 0.0030375000000000003,
+      "strain": 0.10928758927125,
+      "reaction_y_N": 2334.2719999999863,
+      "nominal_stress_MPa": 1.2285642105263086
+    },
+    {
+      "time": 0.0030625,
+      "strain": 0.11147798211875,
+      "reaction_y_N": 2308.7640000000106,
+      "nominal_stress_MPa": 1.2151389473684266
+    },
+    {
+      "time": 0.0030875,
+      "strain": 0.11366837496624999,
+      "reaction_y_N": 2313.275999999998,
+      "nominal_stress_MPa": 1.2175136842105252
+    },
+    {
+      "time": 0.0031125,
+      "strain": 0.11589838352624998,
+      "reaction_y_N": 2387.447999999983,
+      "nominal_stress_MPa": 1.2565515789473596
+    },
+    {
+      "time": 0.0031375,
+      "strain": 0.11816800779875,
+      "reaction_y_N": 2398.2800000000248,
+      "nominal_stress_MPa": 1.2622526315789604
+    },
+    {
+      "time": 0.0031625,
+      "strain": 0.12043763207125,
+      "reaction_y_N": 2373.4240000000073,
+      "nominal_stress_MPa": 1.2491705263157933
+    }
+  ],
+  "qualification": "solver evidence only; independent material, contact and quasi-static qualification required",
+  "force_mapping": {
+    "csv_column": "Contact force and energy                 3 Contact 3                                var 64",
+    "compressive_sign": -1,
+    "area_mm2": 1900.0,
+    "channel_kind": "impulse",
+    "sampling": "interval average",
+    "verification": "caller-selected verified channel and physical quantity",
+    "tangential_csv_column": "Contact force and energy                 3 Contact 3                                var 67",
+    "component_operation": "FN-FT",
+    "contact_force_quantity": "total_force_on_secondary",
+    "convention": "TYPE25 IMS=2 secondary force; subtract FT from FN before sign and impulse differentiation"
+  },
+  "last_recorded_force_nominal_strain": 0.12043763207125,
+  "last_observed_nominal_strain": 0.12157244420749998,
+  "partial_solver_stages_completed": true,
+  "intentionally_partial": true,
+  "evidence_archive": "opencourant-platen-y-only-partial-inputs.tar.gz",
+  "evidence_archive_sha256": "549d3da4fb10194586dd475f16547ea83744abac1910c7b10305577c1a80984e"
+}
