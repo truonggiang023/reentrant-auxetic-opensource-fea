@@ -117,14 +117,28 @@ def run_generated(metadata, *, timeout, starter='starter_linux64_gf',
     return csv
 
 
+def physical_loading_duration(nodes, strain, speed_mm_min):
+    """Seconds for a constant crosshead speed using the actual core envelope."""
+    import numpy as np
+    xyz=np.asarray(nodes,float)
+    if (xyz.ndim!=2 or xyz.shape[1]!=3 or not np.isfinite(xyz).all()
+            or not np.isfinite([strain,speed_mm_min]).all() or not 0<strain<1
+            or speed_mm_min<=0 or np.ptp(xyz[:,1])<=0):
+        raise ValueError('Require finite mesh, positive height/speed and strain in (0,1)')
+    return float(np.ptp(xyz[:,1])*strain/speed_mm_min*60.)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', default='configs/dong2019_brick_damage.json')
     parser.add_argument('--plastic', default='reference_setup_numeric_source.py',
                         help='True stress/plastic strain: one Abaqus *Plastic block or literal PLASTIC_DATA Python source; neither is executed')
     parser.add_argument('--output', default='results/opencourant/thin')
-    parser.add_argument('--duration-seconds', type=float, required=True,
-                        help='Explicit duration; not assumed equivalent to 2 mm/min')
+    loading = parser.add_mutually_exclusive_group(required=True)
+    loading.add_argument('--duration-seconds', type=float,
+                         help='Explicit duration; not assumed equivalent to 2 mm/min')
+    loading.add_argument('--physical-speed-mm-min', type=float,
+                         help='Constant compressive speed; derives duration from actual mesh height and selects linear displacement')
     parser.add_argument('--drop-ccx-viscosity', action='store_true',
                         help='Record intentional omission of CCX pseudo-time viscosity')
     parser.add_argument('--run', action='store_true')
@@ -138,11 +152,26 @@ def main():
         parser.error('Select a brick configuration; wedge conversion is not qualified')
     nodes, elements, _, _ = mesh_bricks(core_polygon(config), config['depth'],
                                        config['mesh_size'], config['depth_layers'],
-                                       strategy=config.get('brick_mesh', 'recombine'))
+                                       strategy=config.get('brick_mesh', 'recombine'),config=config)
+    duration = args.duration_seconds
+    if args.physical_speed_mm_min is not None:
+        duration = physical_loading_duration(nodes, config['compression_strain'], args.physical_speed_mm_min)
+        if config.get('loading_profile','linear') != 'linear':
+            parser.error('Physical constant speed requires loading_profile=linear')
+        config['loading_profile']='linear'
     metadata = write_radioss_deck(args.output, nodes, elements, config,
-                                 load_plastic(args.plastic), duration=args.duration_seconds,
+                                 load_plastic(args.plastic), duration=duration,
                                  drop_ccx_viscosity=args.drop_ccx_viscosity,
                                  ams_time_step=args.ams_time_step)
+    if args.physical_speed_mm_min is not None:
+        metadata['paper_reference_speed_mm_per_min']=metadata['physical_speed_mm_per_min']
+        metadata['paper_reference_duration_seconds']=metadata['physical_duration_seconds']
+        metadata['physical_speed_mm_per_min']=args.physical_speed_mm_min
+        metadata['physical_duration_seconds']=duration
+    metadata['loading_request'] = dict(physical_speed_mm_min=args.physical_speed_mm_min,
+                                       explicit_duration_seconds=args.duration_seconds,
+                                       effective_duration_seconds=duration,
+                                       profile_override='linear' if args.physical_speed_mm_min is not None else None)
     metadata['source_config_sha256'] = hashlib.sha256(Path(args.config).read_bytes()).hexdigest()
     metadata['hardening_source_sha256'] = hashlib.sha256(Path(args.plastic).read_bytes()).hexdigest()
     metadata_path = Path(metadata['starter']).parent/(metadata['prefix']+'.radioss.json')
@@ -153,11 +182,14 @@ def main():
         from assess_courant import assess
         # TYPE25 IMS=2 force on the core secondary is FN-FT. Both DEF Y
         # channels are cumulative impulses; differentiate their difference once.
-        result = assess(
-            metadata_path, csv,
-            force_column='Contact force and energy                 3 Contact 3                                var 64',
-            tangential_column='Contact force and energy                 3 Contact 3                                var 67',
-            force_sign=-1, force_kind='impulse')
+        if metadata.get('platen_reference_points'):
+            result = assess(metadata_path, csv, force_source='rp')
+        else:
+            result = assess(
+                metadata_path, csv,
+                force_column='Contact force and energy                 3 Contact 3                                var 64',
+                tangential_column='Contact force and energy                 3 Contact 3                                var 67',
+                force_sign=-1, force_kind='impulse')
         metadata_path.with_name(metadata['prefix']+'.assessment.json').write_text(json.dumps(result,indent=2)+'\n')
         print('Solver stages terminated normally. Energy assessment:', result['global_energy_screen'])
     else:

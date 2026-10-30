@@ -214,3 +214,23 @@ qualification blockers have not been bypassed. Bottom native reaction
 histories are requested with `support_reaction_history=true` (automatically
 on for `platen_reference_points=true`), preserving legacy top-only histories
 for existing diagnostic scripts.
+
+## Paper loading clarification and RP studies
+
+The full paragraph supplied by the user does **not** identify Standard versus
+Explicit. The numerical implementations in this repository are choices, not
+proof of the paper's step formulation. See
+[loading and mesh corrections](calibration_loading_revision.md) and
+[specified conditions](paper_loading_conditions.json).
+
+With `platen_reference_points=true` in a native study's base configuration,
+preparation, execution/resume and scoring now all retain `--force-source rp`.
+The scorer reassesses actual bound REACY/DY histories; it does not silently
+switch back to contact-force or prescribed-time strain. Existing contact-force
+studies remain supported. All geometry, work/energy and response-convergence
+selection gates remain active.
+
+`structured_walls` is a geometry-preserving optional mesher whose small elastic
+work response agreed with a same-mesh static reference within 0.86%. This does
+not qualify full contact, collapse, erosion, paper edge seeding or parameter
+identifiability. The measured corrected component is not a fitted material.

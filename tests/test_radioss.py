@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 import numpy as np
 import pytest
 
@@ -117,3 +118,63 @@ def test_support_history_is_opt_in_except_for_platen_rps(tmp_path, coupled, supp
     assert meta['support_reaction_history'] is expected_support
     # Support-node identities remain available even when not requested in T01.
     assert meta['bottom_support_nodes']
+
+
+@pytest.mark.parametrize('scope,group,parts', [('all',0,[1,2,3]), ('core',50,[1])])
+def test_ams_scope_selects_declared_parts_without_changing_platen_coupling(tmp_path,scope,group,parts):
+    cfg=dict(young=69000.,poisson=.3,compression_strain=.12,
+             platen_reference_points=True,ams_scope=scope)
+    meta=write_radioss_deck(tmp_path/'rp',NODES,ELEMENTS,cfg,
+                          [(225.,0.),(300.,.2)],duration=.001,ams_time_step=1e-6)
+    lines=(tmp_path/'rp_0000.rad').read_text().splitlines()
+    assert int(lines[lines.index('/AMS')+1])==group
+    assert ('/GRPART/PART/50' in lines)==(scope=='core')
+    if scope=='core':
+        assert lines[lines.index('/GRPART/PART/50')+2].split()==['1']
+    assert meta['ams']['scope']==scope
+    assert meta['ams']['selected_part_ids']==parts
+    assert meta['ams']['part_group_id']==group
+    assert '/RBE2/1' in lines and '/RBE2/2' in lines
+    assert meta['loading_face_nodes']==[26]
+    # Native AMS modifies inertia, but this selection adds no nodal mass card.
+    assert not any(line.startswith('/ADMAS') for line in lines)
+
+
+def test_default_and_invalid_ams_scope(tmp_path):
+    cfg=dict(young=69000.,poisson=.3,compression_strain=.12)
+    meta=write_radioss_deck(tmp_path/'default',NODES,ELEMENTS,cfg,
+                          [(225.,0.),(300.,.2)],duration=.001,ams_time_step=1e-6)
+    assert meta['ams']['scope']=='all'
+    assert meta['ams']['selected_part_ids']==[1,2,3]
+    assert int((tmp_path/'default_0000.rad').read_text().split('/AMS\n')[1].splitlines()[0])==0
+    for value in ('steel','',None,True,1):
+        with pytest.raises(ValueError,match='ams_scope'):
+            write_radioss_deck(tmp_path/'invalid',NODES,ELEMENTS,dict(cfg,ams_scope=value),
+                              [(225.,0.),(300.,.2)],duration=.001,ams_time_step=1e-6)
+    assert not (tmp_path/'invalid_0000.rad').exists()
+
+
+def test_optional_restart_checkpoints_preserve_default_and_validate_input(tmp_path):
+    cfg=dict(young=69000.,poisson=.3,compression_strain=.12)
+    for name,interval in [('default',None),('checkpoint',1000)]:
+        c=dict(cfg)
+        if interval is not None:c['restart_cycle_interval']=interval
+        m=write_radioss_deck(tmp_path/name,NODES,ELEMENTS,c,[(225.,0.),(300.,.2)],duration=.01)
+        engine=Path(m['engine']).read_text()
+        assert ('/RFILE/2' in engine)==(interval is not None)
+        assert not m['restart_policy']['continuation_verified']
+    for invalid in (0,-1,1.5,True):
+        with pytest.raises(ValueError,match='restart_cycle_interval'):
+            write_radioss_deck(tmp_path/'invalid',NODES,ELEMENTS,dict(cfg,restart_cycle_interval=invalid),[(225.,0.),(300.,.2)],duration=.01)
+
+
+def test_linear_profile_means_constant_velocity_instead_of_smoothstep(tmp_path):
+    cfg=dict(young=69000.,poisson=.3,compression_strain=.12,loading_profile='linear')
+    m=write_radioss_deck(tmp_path/'linear',NODES,ELEMENTS,cfg,[(225.,0.),(300.,.2)],duration=3.6)
+    assert m['displacement_fraction_samples']==[[0.,0.],[3.6,1.]]
+    assert m['peak_imposed_speed_mm_per_s']==pytest.approx(2./60.)
+    assert m['mean_imposed_speed_mm_per_s']==pytest.approx(2./60.)
+    assert not m['constitutive_rate_dependence']
+    assert m['hardening_curve_count']==1
+    with pytest.raises(ValueError,match='loading_profile'):
+        write_radioss_deck(tmp_path/'bad_profile',NODES,ELEMENTS,dict(cfg,loading_profile='bad'),[(225.,0.),(300.,.2)],duration=1.)

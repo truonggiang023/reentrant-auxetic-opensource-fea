@@ -259,3 +259,36 @@ Exact input hashes and rejection reasons are retained in
 Paper comparison data and the accepted historical CCX comparison are described
 in `paper_reference/README.md`. Thick-wall fitting and independent thin-wall
 validation must remain separate; see `calibration_workflow.md`.
+
+## Exact physical velocity versus accelerated diagnostic
+
+The user-provided paper paragraph does not identify Standard/Explicit or the
+step formulation. C3D8R alone does not identify the solver. Physical constant
+2 mm/min is distinct from the accelerated smoothstep durations used above.
+
+Generate the declared physical loading condition (without launching billions
+of explicit cycles) with:
+
+```sh
+python run_radioss.py --config configs/dong2019_paper_velocity012.json \
+  --physical-speed-mm-min 2 --drop-ccx-viscosity \
+  --output results/paper_velocity/new_case
+```
+
+Actual mesh height 48 mm gives T=172.8 s at strain .12; the selected linear
+amplitude has both mean and peak velocity 2 mm/min. Smoothstep has peak
+velocity 1.875 times its average. Neither an accelerated run nor switching
+its output time units establishes physical-rate or quasi-static equivalence.
+The current hardening law contains one curve and no constitutive rate effect.
+See `paper_loading_conditions.json` for specified and unreported quantities.
+
+For supported RP bookkeeping, use generated `platen_reference_points=true` and
+assess the completed, bound run with `assess_courant.py META CSV --force-source rp`.
+This uses observed relative RP DY and differentiates cumulative REACY once;
+nominal stress is minus the signed top reaction divided by area. It is not an
+independent proof that native REACY and Abaqus RF2 have identical inertial terms.
+Core-only AMS (`ams_scope=core`) is an explicitly labelled numerical control
+that avoids including steel/platen constraints in the modified mass operator;
+no quasi-static claim follows from successful completion. Optional
+`restart_cycle_interval` writes two rotating restart files; creation was tested,
+continuation has not been qualified.

@@ -45,7 +45,7 @@ def main():
     c["target_output_only"] = args.target_output_only
     poly=core_polygon(c)
     mesher=mesh_bricks if c.get("element_type") in ("C3D8","C3D8R") else mesh_wedges
-    kwargs={"strategy":c.get("brick_mesh","recombine")} if mesher==mesh_bricks else {}
+    kwargs={"strategy":c.get("brick_mesh","recombine"),"config":c} if mesher==mesh_bricks else {}
     nodes,els,top,bottom=mesher(poly,c["depth"],c["mesh_size"],c["depth_layers"],**kwargs)
     imperfection=None
     if args.imperfection_mm:

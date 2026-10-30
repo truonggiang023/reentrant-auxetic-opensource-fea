@@ -158,3 +158,20 @@ def test_native_commands_reject_misdeclared_total_contact_force(tmp_path, mistak
         row['force_mapping']['component_operation'] = 'FN+FT'
     with pytest.raises(ValueError, match='verified'):
         commands(row, 2, 30)
+
+
+def test_rp_study_keeps_observed_rp_assessment_through_runner(tmp_path):
+    import json
+    from pathlib import Path
+    from calibration_study import prepare,ROOT,native_force_mapping,native_assess_kwargs
+    from run_calibration import commands
+    cfg=json.loads((ROOT/'configs/dong2019_brick_damage.json').read_text())
+    cfg['platen_reference_points']=True
+    source=tmp_path/'rp_config.json';source.write_text(json.dumps(cfg))
+    study=prepare(source,tmp_path/'study',backend='opencourant',duration=.04,holdout_end_strain=.78)
+    for row in study['runs']:
+        assert row['force_mapping']==native_force_mapping(reference_points=True)
+        assert native_assess_kwargs(row['force_mapping'])=={'force_source':'rp'}
+        solve,assessment=commands(row,2,3600)
+        assert '--force-source' in assessment and 'rp' in assessment
+        assert '--force-column' not in assessment and '--tangential-column' not in assessment

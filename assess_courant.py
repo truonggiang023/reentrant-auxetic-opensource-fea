@@ -16,7 +16,7 @@ from reentrant_fea.radioss_results import (read_engine_out, read_history_csv,
 
 
 def assess(metadata_path, history_path, *, force_column=None, tangential_column=None,
-           force_sign=None, force_kind=None):
+           force_sign=None, force_kind=None, force_source=None):
     """Assess bound output and optionally reconstruct a verified force quantity.
 
     For this writer's TYPE25 IMS=2 convention, force on the secondary is
@@ -25,6 +25,10 @@ def assess(metadata_path, history_path, *, force_column=None, tangential_column=
     single normal channel remains a normal-component diagnostic, not a total
     contact force. No column numbers or force/impulse units are inferred.
     """
+    if force_source not in (None, 'rp'):
+        raise ValueError('force_source must be rp or omitted for explicit contact channels')
+    if force_source == 'rp' and any(v is not None for v in (force_column,tangential_column,force_sign,force_kind)):
+        raise ValueError('Select RP assessment or explicit contact channels')
     if tangential_column is not None and force_column is None:
         raise ValueError('A tangential column requires a normal force column')
     if tangential_column is not None and tangential_column == force_column:
@@ -88,6 +92,11 @@ def assess(metadata_path, history_path, *, force_column=None, tangential_column=
         'reaction_history': [],
         'qualification': 'solver evidence only; independent material, contact and quasi-static qualification required',
     }
+    if force_source == 'rp':
+        from reentrant_fea.native_rp_history import rp_reaction_history
+        result.update(rp_reaction_history(history, metadata))
+        result['completed'] = bool(result['completed'] and result['prescribed_motion_reached']
+                                   and result['metadata_binding_verified'])
     if force_column is not None:
         if force_column not in history or force_sign not in (-1, 1) or force_kind not in ('force', 'impulse'):
             raise ValueError('Select an existing channel, explicit sign and verified force/impulse kind')
@@ -146,6 +155,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('metadata', type=Path)
     parser.add_argument('history_csv', type=Path)
+    parser.add_argument('--force-source', choices=('rp',),
+                        help='Use verified nodal RP REACY and observed relative DY instead of contact channels')
     parser.add_argument('--force-column')
     parser.add_argument('--tangential-column',
                         help='Verified TYPE25 IMS=2 FT channel; total secondary force is FN-FT')
@@ -156,7 +167,7 @@ def main():
     args = parser.parse_args()
     result = assess(args.metadata, args.history_csv,
                     force_column=args.force_column, tangential_column=args.tangential_column,
-                    force_sign=args.force_sign, force_kind=args.force_kind)
+                    force_sign=args.force_sign, force_kind=args.force_kind, force_source=args.force_source)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps({key: result[key] for key in ('completed', 'history_samples',

@@ -16,7 +16,7 @@ import sys
 import time
 
 from calibration_study import (NATIVE_FORCE_COLUMN, NATIVE_TANGENTIAL_COLUMN, ROOT,
-                               legacy_native_force_mapping, native_force_mapping)
+                               legacy_native_force_mapping, native_force_mapping, native_assess_kwargs)
 from reentrant_fea.plastic import load_plastic, validate_material
 
 
@@ -122,7 +122,7 @@ def commands(row, threads, timeout):
     allowed_assess = {'--output': 1}
     if native:
         allowed_assess.update({'--force-column': 1, '--force-sign': 1, '--force-kind': 1,
-                               '--tangential-column': 1})
+                               '--tangential-column': 1, '--force-source': 1})
     opts = parsed_options(row['assess_argv'], assess_script, allowed_assess, positional)
     expected = [row['metadata'], row['history']] if native else [row['deck']]
     for actual, path in zip(row['assess_argv'][2:2+positional], expected):
@@ -130,17 +130,19 @@ def commands(row, threads, timeout):
             raise ValueError('Assessment input differs from manifest')
     if (ROOT/str(opts.get('--output', ''))).resolve() != Path(row['assessment']).resolve():
         raise ValueError('Assessment destination differs from manifest')
-    if native and (opts.get('--force-column') != NATIVE_FORCE_COLUMN
-                   or opts.get('--force-sign') != '-1' or opts.get('--force-kind') != 'impulse'):
-        raise ValueError('Native assessment must use the verified FY impulse channel')
     if native:
         legacy = legacy_native_force_mapping(row.get('force_mapping'))
-        tangent = opts.get('--tangential-column')
-        if tangent not in (None, NATIVE_TANGENTIAL_COLUMN) or (tangent is None and not legacy):
-            raise ValueError('Native assessment must use the verified top tangential impulse channel')
-        # A historical normal-only manifest can be resumed without rerunning
-        # physics: normalize only the derived assessment command in memory.
-        opts['--tangential-column'] = NATIVE_TANGENTIAL_COLUMN
+        if row.get('force_mapping') == native_force_mapping(reference_points=True):
+            if opts.get('--force-source') != 'rp' or any(k in opts for k in ('--force-column','--force-kind','--force-sign','--tangential-column')):
+                raise ValueError('RP study assessment must use only the declared RP source')
+        else:
+            if (opts.get('--force-source') is not None or opts.get('--force-column') != NATIVE_FORCE_COLUMN
+                    or opts.get('--force-sign') != '-1' or opts.get('--force-kind') != 'impulse'):
+                raise ValueError('Native assessment must use the verified FY impulse channel')
+            tangent = opts.get('--tangential-column')
+            if tangent not in (None,NATIVE_TANGENTIAL_COLUMN) or (tangent is None and not legacy):
+                raise ValueError('Native assessment must use the verified top tangential impulse channel')
+            opts['--tangential-column'] = NATIVE_TANGENTIAL_COLUMN
     assessment = [sys.executable, str(ROOT/assess_script), *row['assess_argv'][2:2+positional]]
     for key, value in opts.items():
         assessment.extend([key, str(value)])
@@ -168,9 +170,7 @@ def verify_completed(row, *, require_receipt=True):
                 or metadata.get('fracture_locus') != config['ductile_damage']['fracture_locus']
                 or metadata.get('target_nominal_strain') != config['compression_strain']):
             raise ValueError('Native generated model differs from requested study inputs')
-        result = assess(row['metadata'], row['history'], force_column=NATIVE_FORCE_COLUMN,
-                        tangential_column=NATIVE_TANGENTIAL_COLUMN,
-                        force_sign=-1, force_kind='impulse')
+        result = assess(row['metadata'], row['history'], **native_assess_kwargs(row.get('force_mapping')))
         result['legacy_manifest_force_mapping'] = legacy_mapping
         result['force_mapping_recomputed_from_bound_channels'] = True
         if not result.get('run_binding_verified') or not result.get('metadata_binding_verified'):
@@ -271,7 +271,7 @@ def execute(manifest_path, *, candidates=None, role='training', threads=2,
         if row.get('backend', manifest.get('backend', 'ccx')) == 'opencourant':
             plans[-1].update(
                 legacy_manifest_force_mapping=legacy_native_force_mapping(row.get('force_mapping')),
-                derived_force_mapping=native_force_mapping())
+                derived_force_mapping=native_force_mapping(reference_points=row.get('force_mapping',{}).get('source')=='rp'))
     if dry_run:
         return dict(dry_run=True, runs=plans, calibrated=False, solver_executed=False)
     journal_path = manifest_path.parent/'execution-journal.json'

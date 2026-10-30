@@ -262,3 +262,13 @@ The matched no-AMS elastic control still exceeds the static C3D8I reference
 stiffness by 72.27%; inverse fracture fitting remains blocked. New study
 preparation accepts `--holdout-end-strain .78` to assess the late visible
 thin-wall response, preserving thick-wall training and independent holdout roles.
+
+The supplied paper paragraph does not report the solver/step formulation.
+[The loading correction](validation/calibration_loading_revision.md) records
+constant 2 mm/min, linear displacement, self-contact, core U3 and platen friction.
+The optional wall-aligned mesh reduces the measured **elastic component**
+work-stiffness discrepancy to 0.86%; full collapse calibration is still separate.
+Generate a physical-speed input with `run_radioss.py --physical-speed-mm-min 2`;
+this is distinct from an accelerated explicit duration. The Abaqus physical-speed
+variant and its execution limitations are described in
+[the Abaqus instructions](abaqus/README_PAPER_VELOCITY.md).

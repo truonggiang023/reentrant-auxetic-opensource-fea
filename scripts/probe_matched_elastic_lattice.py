@@ -69,7 +69,7 @@ def nset(lines, name, values):
 
 def make_deck(mesh, path, typ):
     lines = ['*HEADING', 'Matched linear-elastic lattice; exact retained native core mesh', '*NODE']
-    lines += [f'{n}, {x:.15g}, {y:.15g}, {z:.15g}' for n, x, y, z in mesh['nodes']]
+    lines += [f'{n}, {x:.12g}, {y:.12g}, {z:.12g}' for n, x, y, z in mesh['nodes']]
     lines.append(f'*ELEMENT,TYPE={typ},ELSET=CORE')
     lines += [', '.join(map(str, row)) for row in mesh['elements']]
     bcs = mesh['boundary']
@@ -133,7 +133,8 @@ def run_case(directory, mesh, typ, executable, threads, timeout):
     work = .5*(-top[1])*DELTA
     record.update(usable=True, top_total_reaction_N=top, bottom_total_reaction_N=bottom,
                   y_force_balance_N=top[1]+bottom[1], stiffness_N_per_mm=stiffness,
-                  nominal_effective_modulus_MPa=stiffness*mesh['dimensions_mm']['height']/1900.,
+                  nominal_effective_modulus_MPa=stiffness*mesh['dimensions_mm']['height']/float(mesh.get('reference_area_mm2',1900.)),
+                  nominal_reference_area_mm2=float(mesh.get('reference_area_mm2',1900.)),
                   reaction_work_Nmm=work, solver_internal_energy_Nmm=energy,
                   relative_reported_energy_minus_work=(energy-work)/work,
                   solver_total_volume_mm3=volume,

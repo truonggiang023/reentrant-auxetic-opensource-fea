@@ -117,6 +117,8 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
     modifies the high-frequency inertial operator and requires independent
     time-step, loading-speed and energy sensitivity checks. Preserved total
     mass alone does not prove that an AMS result is quasi-static.
+    ``config['ams_scope']`` selects all parts (default) or only the core;
+    core-only AMS leaves the steel-platen constraints outside the AMS group.
     """
     nodes = np.asarray(nodes, float)
     elements = np.asarray(elements)
@@ -134,6 +136,16 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
     if not isinstance(anchor_requested, bool):
         raise ValueError('core_x_anchor must be an explicit boolean')
     anchor_node = None
+    loading_profile = config.get('loading_profile', 'smoothstep')
+    if loading_profile not in ('smoothstep','linear'):
+        raise ValueError('loading_profile must be smoothstep or linear')
+    restart_cycles = config.get('restart_cycle_interval')
+    if restart_cycles is not None and (isinstance(restart_cycles, bool)
+            or not isinstance(restart_cycles, int) or restart_cycles < 1):
+        raise ValueError('restart_cycle_interval must be a positive integer')
+    ams_scope = config.get('ams_scope', 'all')
+    if ams_scope not in ('all', 'core'):
+        raise ValueError("ams_scope must be 'all' or 'core'")
     if ams_time_step is not None:
         ams_time_step = float(ams_time_step)
         if not np.isfinite(ams_time_step) or not 0 < ams_time_step <= duration/100:
@@ -176,9 +188,13 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
              f'{"Mg":>20}{"mm":>20}{"s":>20}',
              '/TITLE', 'Uncalibrated research candidate: native erosion and TYPE25 contact']
     if ams_time_step is not None:
-        # /AMS group=0 selects all parts. Engine /DT/AMS/2 uses the native
+        # /AMS group=0 selects all parts. A core-only group leaves steel
+        # platen/RP constraints outside the modified inertial operator.
+        # Engine /DT/AMS/2 uses the native
         # non-diagonal mass operator and PCG, without adding /DT/NODA/CST.
-        lines.extend(['/AMS', _ints(0)])
+        if ams_scope == 'core':
+            lines.extend(['/GRPART/PART/50', 'AMS core part only', _ints(1)])
+        lines.extend(['/AMS', _ints(50 if ams_scope == 'core' else 0)])
     _material(lines, config, plastic, damage)
     allnodes = nodes.tolist()
     allelements = [(i+1, 1, tuple(int(v)+1 for v in el)) for i, el in enumerate(elements)]
@@ -247,10 +263,11 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
             anchor_node = min(range(len(nodes)), key=lambda i: abs(nodes[i, 0]-(xmin+xmax)/2)) + 1
             _group(lines, 4, 'Legacy interior X roller', [anchor_node])
             _bcs(lines, 4, 'Legacy in-plane pin (not a paper boundary)', 4, '100')
-    # Quintic smoothstep displacement: zero velocity/acceleration at both ends.
-    lines.extend(['/FUNCT/20', 'Smooth displacement fraction versus seconds'])
-    amplitude_samples = [[float(duration*fraction), float(fraction**3*(10-15*fraction+6*fraction**2))]
-                         for fraction in np.linspace(0, 1, 101)]
+    # Linear motion gives constant velocity; smoothstep is an explicit numerical choice.
+    lines.extend(['/FUNCT/20', 'Displacement fraction versus seconds: '+loading_profile])
+    amplitude_samples = ([[0.,0.],[float(duration),1.]] if loading_profile=='linear' else
+                         [[float(duration*fraction), float(fraction**3*(10-15*fraction+6*fraction**2))]
+                          for fraction in np.linspace(0, 1, 101)])
     for time, fraction in amplitude_samples:
         lines.append(_reals(time, fraction))
     _motion(lines, 1, 12 if coupled else 2, height*strain*(1 if tensile_coupon else -1))
@@ -286,12 +303,16 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
     if ams_time_step is not None:
         engine_lines.extend(['/DT/AMS/2', _reals(.67, ams_time_step),
                              _reals(1e-4), _ints(1000, 0)])
+    if restart_cycles is not None:
+        engine_lines.extend(['/RFILE/2', _ints(restart_cycles)])
     engine.write_text('\n'.join(engine_lines)+'\n')
     metadata = dict(backend='OpenCourant / Radioss format experimental', prefix=prefix,
                     starter=str(starter.resolve()), engine=str(engine.resolve()),
                     units=dict(mass='Mg', length='mm', time='s', stress='MPa', force='N'),
                     duration_seconds=duration, height_mm=height, wall_mm=config.get('wall'),
                     displacement_fraction_samples=amplitude_samples,
+                    loading_profile=loading_profile,
+                    constitutive_rate_dependence=False,hardening_curve_count=1,
                     time_history_interval_seconds=duration/400,
                     loading_face_nodes=upper, bottom_support_nodes=lower,
                     platen_reference_points=coupled, support_reaction_history=support_history,
@@ -301,10 +322,14 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
                     core_nodes=ncore, core_elements=len(elements), target_nominal_strain=strain,
                     reference_area_mm2=config.get('reference_area', (xmax-xmin)*(zmax-zmin)),
                     physical_speed_mm_per_min=2., physical_duration_seconds=height*strain/2*60,
-                    peak_imposed_speed_mm_per_s=1.875*height*strain/duration,
+                    peak_imposed_speed_mm_per_s=(1. if loading_profile=='linear' else 1.875)*height*strain/duration,
+                    mean_imposed_speed_mm_per_s=height*strain/duration,
                     acceleration_requires_energy_and_speed_sensitivity=True,
                     mass_scaling='native Advanced Mass Scaling' if ams_time_step is not None else False,
                     ams=dict(enabled=ams_time_step is not None,
+                             scope=ams_scope,
+                             selected_part_ids=([1] if ams_scope == 'core' or tensile_coupon else [1, 2, 3]) if ams_time_step is not None else [],
+                             part_group_id=(50 if ams_scope == 'core' else 0) if ams_time_step is not None else None,
                              requested_time_step_seconds=ams_time_step,
                              time_step_scale_factor=.67,
                              pcg_relative_tolerance=1e-4,
@@ -318,6 +343,9 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
                                            starter_reported_solid_qb=.05,
                                            starter_reported_contact_critical_damping=.05,
                                            starter_reported_contact_quadratic_damping=1),
+                    restart_policy=dict(enabled=restart_cycles is not None,
+                                        retained_files=2 if restart_cycles is not None else 0,
+                                        cycle_interval=restart_cycles,continuation_verified=False),
                     completion_verified=False,
                     calibrated=False, experimental_agreement=False,
                     native_erosion_requested=bool(damage),

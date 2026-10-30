@@ -23,8 +23,12 @@ NATIVE_FORCE_COLUMN = 'Contact force and energy                 3 Contact 3     
 NATIVE_TANGENTIAL_COLUMN = 'Contact force and energy                 3 Contact 3                                var 67'
 
 
-def native_force_mapping(*, legacy=False):
-    """The three-part writer's verified TYPE25 IMS=2 top-contact quantity."""
+def native_force_mapping(*, legacy=False, reference_points=False):
+    """Declare verified TYPE25 contact impulses or observed-RP reaction histories."""
+    if reference_points:
+        if legacy:
+            raise ValueError('RP mapping has no legacy normal-only form')
+        return dict(source='rp',channel_kind='impulse',strain_measure='observed_relative_RP_DY')
     result = dict(csv_column=NATIVE_FORCE_COLUMN, compressive_sign=-1, channel_kind='impulse')
     if not legacy:
         result.update(tangential_csv_column=NATIVE_TANGENTIAL_COLUMN, component_operation='FN-FT')
@@ -37,11 +41,21 @@ def legacy_native_force_mapping(mapping):
     Legacy input/solver files remain unchanged. Reassessment always uses both
     actual bound channels, and explicitly records the interpretation upgrade.
     """
+    if mapping == native_force_mapping(reference_points=True):
+        return False
     if mapping == native_force_mapping():
         return False
     if mapping == native_force_mapping(legacy=True):
         return True
     raise ValueError('Native study requires verified top FN/FT impulse channels, FN-FT and sign')
+
+
+def native_assess_kwargs(mapping):
+    legacy_native_force_mapping(mapping)
+    if mapping == native_force_mapping(reference_points=True):
+        return dict(force_source='rp')
+    return dict(force_column=NATIVE_FORCE_COLUMN,tangential_column=NATIVE_TANGENTIAL_COLUMN,
+                force_sign=-1,force_kind='impulse')
 
 
 def dump(path, data):
@@ -135,7 +149,7 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
                               metadata=str(metadata), history=str(history),
                               assessment=str(prefix.with_name(prefix.name+'.assessment.json')),
                               duration_seconds=actual_duration, ams_time_step=actual_ams,
-                              force_mapping=native_force_mapping())
+                              force_mapping=native_force_mapping(reference_points=bool(config.get('platen_reference_points',False))))
                 record['solve_argv'] = ['python', 'run_radioss.py', '--config', str(config_path),
                                        '--plastic', record['hardening_source'], '--output', str(prefix),
                                        '--duration-seconds', str(actual_duration), '--drop-ccx-viscosity', '--run']
@@ -145,6 +159,9 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
                                         '--force-column', NATIVE_FORCE_COLUMN, '--force-sign', '-1',
                                         '--tangential-column', NATIVE_TANGENTIAL_COLUMN,
                                         '--force-kind', 'impulse', '--output', record['assessment']]
+                if config.get('platen_reference_points'):
+                    record['assess_argv'] = ['python','assess_courant.py',str(metadata),str(history),
+                                            '--force-source','rp','--output',record['assessment']]
             records.append(record)
     manifest = {
         'status': 'unrun hypotheses; no calibrated material', 'calibrated': False,
@@ -152,6 +169,8 @@ def prepare(base, output, *, backend='ccx', duration=None, ams_time_step=None, p
         'hardening_source': str(plastic_source), 'hardening_source_sha256': plastic_sha256,
         'fit_intervals': deepcopy_intervals(),
         'holdout_end_strain': float(holdout_end_strain),
+        'native_force_source': ('observed RP REACY and relative DY' if source.get('platen_reference_points')
+                                else 'TYPE25 total contact FN-FT') if backend=='opencourant' else None,
         'deformation_targets': {'training': .5, 'holdout': float(holdout_end_strain)},
         'late_response_scope': 'End strain controls run coverage; late densification is assessed separately from the historical fit interval. No extrapolation or altered training/holdout role.',
         'geometry_qualification': {
@@ -215,9 +234,7 @@ def score_native_record(row, config, saved_assessment, experiments, interval):
         raise ValueError('Native material assumptions, duration or AMS do not match candidate')
     # assess() verifies generated deck hashes and the .run.json binding to the
     # actual starter/engine/T01/CSV files, and then reconstructs the force curve.
-    actual = assess(metadata_path, history, force_column=NATIVE_FORCE_COLUMN,
-                    tangential_column=NATIVE_TANGENTIAL_COLUMN,
-                    force_sign=-1, force_kind='impulse')
+    actual = assess(metadata_path, history, **native_assess_kwargs(row.get('force_mapping')))
     result = score_assessment(actual, experiments, interval)
     result.update(run_binding_verified=actual['run_binding_verified'],
                   metadata_binding_verified=actual.get('metadata_binding_verified', False),

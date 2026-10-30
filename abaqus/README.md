@@ -160,3 +160,11 @@ xuất RF2/U2. Xem [hướng dẫn chạy](README_VI.md) và
 [exporter ODB](export_abaqus_curve.py). Bộ này giữ các lựa chọn vật liệu,
 damage, mesh và mass scaling của script gốc; không thay thế hai deck thin_t03
 ở trên và không phải một mô hình đồng nhất với native OpenCourant.
+
+## Đúng tốc độ vật lý của đoạn paper
+
+[run_paper_velocity012.py](run_paper_velocity012.py) tạo riêng điều kiện
+2 mm/phút, chuyển vị tuyến tính, khóa U3 toàn bộ core, không yêu cầu mass
+scaling. Xem [hướng dẫn](README_PAPER_VELOCITY.md). Paper không nêu loại
+solver; Explicit trong script là lựa chọn triển khai. Đã kiểm tra mã nhưng
+chưa chạy Abaqus/datacheck. Với H0=48 mm, bước tới strain 0,12 dài 172,8 s.
