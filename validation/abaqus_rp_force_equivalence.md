@@ -78,3 +78,43 @@ print(result["balance_relative_rms"])
 channels and core/platen sign mapping from the actual 6x5 T01 deck; native
 solver execution and Abaqus RP export. Do not manufacture a numerical
 comparison from existing total-contact-only data.
+
+## Native RBE2 check (2026-10-30)
+
+`platen_reference_points=true` now selects an RBE2 coupling from each outer
+platen face to its central reference node. RP rotations are fixed, the bottom
+RP is fixed and the top RP receives Y displacement. Inner faces remain elastic.
+Both support and loading node histories are requested. Default direct-face
+loading remains available as a numerical control.
+
+Executed `scripts/probe_rp_coupling.py` with the pinned official runtime:
+zero starter errors/warnings and normal engine termination for both cases.
+At sampled strain 0.1199997, comparing interval forces obtained from REACY
+impulses gives relative RMS difference 3.749666e-5 (0.00375%) and maximum
+absolute difference 0.008866 N. See `native_rp_coupon_comparison.json`.
+This is a small solid coupon, not the honeycomb. Its maximum KE/IE=0.798
+fails the quasi-static screen. It establishes numerical agreement of the two
+loading implementations only; it does not establish Abaqus agreement.
+
+Reproduce from the repository root, with a fresh output directory:
+
+```sh
+source /workspace/opencourant/env.sh
+PYTHONPATH=.:src /workspace/fea-venv/bin/python scripts/probe_rp_coupling.py
+/workspace/fea-venv/bin/python scripts/compare_rp_reactions.py \
+  results/native_rp/direct results/native_rp/rp \
+  --output results/native_rp/comparison.json
+```
+
+The full honeycomb trial at duration 0.01 s, target strain 0.12, native AMS
+1e-6 s, J2 plasticity and inner-Y platen contact failed with
+`AMS IS LIKELY DIVERGING` after 1721 cycles. The trailing normal-termination
+message does not qualify that run. No completed 0.12 lattice RP comparison
+or Abaqus validation follows from it. A no-AMS pilot is required to isolate
+AMS instability and estimate the full runtime before any material calibration.
+
+The no-AMS full-mesh pilot was bounded to 90 s and timed out; its initial
+stable step was 1.4515e-8 s. This is an incomplete run, not a convergence
+failure or a completed comparison. A longer no-AMS RP/direct pair has been
+launched locally under `results/native_rp_lattice/full_*`; results remain
+pending and are not included in the committed qualification evidence.

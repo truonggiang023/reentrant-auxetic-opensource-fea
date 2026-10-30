@@ -82,3 +82,19 @@ def test_inner_y_platen_control_preserves_core_erosion_surface(tmp_path):
     for part, expected in [(2, [2, 11, 12, 16, 15]), (3, [3, 17, 18, 22, 21])]:
         assert list(map(int, lines[lines.index('/SURF/SEG/'+str(part))+2].split())) == expected
     assert meta['platen_contact_surface'] == 'inner_y'
+
+
+def test_rp_coupling_moves_only_outer_platen_faces(tmp_path):
+    cfg=dict(young=69000.,poisson=.3,compression_strain=.12,
+             platen_reference_points=True)
+    meta=write_radioss_deck(tmp_path/'rp',NODES,ELEMENTS,cfg,
+                           [(225.,0.),(300.,.2)],duration=.001)
+    text=(tmp_path/'rp_0000.rad').read_text()
+    assert '/RBE2/1' in text and '/RBE2/2' in text
+    assert meta['loading_face_nodes']==[26]
+    assert meta['bottom_support_nodes']==[25]
+    assert '/BCS/11' in text and '/BCS/12' in text
+    assert 'Top face XZ restraint' not in text
+    assert meta['core_nodes']==8
+    # All original solid elements retain their connectivity; RPs add no solids.
+    assert meta['core_elements']==1

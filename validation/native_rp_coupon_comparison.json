@@ -1,0 +1,49 @@
+{
+  "direct": {
+    "final_sample_strain": 0.1199997,
+    "energy": {
+      "sampled_energy_screen_passed": false,
+      "reasons": [
+        "global kinetic/internal energy ratio exceeds limit"
+      ],
+      "samples_after_startup": 380,
+      "last_observed_time": 0.0009975035,
+      "max_kinetic_internal_ratio": 0.7976634021609613,
+      "max_hourglass_internal_ratio": 0.0,
+      "max_added_original_mass_ratio": 0.0,
+      "thresholds": {
+        "kinetic_internal": 0.05,
+        "hourglass_internal": 0.05,
+        "added_original_mass": 0.01,
+        "ignored_startup_fraction": 0.05
+      },
+      "quasi_static_validated": false,
+      "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+    }
+  },
+  "rp": {
+    "final_sample_strain": 0.1199997,
+    "energy": {
+      "sampled_energy_screen_passed": false,
+      "reasons": [
+        "global kinetic/internal energy ratio exceeds limit"
+      ],
+      "samples_after_startup": 380,
+      "last_observed_time": 0.0009975035,
+      "max_kinetic_internal_ratio": 0.7976634021609613,
+      "max_hourglass_internal_ratio": 0.0,
+      "max_added_original_mass_ratio": 0.0,
+      "thresholds": {
+        "kinetic_internal": 0.05,
+        "hourglass_internal": 0.05,
+        "added_original_mass": 0.01,
+        "ignored_startup_fraction": 0.05
+      },
+      "quasi_static_validated": false,
+      "qualification": "global screen only; review core histories, contact/energy balance and loading-speed sensitivity"
+    }
+  },
+  "max_force_difference_N": 0.0088656054814822,
+  "relative_force_rms": 3.749666053443725e-05,
+  "scope": "native coupon numerical coupling check; no Abaqus or lattice equivalence established"
+}

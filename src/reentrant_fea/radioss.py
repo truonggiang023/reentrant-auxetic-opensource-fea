@@ -198,6 +198,13 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
             allelements.append((len(allelements)+1, part, tuple(range(start, start+8))))
         lines.extend(['/MAT/ELAST/2', 'Steel', _reals(config.get('steel_density', 7.85e-9)),
                       _reals(config.get('steel_young', 210000), config.get('steel_poisson', .3))])
+    coupled = bool(config.get('platen_reference_points', False))
+    if coupled and tensile_coupon:
+        raise ValueError('Platen RP coupling requires steel platens')
+    if coupled:
+        bottom_rp, top_rp = len(allnodes)+1, len(allnodes)+2
+        allnodes.extend([(float((xmin+xmax)/2), ymin-gap-thick, float((zmin+zmax)/2)),
+                         (float((xmin+xmax)/2), ymax+gap+thick, float((zmin+zmax)/2))])
     lines.append('/NODE')
     lines.extend(_ints(i)+_reals(*xyz) for i, xyz in enumerate(allnodes, 1))
     # HEPH (Isolid=24) has physical hourglass stabilization. It is not claimed
@@ -218,8 +225,18 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
         upper = [ncore+i for i in (11, 12, 15, 16)]
     _group(lines, 1, 'Bottom loading face', lower)
     _group(lines, 2, 'Top loading face', upper)
-    _bcs(lines, 1, 'Fixed bottom loading face', 1, '111')
-    _bcs(lines, 2, 'Top face XZ restraint', 2, '101')
+    if coupled:
+        for ident, rp in ((1, bottom_rp), (2, top_rp)):
+            lines.extend([f'/RBE2/{ident}', 'Outer platen face to reference point',
+                          _ints(rp)+'   111 111'+_ints(0, ident, 0)])
+        _group(lines, 11, 'Bottom reference point', [bottom_rp])
+        _group(lines, 12, 'Top reference point', [top_rp])
+        lower, upper = [bottom_rp], [top_rp]
+        lines.extend(['/BCS/11', 'Bottom RP fixed', '   111 111'+_ints(0,11),
+                      '/BCS/12', 'Top RP guided', '   101 111'+_ints(0,12)])
+    else:
+        _bcs(lines, 1, 'Fixed bottom loading face', 1, '111')
+        _bcs(lines, 2, 'Top face XZ restraint', 2, '101')
     if not tensile_coupon:
         _group(lines, 3, 'Core plane-strain Z restraint', range(1, ncore+1))
         _bcs(lines, 3, 'Core Z restraint', 3, '001')
@@ -236,7 +253,7 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
                          for fraction in np.linspace(0, 1, 101)]
     for time, fraction in amplitude_samples:
         lines.append(_reals(time, fraction))
-    _motion(lines, 1, 2, height*strain*(1 if tensile_coupon else -1))
+    _motion(lines, 1, 12 if coupled else 2, height*strain*(1 if tensile_coupon else -1))
     if not tensile_coupon:
         platen_surface = config.get('platen_contact_surface', 'all')
         if platen_surface not in ('all', 'inner_y'):
@@ -256,7 +273,7 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
                   _ints(*range(1, 2 if tensile_coupon else 4)),
                   '/TH/NODE/3', 'Loading face nodal histories',
                   ''.join(f'{variable:<10}' for variable in ('DX', 'DY', 'DZ', 'REACX', 'REACY', 'REACZ'))])
-    lines.extend(_ints(node, 0)+f'load-node-{node}' for node in upper)
+    lines.extend(_ints(node, 0)+f'load-node-{node}' for node in upper+lower)
     lines.append('/END')
     starter.write_text('\n'.join(lines)+'\n')
     engine_lines = ['#RADIOSS ENGINE', f'/RUN/{prefix}/1', _reals(duration),
@@ -274,7 +291,8 @@ def write_radioss_deck(path, nodes, elements, config, plastic, *,
                     duration_seconds=duration, height_mm=height, wall_mm=config.get('wall'),
                     displacement_fraction_samples=amplitude_samples,
                     time_history_interval_seconds=duration/400,
-                    loading_face_nodes=upper,
+                    loading_face_nodes=upper, bottom_support_nodes=lower,
+                    platen_reference_points=coupled,
                     loading_node_variables=['DX', 'DY', 'DZ', 'REACX', 'REACY', 'REACZ'],
                     reaction_history_semantics='REAC and interface force channels are cumulative impulses; differentiate in time to obtain interval-averaged forces',
                     interface_force_history_units='N*s',
